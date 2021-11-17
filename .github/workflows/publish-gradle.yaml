@@ -16,6 +16,12 @@ jobs:
           distribution: 'adopt'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Clean with Gradle
+        working-directory: macpan
+        run: ./gradlew clean
+      - name: Build with Gradle
+        working-directory: macpan
+        run: ./gradlew build
       - name: Publish package
         working-directory: macpan
         run: ./gradlew publish
