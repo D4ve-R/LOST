@@ -23,6 +23,6 @@ jobs:
         distribution: 'adopt'
         cache: gradle
     - name: Grant execute permission for gradlew
-      run: cd macpan && chmod +x gradlew
+      run: chmod +x macpan/gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./macpan/gradlew build
