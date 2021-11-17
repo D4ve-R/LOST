@@ -27,8 +27,4 @@ jobs:
         run: chmod +x macpan/gradlew
       - name: Build with Gradle
         working-directory: macpan
-<<<<<<< HEAD
-        run: ./gradlew build
-=======
         run: ./gradlew test
->>>>>>> ba395de (preparations)
