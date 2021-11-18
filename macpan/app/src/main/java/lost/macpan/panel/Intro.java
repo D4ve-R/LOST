@@ -10,6 +10,7 @@ package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
 
+import java.awt.GridBagLayout;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -28,6 +29,7 @@ public class Intro extends JPanel implements ResourceHandler {
      * loads the image and adds it to label
      */
     public Intro(){
+        setLayout(new GridBagLayout());
         try{
             img = ImageIO.read(getFileResourcesAsStream("images/LoST_Gruen.png"));
             img = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);

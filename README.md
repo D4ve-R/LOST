@@ -11,6 +11,19 @@ When a feature/module is finished, please create a pull request
 We use [Java Swing Framework](https://docs.oracle.com/javase/tutorial/uiswing/) for basic GUI infrastructure.  
 To build and package our application we use [Gradle](https://gradle.org/).
 
+### How to use Gradle
+Open the projet in your ide. Inside the ide open a new terminal.  
+run : 
+```
+$ cd macpan
+
+# for unix systems
+$ ./gradlew run
+
+# for windows systems
+$ ./gradlew.bat run
+```
+
 ## Project structure
 
 ```
