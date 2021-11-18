@@ -1,12 +1,14 @@
 package lost.macpan.panel;
 
+import lost.macpan.utils.ResourceHandler;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 
-public class Intro extends JPanel {
+public class Intro extends JPanel implements ResourceHandler {
     private Image img;
     private JLabel label;
     public Intro(){

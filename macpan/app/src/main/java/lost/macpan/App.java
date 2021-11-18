@@ -4,6 +4,8 @@
  */
 
 package lost.macpan;
+import lost.macpan.panel.Intro;
+
 import javax.swing.JFrame;
 import java.awt.Dimension;
 
@@ -17,7 +19,7 @@ public class App extends JFrame{
         setMinimumSize(new Dimension(width, height));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //add(new MainMenu(this));
+        add(new Intro());
         setResizable(false);
         pack();
         setVisible(true);
