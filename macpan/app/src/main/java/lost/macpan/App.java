@@ -7,7 +7,7 @@
  */
 
 package lost.macpan;
-import lost.macpan.panel.GameWindow;
+import lost.macpan.panel.FoUND_Engine.FoUND_Engine;
 import lost.macpan.panel.Intro;
 
 import javax.swing.Timer;
@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * App Class that handles the application
@@ -53,7 +54,12 @@ public class App extends JFrame implements ActionListener{
      */
     @Override
     public void actionPerformed ( ActionEvent evt) {
-        GameWindow gw = new GameWindow();
+        FoUND_Engine gw = null;
+        try {
+            gw = new FoUND_Engine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setContentPane(gw);
         pack();
         gw.startTehGaem();
