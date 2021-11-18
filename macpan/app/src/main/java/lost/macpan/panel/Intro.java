@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import java.awt.Image;
+import java.awt.*;
 
 /**
  * Intro Class to display for 4 seconds when the app starts
