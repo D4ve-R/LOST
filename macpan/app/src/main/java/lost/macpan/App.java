@@ -4,7 +4,21 @@
  */
 
 package lost.macpan;
+import javax.swing.JFrame;
+import java.awt.Dimension;
 
-public class App {
+public class App extends JFrame{
+    private static final int width = 950;
+    private static final int height = 700;
 
+    public App(){
+        setTitle("MacPan");
+        setMinimumSize(new Dimension(width, height));
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        setResizable(false);
+        pack();
+        setVisible(true);
+    }
 }
