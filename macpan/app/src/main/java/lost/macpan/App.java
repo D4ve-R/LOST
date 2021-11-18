@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 
 public class App extends JFrame{
+
     private static final int width = 950;
     private static final int height = 700;
 
@@ -16,7 +17,7 @@ public class App extends JFrame{
         setMinimumSize(new Dimension(width, height));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        //add(new MainMenu(this));
         setResizable(false);
         pack();
         setVisible(true);
