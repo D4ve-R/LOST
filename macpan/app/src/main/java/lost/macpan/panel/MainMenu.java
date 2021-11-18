@@ -13,7 +13,6 @@ import java.awt.Color;
 
 public class MainMenu extends JPanel{
     public MainMenu(JFrame frame){
-
         setBackground(Color.green);
     }
 }
