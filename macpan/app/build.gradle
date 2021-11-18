@@ -27,7 +27,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'lost.macpan.App'
+    mainClass = 'lost.macpan.Main'
 }
 
 tasks.named('test') {
