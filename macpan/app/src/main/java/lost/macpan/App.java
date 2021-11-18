@@ -7,8 +7,8 @@
  */
 
 package lost.macpan;
+import lost.macpan.panel.GameWindow;
 import lost.macpan.panel.Intro;
-import lost.macpan.panel.MainMenu;
 
 import javax.swing.Timer;
 import javax.swing.JFrame;
@@ -53,7 +53,10 @@ public class App extends JFrame implements ActionListener{
      */
     @Override
     public void actionPerformed ( ActionEvent evt) {
-        setContentPane(new MainMenu(this));
+        GameWindow gw = new GameWindow();
+        setContentPane(gw);
+        pack();
+        gw.startTehGaem();
         revalidate();
         timer.stop();
     }
