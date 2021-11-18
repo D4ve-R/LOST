@@ -1,3 +1,11 @@
+/*
+ * MacPan version 0.1
+ * SWE WS 21/22
+ * Authors:
+ * Janosch Lentz
+ * David Rechkemmer
+ */
+
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
@@ -8,9 +16,17 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 
+/**
+ * Intro Class to display for 4 seconds when the app starts
+ */
 public class Intro extends JPanel implements ResourceHandler {
     private Image img;
     private JLabel label;
+
+    /**
+     * Constructor method for Intro
+     * loads the image and adds it to label
+     */
     public Intro(){
         try{
             img = ImageIO.read(getFileResourcesAsStream("images/LoST_Gruen.png"));
@@ -22,6 +38,7 @@ public class Intro extends JPanel implements ResourceHandler {
         if(img != null){
             label = new JLabel(new ImageIcon(img));
         }
+
         add(label);
     }
 }

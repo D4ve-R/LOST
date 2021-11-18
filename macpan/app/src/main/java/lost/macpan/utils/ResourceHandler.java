@@ -6,6 +6,9 @@
 package lost.macpan.utils;
 import java.io.InputStream;
 
+/**
+ * ResourceHandler interface to handle file opening in production mode
+ */
 public interface ResourceHandler {
     default InputStream getFileResourcesAsStream(String filename){
         ClassLoader cl = getClass().getClassLoader();
@@ -17,5 +20,4 @@ public interface ResourceHandler {
             return in;
         }
     }
-
 }

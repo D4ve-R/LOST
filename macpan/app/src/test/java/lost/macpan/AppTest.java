@@ -6,7 +6,7 @@ package lost.macpan;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+// wird später implementiert
 class AppTest {
 
 }
