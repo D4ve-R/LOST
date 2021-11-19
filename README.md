@@ -4,8 +4,11 @@ Ziel des Projekts ist die Entwickelung eines 2D Games.
 
 ## Contribute
 To contribute always create an extra branch with an identifying name.  
-Check Git.md on how to keep your branch updated with main.  
+Check [Git.md](https://github.com/D4ve-R/LOST/blob/main/Git.md) on how to keep your branch updated with main.  
 When a feature/module is finished, please create a pull request
+
+## Codestyle
+For code styling and formatting checkout [CodeStyle.md](https://github.com/D4ve-R/LOST/blob/main/CodeStyle.md)
 
 ## Framework
 We use [Java Swing Framework](https://docs.oracle.com/javase/tutorial/uiswing/) for basic GUI infrastructure.  
@@ -46,7 +49,7 @@ LOST
 ```
 
 ## CI & Tests
-We us Junit5 Jupiter for testing purposes,
+We use Junit5 Jupiter for testing purposes,
 all tests must be in the test dir.  
 When pushing your commits to the remote repo,
 github will run gradle build & testing action.  

@@ -1,5 +1,5 @@
 ## How to git
-This repo is the source, please do not push any changes directly.
+This repo is the source, please do not push any changes directly to main.
 Make pull request!
 
 ### How to get this project
@@ -7,7 +7,7 @@ Make pull request!
 # go to a place in your filesystem you like
 # and clone the repo
 
-$ git clone URL 
+$ git clone https://github.com/D4ve-R/LOST.git 
 ```
 
 ### How to keep main & my branch updated
