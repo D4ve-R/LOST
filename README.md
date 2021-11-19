@@ -15,7 +15,7 @@ We use [Java Swing Framework](https://docs.oracle.com/javase/tutorial/uiswing/) 
 To build and package our application we use [Gradle](https://gradle.org/).
 
 ### How to use Gradle
-Open the projet in your ide. Inside the ide open a new terminal.  
+Open the project in your ide. Inside the ide open a new terminal.  
 run : 
 ```
 $ cd macpan
