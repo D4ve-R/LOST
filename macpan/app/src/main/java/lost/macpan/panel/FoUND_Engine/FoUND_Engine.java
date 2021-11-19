@@ -1,16 +1,18 @@
 package lost.macpan.panel.FoUND_Engine;
 
+import lost.macpan.panel.FoUND_Engine.spriteClasses.*;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
     //attributes
     private int originalTileSize = 16;
     private int scale = 2;
-    private int tileSize = originalTileSize * scale;
+    public int tileSize = originalTileSize * scale;
     private int maxColumns = 32;
     private int maxRows = 24;
     private int width = maxColumns * tileSize;
@@ -18,31 +20,32 @@ public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
     private JLabel label;
     private int framerate = 60;
 
-    Image boostedCoin;
-    Image normalCoin;
-    Image enemy1 = null;
-    Image enemy2 = null;
-    Image enemy3 = null;
-    Image enemy4 = null;
-    Image exit1 = null;
-    Image exit2 = null;
-    Image exit3 = null;
-    Image exit4 = null;
-    Image exit5 = null;
-    Image exit6 = null;
-    Image exit7 = null;
-    Image exit8 = null;
-    Image freeze;
-    Image key;
-    Image pan;
-    Image path;
-    Image player1 = null;
-    Image player2 = null;
-    Image player3 = null;
-    Image player4 = null;
-    Image shield;
-    Image speed;
-    Image wall;
+    public BufferedImage boostedCoin;
+    public BufferedImage normalCoin;
+    public BufferedImage enemy1 = null;
+    public BufferedImage enemy2 = null;
+    public BufferedImage enemy3 = null;
+    public BufferedImage enemy4 = null;
+    public BufferedImage exit1 = null;
+    public BufferedImage exit2 = null;
+    public BufferedImage exit3 = null;
+    public BufferedImage exit4 = null;
+    public BufferedImage exit5 = null;
+    public BufferedImage exit6 = null;
+    public BufferedImage exit7 = null;
+    public BufferedImage exit8 = null;
+    public BufferedImage freeze;
+    public BufferedImage key;
+    public BufferedImage pan;
+    public BufferedImage path;
+    public BufferedImage player1 = null;
+    public BufferedImage player2 = null;
+    public BufferedImage player3 = null;
+    public BufferedImage player4 = null;
+    public BufferedImage shield;
+    public BufferedImage speed;
+    public BufferedImage wall;
+    playerSprite playerSprite = new playerSprite(this);
     public void fetchSprites() {
         try {
             boostedCoin = ImageIO.read(getFileResourcesAsStream("images/Coin boost.png"));
@@ -75,6 +78,9 @@ public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
         }
     }
 
+    public int xExample = 0, yExample = 0;
+
+
     Thread tehGaem;
 
     public FoUND_Engine(){
@@ -102,6 +108,8 @@ public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
         double nextDrawTime = System.nanoTime() + frametime;
         while(tehGaem != null){
             gameLogic();
+            xExample = (xExample + 1) % 100;
+            yExample = (yExample + 1) % 100;
             repaint();
             try {
                 double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;
@@ -154,13 +162,15 @@ public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.CYAN);
-        g2d.fillRect(100,100, tileSize, tileSize);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.CYAN);
+        g2.fillRect(xExample,yExample, tileSize, tileSize);
+        g2.drawImage(wall, 132, 132, tileSize, tileSize, null);
+        playerSprite.draw(g2);
+        g2.dispose();
     }
 
-    public Image enemySprite(){
+    public BufferedImage enemySpriteSelect(){
         long timeWithinSecond = System.currentTimeMillis() % 1000;
         if (timeWithinSecond < 500){
             if (timeWithinSecond < 250)
@@ -175,7 +185,7 @@ public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
     }
 
     public static long animationStart = 0;
-    public Image exitSprite(boolean isUnlocked){
+    public BufferedImage exitSpriteSelect(boolean isUnlocked){
         long animationTimer = 0;
         if (isUnlocked && animationStart != 0) {
             animationTimer = System.currentTimeMillis() - animationStart;
@@ -200,17 +210,5 @@ public class FoUND_Engine extends JPanel implements Runnable, ResourceHandler{
         return exit1;
     }
 
-    public Image playerSprite(){
-        long timeWithinSecond = System.currentTimeMillis() % 1000;
-        if (timeWithinSecond < 500){
-            if (timeWithinSecond < 250)
-                return player1;
-            else
-                return player2;
-        }
-        else if (timeWithinSecond < 750)
-            return player3;
-        else
-            return player4;
-    }
+
 }

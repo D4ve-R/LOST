@@ -7,15 +7,14 @@
  */
 
 package lost.macpan;
+
 import lost.macpan.panel.FoUND_Engine.FoUND_Engine;
 import lost.macpan.panel.Intro;
 
-import javax.swing.Timer;
-import javax.swing.JFrame;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 /**
  * App Class that handles the application
@@ -31,7 +30,7 @@ public class App extends JFrame implements ActionListener{
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 5500; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
+        int delay = 1000; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
 
         timer = new Timer(delay, this);
 
@@ -54,15 +53,10 @@ public class App extends JFrame implements ActionListener{
      */
     @Override
     public void actionPerformed ( ActionEvent evt) {
-        FoUND_Engine gw = null;
-        try {
-            gw = new FoUND_Engine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        setContentPane(gw);
+        FoUND_Engine fnd = new FoUND_Engine();
+        setContentPane(fnd);
         pack();
-        gw.startTehGaem();
+        fnd.startTehGaem();
         revalidate();
         timer.stop();
     }
