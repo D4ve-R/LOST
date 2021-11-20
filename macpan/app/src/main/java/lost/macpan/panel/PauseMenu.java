@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Die Klasse MainMenu stellt das Pausemenü des Spiels auf dem JPanel dar.
+ * @author Fatih
  */
 public class PauseMenu extends JPanel implements ActionListener, ResourceHandler {
     // Erstellen der einzelnen Buttons

@@ -35,7 +35,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Bilder als ImgageIcon
+        // Bilder als ImageIcon
         if (img_1 != null) {
             topLabel = new JLabel(new ImageIcon(img_1));
         }
