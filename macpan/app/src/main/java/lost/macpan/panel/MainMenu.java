@@ -82,7 +82,9 @@ public class MainMenu extends JPanel implements ActionListener,ResourceHandler {
         } else if (e.getSource() == optionsBtn) {
 
         } else if (e.getSource() == quitBtn) {
-
+            QuitMenu quitMenu = new QuitMenu(parentFrame);
+            parentFrame.setContentPane(quitMenu);
+            parentFrame.revalidate();
         }
     }
 }
