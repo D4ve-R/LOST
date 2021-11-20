@@ -39,6 +39,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         backBtn.setBounds(30,550,160,50);
         add(label);
         add(backBtn);
+        backBtn.addActionListener(this);
     }
 
     @Override

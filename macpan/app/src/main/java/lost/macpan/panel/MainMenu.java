@@ -78,6 +78,9 @@ public class MainMenu extends JPanel implements ActionListener,ResourceHandler {
         } else if (e.getSource() == loadBtn) {
 
         } else if (e.getSource() == highscoresBtn) {
+            HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame);
+            parentFrame.setContentPane(highscoreMenu);
+            parentFrame.revalidate();
 
         } else if (e.getSource() == optionsBtn) {
 
