@@ -59,7 +59,9 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
             parentFrame.revalidate();
 
         } else if (e.getSource() == descBtn) {
-
+            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame,before);
+            parentFrame.setContentPane(gameDescriptionMenu);
+            parentFrame.revalidate();
         }
     }
 }
