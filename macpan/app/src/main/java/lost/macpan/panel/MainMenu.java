@@ -14,55 +14,61 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import lost.macpan.utils.ResourceHandler;
 
+/**
+ * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
+ */
 public class MainMenu extends JPanel implements ActionListener,ResourceHandler {
-    //Buttons werden Erstellt
+    // Erstellen der einzelnen Buttons
     private final JButton playBtn = new JButton("Spiel Starten");
     private final JButton loadBtn = new JButton("Spiel Laden");
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton quitBtn = new JButton("Spiel Beenden");
+    /*
+        parenFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
+     */
     private JFrame parentFrame;
-    private JPanel panelForButtons = new JPanel();
-    private JPanel panelForImage = new JPanel();
     private JLabel label;
     private Image img;
 
+    /**
+     * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Hauptmenü gehören auf dem Frame
+     * @param frame
+     */
     public MainMenu(JFrame frame){
         parentFrame = frame;
-        setLayout(null);
-        try{
-            img = ImageIO.read(getFileResourcesAsStream("images/HauptmenüBildPlatzhalter.png"));
-            img = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-        }catch(Exception e){
+
+        try {
+            img = ImageIO.read(getFileResourcesAsStream("images/HauptmenuePlatzhalter.png"));
+        } catch(Exception e) {
             e.printStackTrace();
         }
 
-        if(img != null){
+        if(img != null) {
             label = new JLabel(new ImageIcon(img));
         }
-        label.setBounds(175,50,600,200);
-        add(label);
-
 
         setLayout(null);
+        // Positionierung der Buttons und Labels
+        label.setBounds(175,50,600,200);
         playBtn.setBounds(395,300,160,50);
         loadBtn.setBounds(395,360,160,50);
         highscoresBtn.setBounds(395,420,160,50);
         optionsBtn.setBounds(395,480,160,50);
         quitBtn.setBounds(395,540,160,50);
+        // Hinzufügen der Buttons und Labels auf den Frame
+        add(label);
         add(playBtn);
         add(loadBtn);
         add(highscoresBtn);
         add(optionsBtn);
         add(quitBtn);
-
+        //Buttons werdem dem Listener zugeordnet
         playBtn.addActionListener(this);
         loadBtn.addActionListener(this);
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
-
-        //setBackground(Color.white);
     }
 
     @Override
