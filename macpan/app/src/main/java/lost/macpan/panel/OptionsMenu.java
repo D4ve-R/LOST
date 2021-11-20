@@ -1,6 +1,7 @@
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
+import org.checkerframework.checker.units.qual.K;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -53,6 +54,9 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
                 //Spiel weiter Spielen
             }
         } else if (e.getSource() == keyBtn) {
+            KeysMenu keysMenu = new KeysMenu(parentFrame,before);
+            parentFrame.setContentPane(keysMenu);
+            parentFrame.revalidate();
 
         } else if (e.getSource() == descBtn) {
 
