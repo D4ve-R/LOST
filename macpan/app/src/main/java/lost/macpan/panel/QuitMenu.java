@@ -26,12 +26,12 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = frame;
         // Laden der Bilder, falls diese vorhanden sind
         try {
-            img_1 = ImageIO.read(getFileResourcesAsStream("images/SpielBeendenPlatzhalter1.png"));
+            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielBeendenPlatzhalter1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            img_2 = ImageIO.read(getFileResourcesAsStream("images/SpielBeendenPlatzhalter2.png"));
+            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielBeendenPlatzhalter2.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -32,7 +32,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     public PauseMenu(JFrame frame) {
         parentFrame = frame;
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/PausemenuePlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/PausemenuePlatzhalter.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

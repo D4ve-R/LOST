@@ -39,7 +39,7 @@ public class MainMenu extends JPanel implements ActionListener,ResourceHandler {
         parentFrame = frame;
 
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/HauptmenuePlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/HauptmenuePlatzhalter.png"));
         } catch(Exception e) {
             e.printStackTrace();
         }
