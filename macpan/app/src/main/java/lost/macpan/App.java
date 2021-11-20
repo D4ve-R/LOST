@@ -9,6 +9,7 @@
 package lost.macpan;
 import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
+import lost.macpan.panel.PauseMenu;
 
 import java.awt.Dimension;
 import javax.swing.Timer;
