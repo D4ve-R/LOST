@@ -23,19 +23,15 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
-
         setLayout(null);
         label.setBounds(175,50,600,200);
         backBtn.setBounds(30,550,160,50);
         add(label);
         add(backBtn);
         backBtn.addActionListener(this);
-
-        setBackground(Color.DARK_GRAY);
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {

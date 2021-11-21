@@ -31,7 +31,9 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
      */
     private JFrame parentFrame;
     private JLabel label;
+    private JLabel background;
     private Image img;
+    private Image backgroundImg;
 
     /**
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Hauptmenue gehören auf dem Frame
@@ -40,19 +42,25 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
      */
     public MainMenu(JFrame frame) {
         parentFrame = frame;
-
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/HauptmenuePlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPanLabel.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
-
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         setLayout(null);
         // Positionierung der Buttons und Labels
+        background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
         playBtn.setBounds(395, 300, 160, 50);
         loadBtn.setBounds(395, 360, 160, 50);
@@ -66,6 +74,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         add(highscoresBtn);
         add(optionsBtn);
         add(quitBtn);
+        add(background);
         //Buttons werden dem Listener zugeordnet
         playBtn.addActionListener(this);
         loadBtn.addActionListener(this);
@@ -87,7 +96,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.revalidate();
 
         } else if (e.getSource() == optionsBtn) {
-            OptionsMenu optionsMenu = new OptionsMenu(parentFrame,this.parentFrame.getContentPane());
+            OptionsMenu optionsMenu = new OptionsMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
 
