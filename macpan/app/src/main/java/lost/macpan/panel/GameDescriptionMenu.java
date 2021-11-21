@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton backBtn = new JButton("Zuruck");
+    private final JButton backBtn = new JButton("Zurück");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;

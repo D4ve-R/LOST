@@ -12,7 +12,7 @@ import java.awt.*;
 public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton keyBtn = new JButton("Tastenbelegung");
     private final JButton descBtn = new JButton("Spielbeschreibung");
-    private final JButton backBtn = new JButton("Zuruck");
+    private final JButton backBtn = new JButton("Zurück");
     private JLabel label;
     private Image img;
     private JFrame parentFrame;
