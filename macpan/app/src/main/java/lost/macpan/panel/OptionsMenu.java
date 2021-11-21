@@ -41,6 +41,7 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         keyBtn.addActionListener(this);
         descBtn.addActionListener(this);
         backBtn.addActionListener(this);
+        setBackground(Color.DARK_GRAY);
     }
 
     @Override

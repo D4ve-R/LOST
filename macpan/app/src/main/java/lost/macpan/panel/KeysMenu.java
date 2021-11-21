@@ -44,6 +44,7 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         add(backBtn);
         add(subLabel);
         backBtn.addActionListener(this);
+        setBackground(Color.DARK_GRAY);
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {

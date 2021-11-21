@@ -65,6 +65,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         backBtn.addActionListener(this);
+        setBackground(Color.DARK_GRAY);
     }
 
     @Override

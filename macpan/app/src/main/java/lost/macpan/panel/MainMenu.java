@@ -72,6 +72,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
+        setBackground(Color.DARK_GRAY);
     }
 
     @Override

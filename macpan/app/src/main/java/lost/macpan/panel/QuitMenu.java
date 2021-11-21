@@ -54,6 +54,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         add(noBtn);
         yesBtn.addActionListener(this);
         noBtn.addActionListener(this);
+        setBackground(Color.DARK_GRAY);
 
     }
     // Funktionalität der Buttons festlegen

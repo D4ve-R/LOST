@@ -34,6 +34,8 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         add(label);
         add(backBtn);
         backBtn.addActionListener(this);
+
+        setBackground(Color.DARK_GRAY);
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {

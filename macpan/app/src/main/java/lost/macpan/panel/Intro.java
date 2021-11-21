@@ -42,5 +42,7 @@ public class Intro extends JPanel implements ResourceHandler {
         }
 
         add(label);
+
+        setBackground(Color.DARK_GRAY);
     }
 }

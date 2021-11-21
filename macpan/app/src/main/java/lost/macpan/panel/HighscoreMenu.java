@@ -40,6 +40,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         add(label);
         add(backBtn);
         backBtn.addActionListener(this);
+        setBackground(Color.DARK_GRAY);
     }
 
     @Override
