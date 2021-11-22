@@ -5,7 +5,7 @@ Like stopGameThread() or stopTimer or GameWindow.
 
 Please name your stuff identifying.  So everybody else can get an idea of the functionality, just by reading the name.
 
-Your names shouldn't contain unnecessary word.  
+Your names shouldn't contain unnecessary words.  
 ```
 # don't do this
 public class PlayerClass {}
@@ -15,7 +15,7 @@ public class Player{}
 ```
 
 Indent your code with tabs.  
-tabwidth = 4.
+tabswidth = 4.
 
 ### remember: 
 Java Classes start with an uppercase letter.

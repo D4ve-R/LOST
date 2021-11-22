@@ -1,2 +1,4 @@
 # Ignore Apple stuff
 .DS_Store
+# Ignore IDE settings
+.idea

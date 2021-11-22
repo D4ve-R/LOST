@@ -28,19 +28,19 @@ public class Intro extends JPanel implements ResourceHandler {
      * Constructor method for Intro
      * loads the image and adds it to label
      */
-    public Intro(){
+    public Intro() {
         setLayout(new GridBagLayout());
-        try{
+        try {
             img = ImageIO.read(getFileResourcesAsStream("images/LoST_Gruen.png"));
             img = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(img != null){
+        if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
-
         add(label);
+        setBackground(Color.DARK_GRAY);
     }
 }
