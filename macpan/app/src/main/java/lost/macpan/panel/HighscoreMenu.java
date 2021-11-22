@@ -46,10 +46,16 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (img != null) {
+            label = new JLabel(new ImageIcon(img));
+        }
         try {
             backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
         }
         try {
             backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/HighscoreBackground.png"));
@@ -58,12 +64,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         }
         if (backgroundImg != null) {
             highscoreBackground = new JLabel(new ImageIcon(backgroundImg));
-        }
-        if (img != null) {
-            label = new JLabel(new ImageIcon(img));
-        }
-        if (backgroundImg != null) {
-            background = new JLabel(new ImageIcon(backgroundImg));
         }
         /*
             Laden der Highscores.txt Datei
@@ -87,7 +87,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         }
         setLayout(null);
         String[] lastStringHopefully = out.split("\n");
-
         if (lastStringHopefully.length > 0) {
             JLabel hLb1 = new JLabel(lastStringHopefully[0]);
             hLb1.setBounds(290, 200, 500, 100);
@@ -159,10 +158,10 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             add(hLb10);
         }
         highscoreBackground.setBounds(220, 210, 514, 361);
+        add(highscoreBackground);
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
         backBtn.setBounds(30, 550, 160, 50);
-        add(highscoreBackground);
         add(label);
         add(backBtn);
         add(background);
