@@ -55,3 +55,9 @@ When pushing your commits to the remote repo,
 github will run gradle build & testing action.  
 Check on github.com if your code got build successfully.  
 (Of course you should do some local testing before you push anything).
+Check out [.github folder](https://github.com/D4ve-R/LOST/tree/main/.github/workflows).  
+Github Actions Java Gradle [Docs](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle)  
+
+## GitHub Discord Bot
+[Nice DevOps Stuff](https://gist.github.com/jagrosh/5b1761213e33fc5b54ec7f6379034a22)
+
