@@ -33,12 +33,12 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = frame;
         // Laden der Bilder, falls diese vorhanden sind
         try {
-            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielBeendenPlatzhalter1.png"));
+            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Quit.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielBeendenPlatzhalter2.png"));
+            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Quit_2.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         setLayout(null);
         // Positionierung der Labels und Buttons
         background.setBounds(0, 0, 950, 700);
-        topLabel.setBounds(175, 50, 600, 200);
+        topLabel.setBounds(-20, 10, 950, 200);
         subLabel.setBounds(175, 250, 600, 200);
         yesBtn.setBounds(740, 550, 160, 50);
         noBtn.setBounds(30, 550, 160, 50);

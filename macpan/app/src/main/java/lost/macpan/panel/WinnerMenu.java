@@ -26,7 +26,7 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     public WinnerMenu(JFrame frame) {
         parentFrame = frame;
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/GewonnenPlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

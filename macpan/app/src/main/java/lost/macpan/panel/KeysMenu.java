@@ -33,12 +33,12 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         before = beforeMenu;
         parentFrame = frame;
         try {
-            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/TastenbelegungPlatzhalter.png"));
+            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Keys.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Tastenbelegung_1.png"));
+            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/description_1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,8 +58,8 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         }
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        topLabel.setBounds(175, 50, 600, 200);
-        subLabel.setBounds(175, 250, 600, 400);
+        topLabel.setBounds(-20, 10, 950, 200);
+        subLabel.setBounds(175, 150, 600, 400);
         backBtn.setBounds(30, 550, 160, 50);
         add(topLabel);
         add(backBtn);

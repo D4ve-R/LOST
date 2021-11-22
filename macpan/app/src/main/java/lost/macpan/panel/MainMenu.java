@@ -49,7 +49,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = frame;
 
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPanLabel.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPan.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

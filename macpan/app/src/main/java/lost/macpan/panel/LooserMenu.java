@@ -26,7 +26,7 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
     public LooserMenu(JFrame frame) {
         parentFrame = frame;
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/GestorbenPlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Loose.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
 
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        label.setBounds(175, 50, 600, 200);
+        label.setBounds(-20, 10, 950, 200);
         add(label);
         add(background);
     }

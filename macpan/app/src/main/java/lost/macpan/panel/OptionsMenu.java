@@ -33,7 +33,7 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         parentFrame = frame;
         before = beforeMenu;
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/OptionenPlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Options.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
