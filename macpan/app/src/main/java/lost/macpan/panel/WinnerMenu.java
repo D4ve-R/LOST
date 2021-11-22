@@ -12,6 +12,9 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
+    private JLabel background;
+    private Image backgroundImg;
+
     public WinnerMenu(JFrame frame) {
         parentFrame = frame;
         try {
@@ -22,13 +25,21 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
-
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         //!Funktionalität Namen einzutragen und Score auszugeben fehlt noch
 
         setLayout(null);
+        background.setBounds(0, 0, 950, 700);
         label.setBounds(175,50,600,200);
         add(label);
-        setBackground(Color.DARK_GRAY);
+        add(background);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

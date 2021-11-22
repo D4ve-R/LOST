@@ -14,10 +14,13 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
     private JLabel label;
     private Image img;
     private Container before;
+    private JLabel background;
+    private Image backgroundImg;
 
     public GameDescriptionMenu(JFrame frame,Container beforeMenu) {
         before = beforeMenu;
         parentFrame = frame;
+
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielbeschreibungPlatzhalter.png"));
         } catch (Exception e) {
@@ -26,11 +29,21 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         setLayout(null);
+        background.setBounds(0, 0, 950, 700);
         label.setBounds(175,50,600,200);
         backBtn.setBounds(30,550,160,50);
         add(label);
         add(backBtn);
+        add(background);
         backBtn.addActionListener(this);
     }
     public void actionPerformed(ActionEvent e) {

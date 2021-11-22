@@ -17,6 +17,8 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
     private Image img;
     private JFrame parentFrame;
     private Container before;
+    private JLabel background;
+    private Image backgroundImg;
 
     public OptionsMenu(JFrame frame, Container beforeMenu) {
         parentFrame = frame;
@@ -29,7 +31,16 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         setLayout(null);
+        background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
         keyBtn.setBounds(395, 300, 160, 50);
         descBtn.setBounds(395, 360, 160, 50);
@@ -38,10 +49,10 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         add(label);
         add(keyBtn);
         add(descBtn);
+        add(background);
         keyBtn.addActionListener(this);
         descBtn.addActionListener(this);
         backBtn.addActionListener(this);
-        setBackground(Color.DARK_GRAY);
     }
 
     @Override

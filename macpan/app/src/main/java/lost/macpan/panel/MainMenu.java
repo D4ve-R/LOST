@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import lost.macpan.utils.ResourceHandler;
 
@@ -30,10 +32,11 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
      */
     private JFrame parentFrame;
+    private Image img;;
     private JLabel label;
     private JLabel background;
-    private Image img;
     private Image backgroundImg;
+
 
     /**
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Hauptmenue gehören auf dem Frame
@@ -42,6 +45,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
      */
     public MainMenu(JFrame frame) {
         parentFrame = frame;
+
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPanLabel.png"));
         } catch (Exception e) {
@@ -59,6 +63,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             background = new JLabel(new ImageIcon(backgroundImg));
         }
         setLayout(null);
+
         // Positionierung der Buttons und Labels
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
@@ -67,6 +72,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.setBounds(395, 420, 160, 50);
         optionsBtn.setBounds(395, 480, 160, 50);
         quitBtn.setBounds(395, 540, 160, 50);
+
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);
         add(playBtn);
@@ -81,7 +87,6 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
-        setBackground(Color.DARK_GRAY);
     }
 
     @Override

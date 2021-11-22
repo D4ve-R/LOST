@@ -26,6 +26,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
+    private JLabel background;
+    private Image backgroundImg;
     /**
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Pausemenue gehören auf dem Frame
      * @param frame
@@ -41,8 +43,17 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         setLayout(null);
         // Positionierung der Buttons und Labels
+        background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
         playBtn.setBounds(395, 250, 160, 50);
         loadBtn.setBounds(395, 310, 160, 50);
@@ -58,6 +69,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         add(highscoresBtn);
         add(optionsBtn);
         add(backBtn);
+        add(background);
         //Buttons werden dem Listener zugeordnet
         playBtn.addActionListener(this);
         loadBtn.addActionListener(this);
@@ -65,7 +77,6 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         backBtn.addActionListener(this);
-        setBackground(Color.DARK_GRAY);
     }
 
     @Override

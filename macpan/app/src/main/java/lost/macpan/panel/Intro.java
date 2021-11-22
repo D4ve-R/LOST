@@ -40,9 +40,7 @@ public class Intro extends JPanel implements ResourceHandler {
         if(img != null){
             label = new JLabel(new ImageIcon(img));
         }
-
         add(label);
-
         setBackground(Color.DARK_GRAY);
     }
 }

@@ -18,6 +18,8 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
+    private JLabel background;
+    private Image backgroundImg;
 
     public HighscoreMenu(JFrame frame) {
         parentFrame = frame;
@@ -29,18 +31,25 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         if (img != null) {
             label = new JLabel(new ImageIcon(img));
         }
-
-
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         //Hier fehlt noch die Ausgabe der Highscores auf dem Bildschirm
 
 
         setLayout(null);
+        background.setBounds(0, 0, 950, 700);
         label.setBounds(175,50,600,200);
         backBtn.setBounds(30,550,160,50);
         add(label);
         add(backBtn);
+        add(background);
         backBtn.addActionListener(this);
-        setBackground(Color.DARK_GRAY);
     }
 
     @Override

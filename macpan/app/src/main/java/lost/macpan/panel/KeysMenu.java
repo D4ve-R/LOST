@@ -16,6 +16,8 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
     private Image img_1;
     private Image img_2;
     private Container before;
+    private JLabel background;
+    private Image backgroundImg;
 
     public KeysMenu(JFrame frame,Container beforeMenu) {
         before = beforeMenu;
@@ -36,15 +38,24 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         if (img_2 != null) {
             subLabel = new JLabel(new ImageIcon(img_2));
         }
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         setLayout(null);
+        background.setBounds(0, 0, 950, 700);
         topLabel.setBounds(175,50,600,200);
         subLabel.setBounds(175,250,600,400);
         backBtn.setBounds(30,550,160,50);
         add(topLabel);
         add(backBtn);
         add(subLabel);
+        add(background);
         backBtn.addActionListener(this);
-        setBackground(Color.DARK_GRAY);
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {

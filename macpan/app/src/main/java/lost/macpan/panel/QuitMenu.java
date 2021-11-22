@@ -21,6 +21,8 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     private JFrame parentFrame;
     private JLabel topLabel,subLabel;
     private Image img_1,img_2;
+    private JLabel background;
+    private Image backgroundImg;
 
     public QuitMenu(JFrame frame) {
         parentFrame = frame;
@@ -35,6 +37,14 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (backgroundImg != null) {
+            background = new JLabel(new ImageIcon(backgroundImg));
+        }
         // Bilder als ImageIcon
         if (img_1 != null) {
             topLabel = new JLabel(new ImageIcon(img_1));
@@ -44,6 +54,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         }
         setLayout(null);
         // Positionierung der Labels und Buttons
+        background.setBounds(0, 0, 950, 700);
         topLabel.setBounds(175,50,600,200);
         subLabel.setBounds(175,250,600,200);
         yesBtn.setBounds(740,550,160,50);
@@ -52,10 +63,9 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         add(topLabel);
         add(yesBtn);
         add(noBtn);
+        add(background);
         yesBtn.addActionListener(this);
         noBtn.addActionListener(this);
-        setBackground(Color.DARK_GRAY);
-
     }
     // Funktionalität der Buttons festlegen
     @Override
