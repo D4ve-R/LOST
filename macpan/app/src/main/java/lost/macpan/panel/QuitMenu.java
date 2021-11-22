@@ -10,8 +10,9 @@ import java.awt.event.ActionListener;
 
 
 /**
- *  Die Klasse QuitMenu erstellt das Bestätigungsfenster, wenn der Benutzer das Spiel beenden möchte
- *  @author Fatih
+ * Die Klasse QuitMenu erstellt das Bestätigungsfenster, wenn der Benutzer das Spiel beenden möchte
+ *
+ * @author Fatih
  */
 public class QuitMenu extends JPanel implements ActionListener, ResourceHandler {
     // Erstellen der Buttons Ja und Nein für die Eingabe
@@ -19,8 +20,8 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     private final JButton noBtn = new JButton("Nein");
 
     private JFrame parentFrame;
-    private JLabel topLabel,subLabel;
-    private Image img_1,img_2;
+    private JLabel topLabel, subLabel;
+    private Image img_1, img_2;
     private JLabel background;
     private Image backgroundImg;
 
@@ -55,10 +56,10 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         setLayout(null);
         // Positionierung der Labels und Buttons
         background.setBounds(0, 0, 950, 700);
-        topLabel.setBounds(175,50,600,200);
-        subLabel.setBounds(175,250,600,200);
-        yesBtn.setBounds(740,550,160,50);
-        noBtn.setBounds(30,550,160,50);
+        topLabel.setBounds(175, 50, 600, 200);
+        subLabel.setBounds(175, 250, 600, 200);
+        yesBtn.setBounds(740, 550, 160, 50);
+        noBtn.setBounds(30, 550, 160, 50);
         add(subLabel);
         add(topLabel);
         add(yesBtn);
@@ -67,6 +68,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         yesBtn.addActionListener(this);
         noBtn.addActionListener(this);
     }
+
     // Funktionalität der Buttons festlegen
     @Override
     public void actionPerformed(ActionEvent e) {

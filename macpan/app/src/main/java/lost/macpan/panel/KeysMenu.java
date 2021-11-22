@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Die Klasse KeysMenu liefert dem Spieler ein Menü, wo man die Tastaturbelegung einsehen kann
+ *
+ * @author fatih
+ */
 public class KeysMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton backBtn = new JButton("Zurück");
     private JFrame parentFrame;
@@ -19,7 +24,7 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
     private JLabel background;
     private Image backgroundImg;
 
-    public KeysMenu(JFrame frame,Container beforeMenu) {
+    public KeysMenu(JFrame frame, Container beforeMenu) {
         before = beforeMenu;
         parentFrame = frame;
         try {
@@ -48,18 +53,19 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         }
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        topLabel.setBounds(175,50,600,200);
-        subLabel.setBounds(175,250,600,400);
-        backBtn.setBounds(30,550,160,50);
+        topLabel.setBounds(175, 50, 600, 200);
+        subLabel.setBounds(175, 250, 600, 400);
+        backBtn.setBounds(30, 550, 160, 50);
         add(topLabel);
         add(backBtn);
         add(subLabel);
         add(background);
         backBtn.addActionListener(this);
     }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {
-            OptionsMenu optionsMenu = new OptionsMenu(parentFrame,before);
+            OptionsMenu optionsMenu = new OptionsMenu(parentFrame, before);
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
         }

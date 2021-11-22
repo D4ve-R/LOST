@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Die Klasse MainMenu stellt das Pausemenü des Spiels auf dem JPanel dar.
+ *
  * @author Fatih
  */
 public class PauseMenu extends JPanel implements ActionListener, ResourceHandler {
@@ -28,8 +29,10 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private Image img;
     private JLabel background;
     private Image backgroundImg;
+
     /**
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Pausemenue gehören auf dem Frame
+     *
      * @param frame
      */
     public PauseMenu(JFrame frame) {

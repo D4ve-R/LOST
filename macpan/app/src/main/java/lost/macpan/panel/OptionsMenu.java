@@ -9,6 +9,11 @@ import java.awt.event.ActionListener;
 import javax.imageio.ImageIO;
 import java.awt.*;
 
+/**
+ * Die Klasse OptionMenu stellt ein Menü dar, wo man das Tastenbelegungsfenster oder das Spielbeschreibungsfenster öffnen kann
+ *
+ * @author fatih
+ */
 public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton keyBtn = new JButton("Tastenbelegung");
     private final JButton descBtn = new JButton("Spielbeschreibung");
@@ -66,12 +71,12 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
                 //Spiel weiter Spielen
             }
         } else if (e.getSource() == keyBtn) {
-            KeysMenu keysMenu = new KeysMenu(parentFrame,before);
+            KeysMenu keysMenu = new KeysMenu(parentFrame, before);
             parentFrame.setContentPane(keysMenu);
             parentFrame.revalidate();
 
         } else if (e.getSource() == descBtn) {
-            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame,before);
+            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, before);
             parentFrame.setContentPane(gameDescriptionMenu);
             parentFrame.revalidate();
         }

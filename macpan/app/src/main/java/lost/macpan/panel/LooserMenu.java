@@ -8,12 +8,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Die LooserMenu Klasse stellt ein Menü dar, wenn ein Spieler das Spiel verloren hat
+ *
+ * @author fatih
+ */
 public class LooserMenu extends JPanel implements ActionListener, ResourceHandler {
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
     private Image backgroundImg;
+
     public LooserMenu(JFrame frame) {
         parentFrame = frame;
         try {
@@ -36,10 +42,11 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
 
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        label.setBounds(175,50,600,200);
+        label.setBounds(175, 50, 600, 200);
         add(label);
         add(background);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
     }

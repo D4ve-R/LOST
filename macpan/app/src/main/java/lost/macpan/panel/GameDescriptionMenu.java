@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Die Klasse GameDescriptionMenu liefert dem Spieler eine Spielbeschreibung !!Spielbeschreibung muss noch hinzugefügt werden!!
+ *
+ * @author fatih
+ */
 public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton backBtn = new JButton("Zurück");
     private JFrame parentFrame;
@@ -17,7 +22,7 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
     private JLabel background;
     private Image backgroundImg;
 
-    public GameDescriptionMenu(JFrame frame,Container beforeMenu) {
+    public GameDescriptionMenu(JFrame frame, Container beforeMenu) {
         before = beforeMenu;
         parentFrame = frame;
 
@@ -39,16 +44,18 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         }
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        label.setBounds(175,50,600,200);
-        backBtn.setBounds(30,550,160,50);
+        label.setBounds(175, 50, 600, 200);
+        backBtn.setBounds(30, 550, 160, 50);
         add(label);
         add(backBtn);
         add(background);
         backBtn.addActionListener(this);
     }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {
-            OptionsMenu optionsMenu = new OptionsMenu(parentFrame,before);
+            OptionsMenu optionsMenu = new OptionsMenu(parentFrame, before);
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
         }
