@@ -7,6 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 /**
  *  Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch anzeigen
@@ -40,6 +45,16 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             background = new JLabel(new ImageIcon(backgroundImg));
         }
         //Hier fehlt noch die Ausgabe der Highscores auf dem Bildschirm
+
+        try {
+            Scanner scan = new Scanner(new File("resources/highscores/Highscores.txt"));
+            while(scan.hasNextLine()){
+                String line = scan.nextLine();
+                System.out.println(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         setLayout(null);
