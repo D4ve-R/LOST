@@ -7,7 +7,13 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import lost.macpan.game.sprites.*;
 import lost.macpan.utils.ResourceHandler;
@@ -31,7 +37,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
     protected char[][] map;                         //char-array from which a frame will be drawn
     protected LevelClass level;                     //object from which the data to-be-displayed will be read
     private Thread thread;
-    char[][] importedMap = new char[32][24];
 
     public BufferedImage boostedCoin;
     public BufferedImage normalCoin;
