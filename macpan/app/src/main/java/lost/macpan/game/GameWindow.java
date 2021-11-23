@@ -115,6 +115,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
+        map = importMapArray("test.txt"); //import the map test
     }
 
     /**
@@ -168,32 +169,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         double newTimer = 69.0;
         double newFreezeTimer = 1.1666666;
 
-        /*
-        for (int i = 0; i < 32; i++){
-            newMap[i][0] = 'g';
-            newMap[i][1] = '0';
-            newMap[i][2] = '.';
-            newMap[i][3] = '*';
-            newMap[i][4] = 'k';
-            newMap[i][5] = 'x';
-            newMap[i][6] = 'a';
-            newMap[i][7] = 'b';
-            newMap[i][8] = 'c';
-            newMap[i][9] = 'd';
-            newMap[i][10] = 'e';
-            newMap[i][11] = 'p';
-            for (int j = 12; j < 24; j++){
-                newMap[i][j] = 'h';
-            }
-        }
-        */
-
-        if (map == null) {
-            newMap = importMapArray("test.txt"); //import the map test
-        }else{
-            newMap = map;
-        }
-
+        newMap = map; //New map is old map
 
         newFlags[0] = true;
         for (int i = 1; i < 8; i++) {
@@ -254,6 +230,17 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         }
     }
 
+    /*
+        http://www.java2s.com/Code/Android/File/getResourceAsStreamLoadstheresourcefromclasspath.htm
+     */
+
+    /**
+     * Wandelt einen Stream zu einem String
+     *
+     * @param is Inputstream
+     * @return String der aus Input entstanden ist
+     * @throws IOException
+     */
     private static String convertStreamToString(InputStream is) throws IOException {
         if (is != null) {
             Writer writer = new StringWriter();
@@ -294,12 +281,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
 
         String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
 
-        for(int i = 0; i < rows.length;i++ ){           //For every row
-            for(int o = 0; o < rows[i].length();o++ ){  //for every char in the row
-                map[o][i]=rows[i].charAt(o);            //insert char into the map array
+        for(int i = 0; i < rows.length;i++ ) {           //For every row
+            for (int o = 0; o < rows[i].length(); o++) {  //for every char in the row
+                map[o][i] = rows[i].charAt(o);            //insert char into the map array
             }
         }
-        System.out.println("map geladen");
         return map;
     }
 
