@@ -8,8 +8,8 @@
 
 package lost.macpan;
 
-import lost.macpan.panel.FoUND_Engine.FoUND_Engine;
 import lost.macpan.panel.Intro;
+import lost.macpan.panel.game_visuals.GameWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,10 +53,10 @@ public class App extends JFrame implements ActionListener{
      */
     @Override
     public void actionPerformed ( ActionEvent evt) {
-        FoUND_Engine fnd = new FoUND_Engine();
-        setContentPane(fnd);
+        GameWindow game = new GameWindow();
+        setContentPane(game);
         pack();
-        fnd.startTehGaem();
+        game.startTehGaem();
         revalidate();
         timer.stop();
     }
