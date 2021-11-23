@@ -112,6 +112,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
 
+
         } else if (e.getSource() == quitBtn) {
             QuitMenu quitMenu = new QuitMenu(parentFrame);
             parentFrame.setContentPane(quitMenu);
