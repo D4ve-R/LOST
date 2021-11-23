@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.*;
 
 import lost.macpan.game.sprites.*;
 import lost.macpan.utils.ResourceHandler;
@@ -30,6 +31,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
     protected char[][] map;                         //char-array from which a frame will be drawn
     protected LevelClass level;                     //object from which the data to-be-displayed will be read
     private Thread thread;
+    char[][] importedMap = new char[32][24];
 
     public BufferedImage boostedCoin;
     public BufferedImage normalCoin;
@@ -118,6 +120,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         thread.start();
     }
 
+
     /**
      * draw loop
      */
@@ -127,6 +130,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         map = level.map;                                        //updates "map" from "level"
         isUnlocked = level.flags[6];                            //updates "isUnlocked" from "level"
         fetchSprites();                                         //assigns sprites
+
+
+
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
         while(thread != null){                                 //start of the draw loop
@@ -134,9 +140,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
             repaint();                                          //draws the frame
             try {
                 double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
+                /*
                 System.out.println("Maximum possible framerate (only up to " +
                         framerate + " displayed): " +
                         1000000000 / (framerate - remainingTime));      //TO BE REMOVED returns maximum possible frame rate going by current frame time
+                 */
                 if (remainingTime < 0)                  //determines how long the thread should sleep for
                     remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
                 thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
@@ -158,6 +166,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         double newTimer = 69.0;
         double newFreezeTimer = 1.1666666;
 
+        /*
         for (int i = 0; i < 32; i++){
             newMap[i][0] = 'g';
             newMap[i][1] = '0';
@@ -175,6 +184,15 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
                 newMap[i][j] = 'h';
             }
         }
+        */
+
+        if (map == null) {
+            newMap = importMapArray("test.txt"); //import the map test
+        }else{
+            newMap = map;
+        }
+
+
         newFlags[0] = true;
         for (int i = 1; i < 8; i++) {
             newFlags[i] = true;
@@ -233,4 +251,54 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
             }
         }
     }
+
+    private static String convertStreamToString(InputStream is) throws IOException {
+        if (is != null) {
+            Writer writer = new StringWriter();
+            char[] buffer = new char[1024];
+            try {
+                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF8"));
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            } finally {
+                is.close();
+            }
+            return writer.toString();
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * method for importing a map as a char array
+     * @author Sebastian
+     *
+     * @param pFileName name of the map to load (has to be in the levels folder)
+     * @return charArray of the map at the filename
+     */
+    private char[][] importMapArray(String pFileName){
+
+        char[][] map = new char[32][24];
+        String mapString = "";
+
+        try {
+            InputStream inputStream = getFileResourcesAsStream("levels/"+pFileName);
+            mapString = convertStreamToString(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
+
+        for(int i = 0; i < rows.length;i++ ){           //For every row
+            for(int o = 0; o < rows[i].length();o++ ){  //for every char in the row
+                map[o][i]=rows[i].charAt(o);            //insert char into the map array
+            }
+        }
+        System.out.println("map geladen");
+        return map;
+    }
+
 }
