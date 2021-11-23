@@ -8,7 +8,6 @@
 
 package lost.macpan;
 
-import javax.swing.*;
 
 /**
  * Main entry point for app
@@ -21,7 +20,5 @@ public class Main {
                App app = new App();
            }
        });
-
-       //for GameWindow testing
    }
 }

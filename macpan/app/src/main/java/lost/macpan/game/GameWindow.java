@@ -1,9 +1,12 @@
 package lost.macpan.game;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import lost.macpan.game.sprites.*;
 import lost.macpan.utils.ResourceHandler;

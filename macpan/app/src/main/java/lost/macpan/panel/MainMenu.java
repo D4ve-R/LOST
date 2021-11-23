@@ -9,12 +9,15 @@
 package lost.macpan.panel;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 import lost.macpan.utils.ResourceHandler;
 import lost.macpan.game.GameWindow;
@@ -33,7 +36,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
      */
     private JFrame parentFrame;
-    private Image img;;
+    private Image img;
     private JLabel label;
     private JLabel background;
     private Image backgroundImg;
