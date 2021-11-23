@@ -1,4 +1,4 @@
-package lost.macpan.panel.game_visuals;
+package lost.macpan.game;
 
 /**
  * Class for level data handover between logic and rendering

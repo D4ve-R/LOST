@@ -1,12 +1,13 @@
-package lost.macpan.panel.game_visuals;
-
-import lost.macpan.panel.game_visuals.spriteClasses.*;
-import lost.macpan.utils.ResourceHandler;
+package lost.macpan.game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import lost.macpan.game.sprites.*;
+import lost.macpan.utils.ResourceHandler;
+import lost.macpan.game.LevelClass;
 
 /**
  * Class for displaying gameplay
@@ -25,6 +26,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
     private int framerate = 60;                     //rate of draw loop repetitions
     protected char[][] map;                         //char-array from which a frame will be drawn
     protected LevelClass level;                     //object from which the data to-be-displayed will be read
+    private Thread thread;
 
     public BufferedImage boostedCoin;
     public BufferedImage normalCoin;
@@ -98,7 +100,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         }
     }
 
-    Thread tehGaem;         //thread for ongoing frame drawing
 
     public GameWindow(){
         setPreferredSize(new Dimension(width, height));
@@ -109,9 +110,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
     /**
      * Thread starter
      */
-    public void startTehGaem(){
-        tehGaem = new Thread(this);
-        tehGaem.start();
+    public void start(){
+        thread = new Thread(this);
+        thread.start();
     }
 
     /**
@@ -125,7 +126,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         fetchSprites();                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
-        while(tehGaem != null){                                 //start of the draw loop
+        while(thread != null){                                 //start of the draw loop
             gameLogic();                                        //TO BE REPLACED see above
             repaint();                                          //draws the frame
             try {
@@ -135,7 +136,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
                         1000000000 / (framerate - remainingTime));      //TO BE REMOVED returns maximum possible frame rate going by current frame time
                 if (remainingTime < 0)                  //determines how long the thread should sleep for
                     remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                Thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
+                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
                 nextDrawTime += frametime;              //determines when the next frame should finish
             } catch (InterruptedException e) {
                 e.printStackTrace();

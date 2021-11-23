@@ -1,6 +1,6 @@
-package lost.macpan.panel.game_visuals.spriteClasses;
+package lost.macpan.game.sprites;
 
-import lost.macpan.panel.game_visuals.GameWindow;
+import lost.macpan.game.GameWindow;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
  * @version 1.0
  */
 public class ExitSprite extends Sprite{
+
+    private static long animationStart = 0; //used for keeping track of exit animation progression
 
     public ExitSprite(GameWindow game) {
         super(game);
@@ -27,12 +29,11 @@ public class ExitSprite extends Sprite{
         super.draw(g, x, y, exitSpriteSelect(game.isUnlocked));     //draws exit sprite
     }
 
-    public static long animationStart = 0; //used for keeping track of exit animation progression
     /**
      * selects a sprite to be used based on animation progression and returns it
      * @return player sprite
      */
-    public BufferedImage exitSpriteSelect(boolean isUnlocked){
+    private BufferedImage exitSpriteSelect(boolean isUnlocked){
         long animationTimer;
         if (isUnlocked && animationStart != 0) {
             animationTimer = System.currentTimeMillis() - animationStart;

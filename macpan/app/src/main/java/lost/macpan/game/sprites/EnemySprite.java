@@ -1,6 +1,6 @@
-package lost.macpan.panel.game_visuals.spriteClasses;
+package lost.macpan.game.sprites;
 
-import lost.macpan.panel.game_visuals.GameWindow;
+import lost.macpan.game.GameWindow;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -31,7 +31,7 @@ public class EnemySprite extends Sprite{
      * selects a sprite to be used based on animation progression and returns it
      * @return player sprite
      */
-    public BufferedImage enemySpriteSelect(){
+    private BufferedImage enemySpriteSelect(){
         long timeWithinSecond = System.currentTimeMillis() % 1000;
         if (timeWithinSecond < 500){
             if (timeWithinSecond < 250)

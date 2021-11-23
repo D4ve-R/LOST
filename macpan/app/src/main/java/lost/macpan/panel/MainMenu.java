@@ -17,6 +17,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import lost.macpan.utils.ResourceHandler;
+import lost.macpan.game.GameWindow;
 
 /**
  * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
@@ -92,7 +93,10 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-
+            GameWindow game = new GameWindow();
+            parentFrame.setContentPane(game);
+            parentFrame.revalidate();
+            game.start();
         } else if (e.getSource() == loadBtn) {
 
         } else if (e.getSource() == highscoresBtn) {

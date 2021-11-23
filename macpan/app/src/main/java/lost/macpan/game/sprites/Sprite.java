@@ -1,6 +1,6 @@
-package lost.macpan.panel.game_visuals.spriteClasses;
+package lost.macpan.game.sprites;
 
-import lost.macpan.panel.game_visuals.GameWindow;
+import lost.macpan.game.GameWindow;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
