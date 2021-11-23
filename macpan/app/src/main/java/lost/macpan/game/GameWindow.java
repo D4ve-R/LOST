@@ -7,24 +7,20 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
+
 
 import lost.macpan.game.sprites.*;
 import lost.macpan.utils.ResourceHandler;
 import lost.macpan.game.LevelClass;
+import lost.macpan.utils.StreamConverter;
 
 /**
  * Class for displaying gameplay
  * @author Leon Wigro
  * @version 0.1
  */
-public class GameWindow extends JPanel implements Runnable, ResourceHandler{
+public class GameWindow extends JPanel implements Runnable, ResourceHandler, StreamConverter {
     //attributes
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
@@ -227,36 +223,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
                 else if (c == '0')
                     sprite.draw(g2, i, j, path);    //draws path sprite
             }
-        }
-    }
-
-    /*
-        http://www.java2s.com/Code/Android/File/getResourceAsStreamLoadstheresourcefromclasspath.htm
-     */
-
-    /**
-     * Wandelt einen Stream zu einem String
-     *
-     * @param is Inputstream
-     * @return String der aus Input entstanden ist
-     * @throws IOException
-     */
-    private static String convertStreamToString(InputStream is) throws IOException {
-        if (is != null) {
-            Writer writer = new StringWriter();
-            char[] buffer = new char[1024];
-            try {
-                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF8"));
-                int n;
-                while ((n = reader.read(buffer)) != -1) {
-                    writer.write(buffer, 0, n);
-                }
-            } finally {
-                is.close();
-            }
-            return writer.toString();
-        } else {
-            return "";
         }
     }
 
