@@ -135,9 +135,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
         map = level.map;                                        //updates "map" from "level"
         isUnlocked = level.flags[6];                            //updates "isUnlocked" from "level"
         fetchSprites();                                         //assigns sprites
-
-
-
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
         while(thread != null){                                 //start of the draw loop
@@ -165,7 +162,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
      * @return levelClass example
      */
     public LevelClass gameLogic(){
-        char[][] newMap = new char[32][24];
+        char[][] newMap;
         int newScore = 42069;
         boolean[] newFlags = new boolean[8];
         double newTimer = 69.0;
@@ -285,7 +282,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler{
      */
     private char[][] importMapArray(String pFileName){
 
-        char[][] map = new char[32][24];
+        char[][] map = new char[maxColumns][maxRows];
         String mapString = "";
 
         try {
