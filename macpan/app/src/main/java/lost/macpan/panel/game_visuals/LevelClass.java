@@ -1,19 +1,18 @@
-package lost.macpan.panel.FoUND_Engine;
-
-import java.util.HashMap;
-import java.util.Map;
+package lost.macpan.panel.game_visuals;
 
 /**
  * Class for level data handover between logic and rendering
  * @author Leon Wigro
+ * @version 1.0
  */
-public class levelClass {
+public class LevelClass {
     /**
      * Array is built as [X-axis, left to right] [Y-axis, top to bottom]. <br>
-     * If the map is smaller than 32 * 24 tiles, empty array fields have to be filled with '0'.
+     * Empty path tiles (where the coin has already been collected) have to be filled with '0'. <br>
+     * Any arrays bigger than "maximumColumns" * "maximumRows" (as defined in GameWindow) will not be displayed.
      */
-    public char[][] map = new char[32][24];
-    public int score = 0;
+    public char[][] map;
+    public int score;
     /**
      * Flag array is built as follows: <br>
      * [0] = player____[true]>alive____[false]>dead <br>
@@ -23,13 +22,13 @@ public class levelClass {
      * [4] = pan (death touch)____[true]>active____[false]>inactive <br>
      * [5] = coin booster____[true]>active____[false]>inactive <br>
      * [6] = exit unlock____[true]>locked____[false]>unlocked <br>
-     * [7] = tbd____[true]>____[false]>   <br>
+     * [...] = tbd____[true]>____[false]>   <br>
      */
-    public boolean[] flags = new boolean[8];
-    public double timer = 0;
-    public double freezeTimer = 0;
+    public boolean[] flags;
+    public double timer; //in case a timer is to be displayed, not yet implemented in GameWindow
+    public double freezeTimer; //in case a timer for an ongoing freeze timer is to be displayed
 
-    public levelClass(char[][] map, int score, boolean[] flags, double timer, double freezeTimer){
+    public LevelClass(char[][] map, int score, boolean[] flags, double timer, double freezeTimer){
         this.map = map;
         this.score = score;
         this.flags = flags;
