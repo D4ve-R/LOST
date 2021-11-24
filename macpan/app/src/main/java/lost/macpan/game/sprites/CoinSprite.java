@@ -2,8 +2,10 @@ package lost.macpan.game.sprites;
 
 import lost.macpan.game.GameWindow;
 
+import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Class for selecting and displaying a coin sprite
@@ -11,9 +13,26 @@ import java.awt.image.BufferedImage;
  * @version 1.0
  */
 public class CoinSprite extends Sprite{
+    //attributes
+    private BufferedImage boostedCoin;
+    private BufferedImage normalCoin;
 
+    //constructor
     public CoinSprite(GameWindow game) {
         super(game);
+    }
+
+    /**
+     * fetches coin sprites
+     */
+    @Override
+    public void fetchSprites() {
+        try {
+            boostedCoin = ImageIO.read(getFileResourcesAsStream("images/Coin boost.png"));
+            normalCoin = ImageIO.read(getFileResourcesAsStream("images/Coin normal.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -33,8 +52,8 @@ public class CoinSprite extends Sprite{
      */
     private BufferedImage coinSpriteSelect(boolean boost){
         if (game.boost)
-            return game.boostedCoin;
+            return boostedCoin;
         else
-            return game.normalCoin;
+            return normalCoin;
     }
 }
