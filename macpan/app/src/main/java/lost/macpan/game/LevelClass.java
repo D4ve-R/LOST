@@ -22,7 +22,7 @@ public class LevelClass {
      * [4] = pan (death touch)____[true]>active____[false]>inactive <br>
      * [5] = coin booster____[true]>active____[false]>inactive <br>
      * [6] = exit unlock____[true]>locked____[false]>unlocked <br>
-     * [...] = tbd____[true]>____[false]>   <br>
+     * [7] = enemy freeze____[true]>active____[false]>inactive   <br>
      */
     public boolean[] flags;
     public double timer; //in case a timer is to be displayed, not yet implemented in GameWindow

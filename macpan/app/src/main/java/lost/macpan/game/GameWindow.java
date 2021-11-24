@@ -25,7 +25,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     public int tileSize = originalTileSize * scale; //tile size and effective sprite size
-    private int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
+    protected int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
     private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
