@@ -1,7 +1,6 @@
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
-import lost.macpan.utils.StreamConverter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,7 +21,7 @@ import java.io.InputStream;
  *
  * @author fatih
  */
-public class HighscoreMenu extends JPanel implements ActionListener, ResourceHandler, StreamConverter {
+public class HighscoreMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton backBtn = new JButton("Zurück");
     private JFrame parentFrame;
     private JLabel label;
