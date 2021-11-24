@@ -1,24 +1,22 @@
 package lost.macpan.game;
 
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.io.InputStream;
-
-
 import lost.macpan.game.sprites.*;
 import lost.macpan.utils.ResourceHandler;
-import lost.macpan.game.LevelClass;
 import lost.macpan.utils.StreamConverter;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 /**
  * Class for displaying gameplay
  * @author Leon Wigro
- * @version 0.1
+ * @version 0.1.1
  */
 public class GameWindow extends JPanel implements Runnable, ResourceHandler, StreamConverter {
     //attributes
@@ -34,31 +32,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Str
     protected LevelClass level;                     //object from which the data to-be-displayed will be read
     private Thread thread;
 
-    public BufferedImage boostedCoin;
-    public BufferedImage normalCoin;
-    public BufferedImage boostItem;
-    public BufferedImage enemy1;
-    public BufferedImage enemy2;
-    public BufferedImage enemy3;
-    public BufferedImage enemy4;
-    public BufferedImage exit1;
-    public BufferedImage exit2;
-    public BufferedImage exit3;
-    public BufferedImage exit4;
-    public BufferedImage exit5;
-    public BufferedImage exit6;
-    public BufferedImage exit7;
-    public BufferedImage exit8;
-    public BufferedImage freeze;
-    public BufferedImage key;
-    public BufferedImage pan;
     public BufferedImage path;
-    public BufferedImage player1;
-    public BufferedImage player2;
-    public BufferedImage player3;
-    public BufferedImage player4;
-    public BufferedImage shield;
-    public BufferedImage speed;
     public BufferedImage wall;
 
     PlayerSprite playerSprite = new PlayerSprite(this);     //handles drawing the player sprite
@@ -71,35 +45,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Str
     public boolean boost = false;               //tracks whether coin boost is active
 
     /**
-     * method for fetching Sprites from  the "images" folder and assigning them to the corresponding BufferedImage sprite
+     * method for fetching sprites from  the "images" folder and assigning them to the corresponding BufferedImage sprite
      */
     public void fetchSprites() {
         try {
-            boostedCoin = ImageIO.read(getFileResourcesAsStream("images/Coin boost.png"));
-            normalCoin = ImageIO.read(getFileResourcesAsStream("images/Coin normal.png"));
-            boostItem = ImageIO.read(getFileResourcesAsStream("images/Boost-1.png.png"));
-            enemy1 = ImageIO.read(getFileResourcesAsStream("images/enemy-1.png.png"));
-            enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy-2.png.png"));
-            enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy-3.png.png"));
-            enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy-4.png.png"));
-            exit1 = ImageIO.read(getFileResourcesAsStream("images/Exit-1.png.png"));
-            exit2 = ImageIO.read(getFileResourcesAsStream("images/Exit-2.png.png"));
-            exit3 = ImageIO.read(getFileResourcesAsStream("images/Exit-3.png.png"));
-            exit4 = ImageIO.read(getFileResourcesAsStream("images/Exit-4.png.png"));
-            exit5 = ImageIO.read(getFileResourcesAsStream("images/Exit-5.png.png"));
-            exit6 = ImageIO.read(getFileResourcesAsStream("images/Exit-6.png.png"));
-            exit7 = ImageIO.read(getFileResourcesAsStream("images/Exit-7.png.png"));
-            exit8 = ImageIO.read(getFileResourcesAsStream("images/Exit-8.png.png"));
-            freeze = ImageIO.read(getFileResourcesAsStream("images/Freeze.png"));
-            key = ImageIO.read(getFileResourcesAsStream("images/Key.png"));
-            pan = ImageIO.read(getFileResourcesAsStream("images/Pan.png"));
             path = ImageIO.read(getFileResourcesAsStream("images/Path.png"));
-            player1 = ImageIO.read(getFileResourcesAsStream("images/Player-1.png.png"));
-            player2 = ImageIO.read(getFileResourcesAsStream("images/Player-2.png.png"));
-            player3 = ImageIO.read(getFileResourcesAsStream("images/Player-3.png.png"));
-            player4 = ImageIO.read(getFileResourcesAsStream("images/Player-4.png.png"));
-            shield = ImageIO.read(getFileResourcesAsStream("images/Shield.png"));
-            speed = ImageIO.read(getFileResourcesAsStream("images/Speed.png"));
             wall = ImageIO.read(getFileResourcesAsStream("images/Wall.png"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,7 +84,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Str
         fetchSprites();                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
-        while(thread != null){                                 //start of the draw loop
+        while(thread != null){                                  //start of the draw loop
             gameLogic();                                        //TO BE REPLACED see above
             repaint();                                          //draws the frame
             try {
@@ -192,36 +142,10 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Str
                     enemySprite.draw(g2, i, j);     //handles enemy sprite
                 else if (c == 'x')
                     exitSprite.draw(g2, i, j);      //handles exit sprite
-                else if (c == 'h')
-                    sprite.draw(g2, i, j, wall);    //draws wall sprite
                 else if (c == '*')
                     coinSprite.draw(g2, i, j);      //handles coin sprite
-                else if (c == 'k') {
-                    sprite.draw(g2, i, j, path);    //underlays path sprite
-                    sprite.draw(g2, i, j, key);     //draws key sprite
-                }
-                else if (c == 'a'){
-                    sprite.draw(g2, i, j, path);    //underlays path sprite
-                    sprite.draw(g2, i, j, speed);   //draws speed boost sprite
-                }
-                else if (c == 'b') {
-                    sprite.draw(g2, i, j, path);    //underlays path sprite
-                    sprite.draw(g2, i, j, freeze);  //draws freeze sprite
-                }
-                else if (c == 'c') {
-                    sprite.draw(g2, i, j, path);    //underlays path sprite
-                    sprite.draw(g2, i, j, boostItem);//draws coin boost sprite
-                }
-                else if (c == 'd') {
-                    sprite.draw(g2, i, j, path);    //underlays path sprite
-                    sprite.draw(g2, i, j, shield);  //draws shield sprite
-                }
-                else if (c == 'e') {
-                    sprite.draw(g2, i, j, path);    //underlays path sprite
-                    sprite.draw(g2, i, j, pan);     //draws pan sprite
-                }
-                else if (c == '0')
-                    sprite.draw(g2, i, j, path);    //draws path sprite
+                else
+                    sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
     }

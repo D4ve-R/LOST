@@ -2,8 +2,10 @@ package lost.macpan.game.sprites;
 
 import lost.macpan.game.GameWindow;
 
+import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Class for displaying and animating an enemy sprite
@@ -11,9 +13,30 @@ import java.awt.image.BufferedImage;
  * @version 1.0
  */
 public class EnemySprite extends Sprite{
+    //attributes
+    private BufferedImage enemy1;
+    private BufferedImage enemy2;
+    private BufferedImage enemy3;
+    private BufferedImage enemy4;
 
+    //constructor
     public EnemySprite(GameWindow game) {
         super(game);
+    }
+
+    /**
+     * fetches enemy sprites
+     */
+    @Override
+    public void fetchSprites() {
+        try {
+            enemy1 = ImageIO.read(getFileResourcesAsStream("images/enemy-1.png.png"));
+            enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy-2.png.png"));
+            enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy-3.png.png"));
+            enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy-4.png.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -35,13 +58,13 @@ public class EnemySprite extends Sprite{
         long timeWithinSecond = System.currentTimeMillis() % 1000;
         if (timeWithinSecond < 500){
             if (timeWithinSecond < 250)
-                return game.enemy1;
+                return enemy1;
             else
-                return game.enemy2;
+                return enemy2;
         }
         else if (timeWithinSecond < 750)
-            return game.enemy3;
+            return enemy3;
         else
-            return game.enemy4;
+            return enemy4;
     }
 }
