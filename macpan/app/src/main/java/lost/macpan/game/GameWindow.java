@@ -1,8 +1,11 @@
 package lost.macpan.game;
 
-import lost.macpan.game.sprites.*;
+import lost.macpan.game.sprites.CoinSprite;
+import lost.macpan.game.sprites.EnemySprite;
+import lost.macpan.game.sprites.ExitSprite;
+import lost.macpan.game.sprites.PlayerSprite;
+import lost.macpan.game.sprites.Sprite;
 import lost.macpan.utils.ResourceHandler;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -39,6 +42,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     ExitSprite exitSprite = new ExitSprite(this);           //handles drawing the exit sprite
     CoinSprite coinSprite = new CoinSprite(this);           //handles drawing coin sprites
     Sprite sprite = new Sprite(this);                       //handles drawing miscellaneous sprites
+    HUD hud = new HUD(this);                                //handles drawing the in-game HUD
 
     public boolean isUnlocked = false;          //tracks whether the exit has been unlocked
     public boolean boost = false;               //tracks whether coin boost is active
@@ -147,6 +151,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
                     sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
+        hud.draw(g2);
     }
 
     /**
