@@ -2,7 +2,6 @@ package lost.macpan.game;
 
 import lost.macpan.game.sprites.*;
 import lost.macpan.utils.ResourceHandler;
-import lost.macpan.utils.StreamConverter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -18,7 +17,7 @@ import java.io.InputStream;
  * @author Leon Wigro
  * @version 0.1.1
  */
-public class GameWindow extends JPanel implements Runnable, ResourceHandler, StreamConverter {
+public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     //attributes
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
