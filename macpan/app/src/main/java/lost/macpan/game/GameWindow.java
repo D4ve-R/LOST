@@ -32,6 +32,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     private int framerate = 60;                     //rate of draw loop repetitions
     protected char[][] map;                         //char-array from which a frame will be drawn
     protected LevelClass level;                     //object from which the data to-be-displayed will be read
+    private int hudHeight = 21;
     private Thread thread;
 
     public BufferedImage path;
@@ -151,7 +152,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
                     sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
-        hud.draw(g2);
+        hud.draw(g2, hudHeight);
+        g2.dispose();
     }
 
     /**
