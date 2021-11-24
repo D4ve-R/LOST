@@ -10,14 +10,9 @@ package lost.macpan;
 
 import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
-import lost.macpan.panel.PauseMenu;
-import lost.macpan.panel.QuitMenu;
 
-
-
-import java.awt.Dimension;
-import javax.swing.Timer;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,8 +20,8 @@ import java.awt.event.ActionListener;
  * App Class that handles the application
  */
 public class App extends JFrame implements ActionListener {
-    private static final int width = 950;
-    private static final int height = 700;
+    private static final int width = 1024;
+    private static final int height = 768;
     private static final int serializeId = 123456789;
     private Timer timer;
 

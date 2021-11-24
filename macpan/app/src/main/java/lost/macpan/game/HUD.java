@@ -9,6 +9,7 @@ public class HUD implements ResourceHandler {
     //attributes
     GameWindow game;
 
+
     Font fontRead; //"fonts/alagard.ttf"
     {
         try {
