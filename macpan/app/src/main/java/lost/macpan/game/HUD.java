@@ -25,11 +25,11 @@ public class HUD implements ResourceHandler {
     BufferedImage effectField;
     BufferedImage filler;
     BufferedImage key;
-    BufferedImage shield;
-    BufferedImage speed;
-    BufferedImage pan;
-    BufferedImage boostItem;
-    BufferedImage freeze;
+    BufferedImage lifeEffect;
+    BufferedImage speedEffect;
+    BufferedImage attack;
+    BufferedImage boostEffect;
+    BufferedImage freezeEffect;
     int iterator;   //used for drawing the HUD bar
 
     //constructor
@@ -49,11 +49,11 @@ public class HUD implements ResourceHandler {
             effectField = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD effect field-1.png.png"));
             filler = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD filler-1.png.png"));
             key = ImageIO.read(getFileResourcesAsStream("images/Key.png"));
-            shield = ImageIO.read(getFileResourcesAsStream("images/Shield.png"));
-            speed = ImageIO.read(getFileResourcesAsStream("images/Speed.png"));
-            pan = ImageIO.read(getFileResourcesAsStream("images/Pan.png"));
-            boostItem = ImageIO.read(getFileResourcesAsStream("images/Boost-1.png.png"));
-            freeze = ImageIO.read(getFileResourcesAsStream("images/Freeze.png"));
+            lifeEffect = ImageIO.read(getFileResourcesAsStream("images/life effect-1.png.png"));
+            speedEffect = ImageIO.read(getFileResourcesAsStream("images/speed effect-1.png.png"));
+            attack = ImageIO.read(getFileResourcesAsStream("images/Sword-1.png.png"));
+            boostEffect = ImageIO.read(getFileResourcesAsStream("images/boost effect-1.png.png"));
+            freezeEffect = ImageIO.read(getFileResourcesAsStream("images/freeze effect-1.png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,15 +105,15 @@ public class HUD implements ResourceHandler {
         if (game.level.flags[3])
             g.drawImage(key, game.tileSize * 8, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
         if (game.level.flags[1])
-            g.drawImage(shield, game.tileSize * 9, (hudHeight - 1) * game.tileSize, game.tileSize-2, game.tileSize-2, null);
+            g.drawImage(lifeEffect, game.tileSize * 9 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
         if (game.level.flags[2])
-            g.drawImage(speed, game.tileSize * 10, (hudHeight - 1) * game.tileSize, game.tileSize-2, game.tileSize-2, null);
+            g.drawImage(speedEffect, game.tileSize * 10 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
         if (game.level.flags[4])
-            g.drawImage(pan, game.tileSize * 11, (hudHeight - 1) * game.tileSize, game.tileSize-2, game.tileSize-2, null);
+            g.drawImage(attack, game.tileSize * 11 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
         if (game.level.flags[5])
-            g.drawImage(boostItem, game.tileSize * 12, (hudHeight - 1) * game.tileSize, game.tileSize-2, game.tileSize-2, null);
+            g.drawImage(boostEffect, game.tileSize * 12 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
         if (game.level.flags[7])
-            g.drawImage(freeze, game.tileSize * 13, (hudHeight - 1) * game.tileSize, game.tileSize-2, game.tileSize-2, null);
+            g.drawImage(freezeEffect, game.tileSize * 13 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
 
         //draws Score
         g.drawString("SCORE: " + game.level.score, 15, hudHeight * game.tileSize - 5);

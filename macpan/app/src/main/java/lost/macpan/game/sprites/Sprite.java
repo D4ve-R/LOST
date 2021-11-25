@@ -53,7 +53,7 @@ public class Sprite implements ResourceHandler {
      * @param c identifier for sprite to be drawn
      */
     public void draw(Graphics2D g, int x, int y, char c){
-        if (c == 'h' || c == '\0')
+        if (c == 'h' || c == '\0' || c == '\r')
             g.drawImage(game.wall, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //draws wall sprite
         else if (c == 'k') {
             g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
