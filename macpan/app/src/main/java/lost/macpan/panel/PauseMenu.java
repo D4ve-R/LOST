@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -95,8 +95,14 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         } else if (e.getSource() == saveBtn) {
 
         } else if (e.getSource() == highscoresBtn) {
+            HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
+            parentFrame.setContentPane(highscoreMenu);
+            parentFrame.revalidate();
 
         } else if (e.getSource() == optionsBtn) {
+            OptionsMenu optionsMenu = new OptionsMenu(parentFrame, this.parentFrame.getContentPane());
+            parentFrame.setContentPane(optionsMenu);
+            parentFrame.revalidate();
 
         } else if (e.getSource() == backBtn) {
             MainMenu mainMenu = new MainMenu(parentFrame);

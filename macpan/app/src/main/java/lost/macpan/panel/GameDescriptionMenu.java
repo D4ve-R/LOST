@@ -72,8 +72,7 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {
-            OptionsMenu optionsMenu = new OptionsMenu(parentFrame, before);
-            parentFrame.setContentPane(optionsMenu);
+            parentFrame.setContentPane(before);
             parentFrame.revalidate();
         }
     }

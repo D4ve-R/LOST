@@ -8,9 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -36,14 +34,16 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
     private String highscores;
     private InputStream inputStream;
     private JLabel highscoreBackground;
+    private Container before;
 
     /**
      * Der Konstruktor stellt den Button sowie die Labels auf dem Frame dar.
      *
      * @param frame der Frame, auf dem alles abgebildet wird
      */
-    public HighscoreMenu(JFrame frame) {
+    public HighscoreMenu(JFrame frame, Container beforeMenu) {
         parentFrame = frame;
+        before = beforeMenu;
         /*
             Laden der einzenlen Bilder
          */
@@ -177,8 +177,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {
-            MainMenu mainMenu = new MainMenu(parentFrame);
-            parentFrame.setContentPane(mainMenu);
+            parentFrame.setContentPane(before);
             parentFrame.revalidate();
         }
     }
@@ -187,7 +186,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
      */
 
     /**
-     * Wandelt einen Stram zu einem String
+     * Wandelt einen Stream zu einem String
      *
      * @param is Inputstream
      * @return String der aus Input entstanden ist

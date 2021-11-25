@@ -68,19 +68,18 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {
             if (before instanceof MainMenu) {
-                MainMenu mainMenu = new MainMenu(parentFrame);
-                parentFrame.setContentPane(mainMenu);
+                parentFrame.setContentPane(before);
                 parentFrame.revalidate();
             } else if (before instanceof PauseMenu) {
                 //Spiel weiter Spielen
             }
         } else if (e.getSource() == keyBtn) {
-            KeysMenu keysMenu = new KeysMenu(parentFrame, before);
+            KeysMenu keysMenu = new KeysMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(keysMenu);
             parentFrame.revalidate();
 
         } else if (e.getSource() == descBtn) {
-            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, before);
+            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(gameDescriptionMenu);
             parentFrame.revalidate();
         }

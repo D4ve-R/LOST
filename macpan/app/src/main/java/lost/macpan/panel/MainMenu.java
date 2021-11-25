@@ -98,7 +98,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         } else if (e.getSource() == loadBtn) {
 
         } else if (e.getSource() == highscoresBtn) {
-            HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame);
+            HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(highscoreMenu);
             parentFrame.revalidate();
 
@@ -108,7 +108,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.revalidate();
 
         } else if (e.getSource() == quitBtn) {
-            QuitMenu quitMenu = new QuitMenu(parentFrame);
+            QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
         }

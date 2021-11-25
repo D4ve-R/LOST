@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,9 +28,11 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     private Image img_1, img_2;
     private JLabel background;
     private Image backgroundImg;
+    private Container before;
 
-    public QuitMenu(JFrame frame) {
+    public QuitMenu(JFrame frame, Container beforeMenu) {
         parentFrame = frame;
+        before = beforeMenu;
         // Laden der Bilder, falls diese vorhanden sind
         try {
             img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Quit.png"));
@@ -81,8 +83,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.dispose();
         } else if (e.getSource() == noBtn) {
             //Hauptmenü wird geladen
-            MainMenu mainMenu = new MainMenu(parentFrame);
-            parentFrame.setContentPane(mainMenu);
+            parentFrame.setContentPane(before);
             parentFrame.revalidate();
         }
     }
