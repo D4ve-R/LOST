@@ -8,7 +8,7 @@ package lost.macpan.game;
 public class LevelClass {
     /**
      * Array is built as [X-axis, left to right] [Y-axis, top to bottom]. <br>
-     * Empty path tiles (where the coin has already been collected) have to be filled with '0'. <br>
+     * Empty path tiles (where the coin has already been collected) have to be filled with '.'. <br>
      * Any arrays bigger than "maximumColumns" * "maximumRows" (as defined in GameWindow) will not be displayed.
      */
     public char[][] map;

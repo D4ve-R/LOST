@@ -79,7 +79,7 @@ public class Sprite implements ResourceHandler {
             g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
             g.drawImage(pan, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);     //draws pan sprite
         }
-        else if (c == '0')
+        else if (c == '.')
             g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //draws path sprite
     }
 
