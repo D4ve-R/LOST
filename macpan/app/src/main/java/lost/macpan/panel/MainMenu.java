@@ -18,6 +18,7 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 /**
@@ -34,7 +35,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
      */
     private JFrame parentFrame;
-    private Image img;;
+    private Image img;
     private JLabel label;
     private JLabel background;
     private Image backgroundImg;
@@ -94,6 +95,9 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
+            GameWindow gameWindow = new GameWindow();
+            parentFrame.setContentPane(gameWindow);
+            parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {
 

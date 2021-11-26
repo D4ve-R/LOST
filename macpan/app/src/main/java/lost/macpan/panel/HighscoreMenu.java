@@ -185,29 +185,5 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         http://www.java2s.com/Code/Android/File/getResourceAsStreamLoadstheresourcefromclasspath.htm
      */
 
-    /**
-     * Wandelt einen Stream zu einem String
-     *
-     * @param is Inputstream
-     * @return String der aus Input entstanden ist
-     * @throws IOException
-     */
-    private static String convertStreamToString(InputStream is) throws IOException {
-        if (is != null) {
-            Writer writer = new StringWriter();
-            char[] buffer = new char[1024];
-            try {
-                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF8"));
-                int n;
-                while ((n = reader.read(buffer)) != -1) {
-                    writer.write(buffer, 0, n);
-                }
-            } finally {
-                is.close();
-            }
-            return writer.toString();
-        } else {
-            return "";
-        }
-    }
+
 }
