@@ -8,18 +8,14 @@
 
 package lost.macpan.panel;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Image;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
@@ -97,6 +93,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         if (e.getSource() == playBtn) {
             GameWindow gameWindow = new GameWindow();
             parentFrame.setContentPane(gameWindow);
+            gameWindow.start();
             parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {

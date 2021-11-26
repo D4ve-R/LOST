@@ -43,7 +43,7 @@ public class CoinSprite extends Sprite{
      */
     public void draw(Graphics2D g, int x, int y) {
         super.draw(g, x, y, game.path);                     //underlays path sprite
-        super.draw(g, x, y, coinSpriteSelect(game.boost));  //draws coin sprite
+        super.draw(g, x, y, coinSpriteSelect(game.flags[5]));  //draws coin sprite
     }
 
     /**
@@ -51,7 +51,7 @@ public class CoinSprite extends Sprite{
      * @return player sprite
      */
     private BufferedImage coinSpriteSelect(boolean boost){
-        if (game.boost)
+        if (boost)
             return boostedCoin;
         else
             return normalCoin;
