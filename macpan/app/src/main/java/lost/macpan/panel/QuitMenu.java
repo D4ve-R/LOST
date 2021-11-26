@@ -3,12 +3,12 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.Image;
+import javax.swing.JPanel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,17 +28,19 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     private Image img_1, img_2;
     private JLabel background;
     private Image backgroundImg;
+    private Container before;
 
-    public QuitMenu(JFrame frame) {
+    public QuitMenu(JFrame frame, Container beforeMenu) {
         parentFrame = frame;
+        before = beforeMenu;
         // Laden der Bilder, falls diese vorhanden sind
         try {
-            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielBeendenPlatzhalter1.png"));
+            img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Quit.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/SpielBeendenPlatzhalter2.png"));
+            img_2 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Quit_2.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +62,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         setLayout(null);
         // Positionierung der Labels und Buttons
         background.setBounds(0, 0, 950, 700);
-        topLabel.setBounds(175, 50, 600, 200);
+        topLabel.setBounds(-20, 10, 950, 200);
         subLabel.setBounds(175, 250, 600, 200);
         yesBtn.setBounds(740, 550, 160, 50);
         noBtn.setBounds(30, 550, 160, 50);
@@ -81,8 +83,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.dispose();
         } else if (e.getSource() == noBtn) {
             //Hauptmenü wird geladen
-            MainMenu mainMenu = new MainMenu(parentFrame);
-            parentFrame.setContentPane(mainMenu);
+            parentFrame.setContentPane(before);
             parentFrame.revalidate();
         }
     }

@@ -10,13 +10,14 @@ package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Color;
 
 /**
  * Intro Class to display for 4 seconds when the app starts

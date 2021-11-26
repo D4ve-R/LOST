@@ -3,10 +3,10 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +26,7 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     public WinnerMenu(JFrame frame) {
         parentFrame = frame;
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/GewonnenPlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

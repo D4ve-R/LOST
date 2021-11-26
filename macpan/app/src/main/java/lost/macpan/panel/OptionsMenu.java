@@ -1,19 +1,17 @@
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
-import org.checkerframework.checker.units.qual.K;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.imageio.ImageIO;
-import java.awt.Image;
-import java.awt.Container;
-
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Die Klasse OptionMenu stellt ein Menü dar, wo man das Tastenbelegungsfenster oder das Spielbeschreibungsfenster öffnen kann
@@ -35,7 +33,7 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         parentFrame = frame;
         before = beforeMenu;
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/OptionenPlatzhalter.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Options.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,19 +68,18 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backBtn) {
             if (before instanceof MainMenu) {
-                MainMenu mainMenu = new MainMenu(parentFrame);
-                parentFrame.setContentPane(mainMenu);
+                parentFrame.setContentPane(before);
                 parentFrame.revalidate();
             } else if (before instanceof PauseMenu) {
                 //Spiel weiter Spielen
             }
         } else if (e.getSource() == keyBtn) {
-            KeysMenu keysMenu = new KeysMenu(parentFrame, before);
+            KeysMenu keysMenu = new KeysMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(keysMenu);
             parentFrame.revalidate();
 
         } else if (e.getSource() == descBtn) {
-            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, before);
+            GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(gameDescriptionMenu);
             parentFrame.revalidate();
         }

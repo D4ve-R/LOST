@@ -9,18 +9,16 @@
 package lost.macpan.panel;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import java.awt.Image;
-import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-
 import lost.macpan.utils.ResourceHandler;
-import lost.macpan.game.GameWindow;
 
 /**
  * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
@@ -36,7 +34,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
      */
     private JFrame parentFrame;
-    private Image img;
+    private Image img;;
     private JLabel label;
     private JLabel background;
     private Image backgroundImg;
@@ -51,7 +49,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = frame;
 
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPanLabel.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPan.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,14 +94,11 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-            GameWindow game = new GameWindow();
-            parentFrame.setContentPane(game);
-            parentFrame.revalidate();
-            game.start();
+
         } else if (e.getSource() == loadBtn) {
 
         } else if (e.getSource() == highscoresBtn) {
-            HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame);
+            HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(highscoreMenu);
             parentFrame.revalidate();
 
@@ -112,9 +107,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
 
-
         } else if (e.getSource() == quitBtn) {
-            QuitMenu quitMenu = new QuitMenu(parentFrame);
+            QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
         }
