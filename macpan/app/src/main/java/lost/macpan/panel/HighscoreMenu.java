@@ -3,17 +3,18 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
+
 
 /**
  * Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch an.
@@ -75,18 +76,16 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             e.printStackTrace();
         }
         String[] parts = highscores.split("\n");
-        int length = 0;
-        if (parts.length > 10) {
-            length = 10;
-        } else length = parts.length;
+        int length;
+        length = Math.min(parts.length, 10);
         String[] temp;
-        String out = "";
+        StringBuilder out = new StringBuilder();
         for (int i = 0; i < length; i++) {
             temp = parts[i].split(";");
-            out += i + 1 + "           " + temp[0] + "          " + temp[1] + "\n";
+            out.append(i + 1 + "           " + temp[0] + "          " + temp[1] + "\n");
         }
         setLayout(null);
-        String[] lastStringHopefully = out.split("\n");
+        String[] lastStringHopefully = out.toString().split("\n");
         if (lastStringHopefully.length > 0) {
             JLabel hLb1 = new JLabel(lastStringHopefully[0]);
             hLb1.setBounds(290, 200, 500, 100);
@@ -174,35 +173,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             MainMenu mainMenu = new MainMenu(parentFrame);
             parentFrame.setContentPane(mainMenu);
             parentFrame.revalidate();
-        }
-    }
-    /*
-        http://www.java2s.com/Code/Android/File/getResourceAsStreamLoadstheresourcefromclasspath.htm
-     */
-
-    /**
-     * Wandelt einen Stram zu einem String
-     *
-     * @param is Inputstream
-     * @return String der aus Input entstanden ist
-     * @throws IOException
-     */
-    private static String convertStreamToString(InputStream is) throws IOException {
-        if (is != null) {
-            Writer writer = new StringWriter();
-            char[] buffer = new char[1024];
-            try {
-                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF8"));
-                int n;
-                while ((n = reader.read(buffer)) != -1) {
-                    writer.write(buffer, 0, n);
-                }
-            } finally {
-                is.close();
-            }
-            return writer.toString();
-        } else {
-            return "";
         }
     }
 }

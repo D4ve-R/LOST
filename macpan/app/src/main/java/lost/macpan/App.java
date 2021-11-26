@@ -7,14 +7,13 @@
  */
 
 package lost.macpan;
+
 import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
-import lost.macpan.panel.PauseMenu;
-import lost.macpan.panel.QuitMenu;
 
-import java.awt.Dimension;
-import javax.swing.Timer;
 import javax.swing.JFrame;
+import javax.swing.Timer;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,8 +21,8 @@ import java.awt.event.ActionListener;
  * App Class that handles the application
  */
 public class App extends JFrame implements ActionListener {
-    private static final int width = 950;
-    private static final int height = 700;
+    private static final int width = 1024;
+    private static final int height = 768;
     private static final int serializeId = 123456789;
     private Timer timer;
 
@@ -32,7 +31,7 @@ public class App extends JFrame implements ActionListener {
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 5500; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
+        int delay = 5000; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
 
         timer = new Timer(delay, this);
         setTitle("MacPan");
@@ -54,7 +53,8 @@ public class App extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed ( ActionEvent evt) {
-        setContentPane(new MainMenu(this));
+        MainMenu mM = new MainMenu(this);
+        setContentPane(mM);
         revalidate();
         timer.stop();
     }

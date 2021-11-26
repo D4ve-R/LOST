@@ -9,14 +9,18 @@
 package lost.macpan.panel;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 import lost.macpan.utils.ResourceHandler;
+import lost.macpan.game.GameWindow;
 
 /**
  * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
@@ -32,7 +36,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
      */
     private JFrame parentFrame;
-    private Image img;;
+    private Image img;
     private JLabel label;
     private JLabel background;
     private Image backgroundImg;
@@ -92,7 +96,10 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-
+            GameWindow game = new GameWindow();
+            parentFrame.setContentPane(game);
+            parentFrame.revalidate();
+            game.start();
         } else if (e.getSource() == loadBtn) {
 
         } else if (e.getSource() == highscoresBtn) {
@@ -104,6 +111,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             OptionsMenu optionsMenu = new OptionsMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
+
 
         } else if (e.getSource() == quitBtn) {
             QuitMenu quitMenu = new QuitMenu(parentFrame);
