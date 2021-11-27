@@ -102,20 +102,20 @@ public class HUD implements ResourceHandler {
             g.drawImage(filler, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
 
         //draws active effects
-        if (game.level.flags[3])
+        if (game.flags[3])
             g.drawImage(key, game.tileSize * 8, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        if (game.level.flags[1])
+        if (game.flags[1])
             g.drawImage(lifeEffect, game.tileSize * 9 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.level.flags[2])
+        if (game.flags[2])
             g.drawImage(speedEffect, game.tileSize * 10 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.level.flags[4])
+        if (game.flags[4])
             g.drawImage(attack, game.tileSize * 11 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.level.flags[5])
+        if (game.flags[5])
             g.drawImage(boostEffect, game.tileSize * 12 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.level.flags[7])
+        if (game.flags[7])
             g.drawImage(freezeEffect, game.tileSize * 13 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
 
         //draws Score
-        g.drawString("SCORE: " + game.level.score, 15, hudHeight * game.tileSize - 5);
+        g.drawString("SCORE: " + game.score, 15, hudHeight * game.tileSize - 5);
     }
 }

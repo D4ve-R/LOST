@@ -30,9 +30,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
     private int framerate = 60;                     //rate of draw loop repetitions
-    protected char[][] map;                         //char-array from which a frame will be drawn
-    protected LevelClass level;                     //object from which the data to-be-displayed will be read
-    private int hudHeight = 21;
+    public char[][] map;                            //char-array from which a frame will be drawn
+    public int score;                               //for keeping track of the score
+    private int hudHeight = 21;                     //determines the height of the HUD
     private Thread thread;
 
     public BufferedImage path;
@@ -45,8 +45,18 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     Sprite sprite = new Sprite(this);                       //handles drawing miscellaneous sprites
     HUD hud = new HUD(this);                                //handles drawing the in-game HUD
 
-    public boolean isUnlocked = false;          //tracks whether the exit has been unlocked
-    public boolean boost = false;               //tracks whether coin boost is active
+    /**
+     * Flag array is built as follows: <br>
+     * [0] = player____[true]>alive____[false]>dead <br>
+     * [1] = armor (extra life)____[true]>collected____[false]>not collected <br>
+     * [2] = speed boost____[true]>active____[false]>inactive <br>
+     * [3] = key____[true]>collected____[false]>not collected <br>
+     * [4] = pan (death touch)____[true]>active____[false]>inactive <br>
+     * [5] = coin booster____[true]>active____[false]>inactive <br>
+     * [6] = exit unlock____[true]>locked____[false]>unlocked <br>
+     * [7] = enemy freeze____[true]>active____[false]>inactive   <br>
+     */
+    public boolean flags[];
 
     /**
      * method for fetching sprites from  the "images" folder and assigning them to the corresponding BufferedImage sprite
@@ -65,6 +75,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
+        flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
     }
 
@@ -82,9 +93,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
      */
     @Override
     public void run() {
-        level = gameLogic();                                    //TO BE REPLACED currently sets "level" to be a debug LevelClass
-        map = level.map;                                        //updates "map" from "level"
-        isUnlocked = level.flags[6];                            //updates "isUnlocked" from "level"
         fetchSprites();                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
@@ -110,23 +118,12 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
 
     /**
      * generic method TO BE REPLACED
-     * @return levelClass example
      */
-    public LevelClass gameLogic(){
-        char[][] newMap;
-        int newScore = 42069;
-        boolean[] newFlags = new boolean[8];
-        double newTimer = 69.0;
-        double newFreezeTimer = 1.1666666;
-
-        newMap = map; //New map is old map
-
-        newFlags[0] = true;
+    public void gameLogic(){
+        score = 42069;
         for (int i = 1; i < 8; i++) {
-            newFlags[i] = true;
+            flags[i] = true;
         }
-
-        return new LevelClass(newMap, newScore, newFlags, newTimer, newFreezeTimer);
     }
 
     /**

@@ -56,7 +56,7 @@ public class ExitSprite extends Sprite{
      */
     public void draw(Graphics2D g, int x, int y) {
         super.draw(g, x, y, game.wall);                             //underlays wall sprite
-        super.draw(g, x, y, exitSpriteSelect(game.isUnlocked));     //draws exit sprite
+        super.draw(g, x, y, exitSpriteSelect(game.flags[6]));     //draws exit sprite
     }
 
     /**
