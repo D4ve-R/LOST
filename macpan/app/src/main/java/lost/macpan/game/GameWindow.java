@@ -177,8 +177,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
 
         String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
 
-        for(int i = 0; i < rows.length;i++ ) {           //For every row
-            for (int o = 0; o < rows[i].length(); o++) {  //for every char in the row
+        for(int i = 0; i < Math.min(rows.length,maxRows);i++ ) {           //For every row
+            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) {  //for every char in the row
                 map[o][i] = rows[i].charAt(o);            //insert char into the map array
             }
         }
