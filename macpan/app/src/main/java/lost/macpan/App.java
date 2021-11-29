@@ -8,7 +8,6 @@ package lost.macpan;
 
 import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
-import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
