@@ -6,7 +6,9 @@ import lost.macpan.game.sprites.ExitSprite;
 import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
 import lost.macpan.utils.ResourceHandler;
+
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,8 +27,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     public int tileSize = originalTileSize * scale; //tile size and effective sprite size
-    protected int maxColumns = 32;                  //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+    protected int maxColumns = 30;                  //maximum amount of tiles that can be drawn horizontally
+    private int maxRows = 21;                       //maximum amount of tiles that can be drawn vertically
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
     private int framerate = 60;                     //rate of draw loop repetitions
@@ -34,6 +36,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     public int score;                               //for keeping track of the score
     private int hudHeight = 21;                     //determines the height of the HUD
     private Thread thread;
+    JFrame parentFrame;
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -71,7 +74,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     }
 
 
-    public GameWindow(){
+    public GameWindow(JFrame parentFrame){
+        this.parentFrame = parentFrame;
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
@@ -95,6 +99,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     public void run() {
         fetchSprites();                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
+        repaint();
+        parentFrame.pack();
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
         while(thread != null){                                  //start of the draw loop
             gameLogic();                                        //TO BE REPLACED see above
@@ -175,7 +181,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
         String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
 
         for(int i = 0; i < rows.length;i++ ) {           //For every row
-            for (int o = 0; o < rows[i].length(); o++) {  //for every char in the row
+            for (int o = 0; o < rows[i].length() && o < maxColumns; o++) {  //for every char in the row
                 map[o][i] = rows[i].charAt(o);            //insert char into the map array
             }
         }
