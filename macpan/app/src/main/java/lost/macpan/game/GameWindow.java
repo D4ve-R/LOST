@@ -7,21 +7,29 @@ import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Class for displaying gameplay
  * @author Leon Wigro
  * @version 0.1.1
  */
-public class GameWindow extends JPanel implements Runnable, ResourceHandler {
+public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener {
     //attributes
+    Timer timer;
+    private  int[] playerPos;
+    char lastKey;
+
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     public int tileSize = originalTileSize * scale; //tile size and effective sprite size
@@ -85,6 +93,21 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
     public void start(){
         thread = new Thread(this);
         thread.start();
+
+        this.addKeyListener(this);
+        this.setFocusable(true);
+        this.grabFocus();
+
+        getPlayerPos();
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gameLogic();
+            }
+        },0,500);
+
     }
 
 
@@ -97,7 +120,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
         while(thread != null){                                  //start of the draw loop
-            gameLogic();                                        //TO BE REPLACED see above
+            //gameLogic();                                        //TO BE REPLACED see above
             repaint();                                          //draws the frame
             try {
                 double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
@@ -120,10 +143,12 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
      * generic method TO BE REPLACED
      */
     public void gameLogic(){
-        score = 42069;
-        for (int i = 1; i < 8; i++) {
+        //score = 42069;
+        /*for (int i = 1; i < 8; i++) {
             flags[i] = true;
-        }
+        }*/
+        move(lastKey);
+        lastKey = 'o';
     }
 
     /**
@@ -182,4 +207,88 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler {
         return map;
     }
 
+    public void getPlayerPos(){
+        playerPos = new int [2];
+
+        for (int i = 0; i < maxColumns; i++){
+            for (int j = 0; j < maxRows; j++) {
+                if(map[i][j] == 'p'){
+                    playerPos[0] = i;
+                    playerPos[1] = j;
+                    System.out.println(i + "und" + j);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void move(char key){ //momentan mit globaler variable
+        if(key == 'w') {
+            moveToNew(0,-1);
+        } else if(key == 's'){
+            moveToNew(0,1);
+        } else if(key == 'a'){
+            moveToNew(-1,0);
+        } else if(key == 'd'){
+            moveToNew(1,0);
+        }
+
+    }
+
+    public void moveToNew(int x, int y) {
+        char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
+        if(onNewPos == 'h') { // Momentan
+            System.out.println("Wand im weg");
+        }
+        else{
+            if(onNewPos == '*'){
+                score += 10;
+            }
+            else if(onNewPos == 'g'){
+                if(flags[1]){
+                    flags[1] = false;
+                }
+                else {
+                    flags[0] = false;
+                }
+            }
+            else if(onNewPos == 'k'){
+                flags[3] = true;
+            }else if(onNewPos == 'x') {
+                if(!flags[3] == true){
+                    return;
+                }else{
+                    //Bildschirm
+                }
+            }
+            geh(x,y);
+        }
+    }
+
+    public void geh(int x, int y){
+        map[playerPos[0]][playerPos[1]] = '.';
+        playerPos[0] += x;
+        playerPos[1] += y;
+        map[playerPos[0]][playerPos[1]] = 'p';
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode()== KeyEvent.VK_ESCAPE)
+        {
+            System.out.println("Geht");
+        }
+        lastKey = e.getKeyChar();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
