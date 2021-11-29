@@ -5,6 +5,7 @@ import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
 import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
+import lost.macpan.panel.OptionsMenu;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -242,7 +243,12 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         }
         else{
             if(onNewPos == '*'){
-                score += 10;
+                if(flags[5] == true){
+                    score += 20;
+                }else{
+                    score +=10;
+                }
+
             }
             else if(onNewPos == 'g'){
                 if(flags[1]){
@@ -250,6 +256,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }
                 else {
                     flags[0] = false;
+                    //Direkt mit Todes Bildschirm
                 }
             }
             else if(onNewPos == 'k'){
@@ -258,8 +265,19 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 if(!flags[3] == true){
                     return;
                 }else{
-                    //Bildschirm
+                    //Bildschirm (Todes oder Erfolgs)
                 }
+            }
+            else if(onNewPos == 'a') {//Geschwindigkeitsbuff
+                flags[2] = true;
+            } else if(onNewPos == 'b') {//Gegner einfrieren
+                flags[7] = true;
+            } else if(onNewPos == 'c'){//Münzboost
+                flags[5] = true;
+            } else if(onNewPos == 'd'){//Zusatzleben
+                flags[1] = true;
+            }else if(onNewPos == 'e'){//Todesberührung
+                flags[4] = true;
             }
             geh(x,y);
         }
