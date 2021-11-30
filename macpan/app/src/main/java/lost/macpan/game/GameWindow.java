@@ -5,7 +5,10 @@ import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
 import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
+import lost.macpan.panel.LooserMenu;
+import lost.macpan.panel.MainMenu;
 import lost.macpan.panel.OptionsMenu;
+import lost.macpan.panel.WinnerMenu;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,6 +16,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -25,7 +30,7 @@ import java.util.TimerTask;
  * @author Leon Wigro
  * @version 0.1.1
  */
-public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener {
+public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener, ActionListener {
     //attributes
     Timer timer;
     private  int[] playerPos;
@@ -43,6 +48,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     public int score;                               //for keeping track of the score
     private int hudHeight = 21;                     //determines the height of the HUD
     private Thread thread;
+    public JFrame parentFrame;
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -80,7 +86,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
 
-    public GameWindow(){
+    public GameWindow(JFrame frame){
+        parentFrame = frame;
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
@@ -256,6 +263,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }
                 else {
                     flags[0] = false;
+                    thread.stop();
+
+                    LooserMenu looserMenu = new LooserMenu(parentFrame);
+                    parentFrame.setContentPane(looserMenu);
+                    parentFrame.revalidate();
                     //Direkt mit Todes Bildschirm
                 }
             }
@@ -265,6 +277,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 if(!flags[3] == true){
                     return;
                 }else{
+                    thread.stop();
+
+                    WinnerMenu winnerMenu = new WinnerMenu(parentFrame);
+                    parentFrame.setContentPane(winnerMenu);
+                    parentFrame.revalidate();
                     //Bildschirm (Todes oder Erfolgs)
                 }
             }
@@ -307,6 +324,10 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+    @Override
+    public void actionPerformed(ActionEvent e){
 
     }
 }
