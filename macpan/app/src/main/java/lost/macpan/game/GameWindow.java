@@ -128,7 +128,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         fetchSprites();                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
-        while(thread != null){                                  //start of the draw loop
+        while(thread.isAlive()){                                  //start of the draw loop
             //gameLogic();                                        //TO BE REPLACED see above
             repaint();                                          //draws the frame
             try {
