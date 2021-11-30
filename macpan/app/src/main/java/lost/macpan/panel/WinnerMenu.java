@@ -3,10 +3,11 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,8 +23,11 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     private Image img;
     private JLabel background;
     private Image backgroundImg;
+    private Timer timer;
 
     public WinnerMenu(JFrame frame) {
+        int delay = 5000;
+        timer = new Timer(delay, this);
         parentFrame = frame;
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
@@ -48,9 +52,15 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         label.setBounds(175, 50, 600, 200);
         add(label);
         add(background);
+
+        timer.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        timer.stop();
+        MainMenu mainMenu = new MainMenu(parentFrame);
+        parentFrame.setContentPane(mainMenu);
+        parentFrame.revalidate();
     }
 }

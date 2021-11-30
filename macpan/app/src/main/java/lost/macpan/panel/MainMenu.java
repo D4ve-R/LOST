@@ -91,7 +91,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-            GameWindow gameWindow = new GameWindow();
+            GameWindow gameWindow = new GameWindow(parentFrame);
             parentFrame.setContentPane(gameWindow);
             gameWindow.start();
             parentFrame.revalidate();
