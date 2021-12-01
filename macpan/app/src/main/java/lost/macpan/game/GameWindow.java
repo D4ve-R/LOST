@@ -1,5 +1,6 @@
 package lost.macpan.game;
 
+import lost.macpan.game.HUD;
 import lost.macpan.game.sprites.CoinSprite;
 import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
@@ -112,22 +113,12 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         thread.start();
         gameRunning = true;
         threadRunning = true;
-        this.run();
         this.addKeyListener(this);
         this.setFocusable(true);
         this.grabFocus();
 
         getPlayerPos();
 
-    }
-
-    /**
-     * Thread stopper
-     * @author Sebastian
-     */
-    public synchronized void stop() {
-        thread = null;
-        notify();
     }
 
 
@@ -143,54 +134,42 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         long contframeCounter = 0;
         int frameCounter = 0;
         int tickCounter = 0;
-        Thread thisThread = Thread.currentThread();
-        System.out.println(Thread.currentThread());
-        while(thread == thisThread) {
-             //start of the draw loop
-            try {
-                double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-                if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                }
-                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                nextDrawTime += frametime;              //determines when the next frame should finish
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            if(contframeCounter % (framerate/tickrate) == 0){
-                gameLogic();                        //Game Logic
-                tickCounter++;
-            }
-
-            repaint();                   //draws the frame
-
-            if (contframeCounter % framerate == 0 ) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
-                double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / frameCounter);
-                double AverageTimeForOneTick = ((double)(System.currentTimeMillis() - timeOld) / tickCounter);
-                double TPS = 1000 / AverageTimeForOneTick;
-                double FPS = 1000 / AverageTimeForOneFrame;
-                System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
-                System.out.println("TPS: " + new DecimalFormat("#0.00").format(TPS));
-                frameCounter = 0;
-                tickCounter = 0;
-                timeOld = System.currentTimeMillis();
-            }
-            contframeCounter++;
-            frameCounter++;
-
-            synchronized (thread){
-                while(!gameRunning && thread==thisThread) {
-                    try {
-                        thread.wait();
-                        System.out.println("waiting");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        while(threadRunning) {
+            System.out.println(gameRunning);
+            while (gameRunning) {                                  //start of the draw loop
+                try {
+                    double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
+                    if (remainingTime < 0) {                  //determines how long the thread should sleep for
+                        remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
                     }
+                    thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
+                    nextDrawTime += frametime;              //determines when the next frame should finish
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+                if(contframeCounter % (framerate/tickrate) == 0){
+                    gameLogic();                        //Game Logic
+                    tickCounter++;
+                }
+
+                repaint();                   //draws the frame
+
+                if (contframeCounter % framerate == 0 ) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
+                    double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / frameCounter);
+                    double AverageTimeForOneTick = ((double)(System.currentTimeMillis() - timeOld) / tickCounter);
+                    double TPS = 1000 / AverageTimeForOneTick;
+                    double FPS = 1000 / AverageTimeForOneFrame;
+                    System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
+                    System.out.println("TPS: " + new DecimalFormat("#0.00").format(TPS));
+                    frameCounter = 0;
+                    tickCounter = 0;
+                    timeOld = System.currentTimeMillis();
+                }
+                contframeCounter++;
+                frameCounter++;
             }
-
-
         }
         System.out.println("Loop beendet");
     }
@@ -338,7 +317,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
     public void move(char key){ //momentan mit globaler variable
-
         if(key == 'w') {
             moveToNew(0,-1);
         } else if(key == 's'){
@@ -371,7 +349,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }
                 else {
                     flags[0] = false;
-                    stop();
+                    gameRunning = false;
 
                     LooserMenu looserMenu = new LooserMenu(parentFrame, before);
                     parentFrame.setContentPane(looserMenu);
@@ -386,7 +364,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 if(!flags[3] == true){
                     return;
                 }else{
-                    stop();
+                    gameRunning = false;
 
                     WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before);
                     parentFrame.setContentPane(winnerMenu);
@@ -417,20 +395,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
     public void spielFortsetzen(){
-
-        System.out.println("Fortgesetzt");
-        System.out.println(Thread.currentThread());
-        /*
-        System.out.println(gameRunning);
-        System.out.println(thread.isAlive());
-
-
-        System.out.println("Fortgesetzt");
-        System.out.println(threadRunning);
-        System.out.println(thread.isAlive());
-        */
         gameRunning = true;
-
     }
 
     @Override
