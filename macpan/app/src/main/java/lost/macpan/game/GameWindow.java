@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -102,6 +103,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
      * Thread starter
      */
     public void start(){
+        fetchSprites();             //assigns sprites
         thread = new Thread(this);
         thread.start();
         gameRunning = true;
@@ -129,18 +131,18 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
      */
     @Override
     public void run() {
-                                         //assigns sprites
-        double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
-        double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
-        long timeOld = System.nanoTime();
+        double frametime = 1000 / (double)framerate;              //determines the time span any frame should be displayed
+        double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
+        long timeOld = System.currentTimeMillis();
         int i = 0;
+
         while(threadRunning) {
-            fetchSprites();
+
             while (gameRunning) {                                  //start of the draw loop
                 //gameLogic();                                        //TO BE REPLACED see above
                 repaint();                                          //draws the frame
                 try {
-                    double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
+                    double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
                     if (remainingTime < 0) {                  //determines how long the thread should sleep for
                         remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
                     }
@@ -151,11 +153,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }
 
                 if (i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
-                    double AverageTimeForOneFrame = (System.nanoTime() - timeOld) / 100;
-                    long FPS = Math.round((1000000000 / AverageTimeForOneFrame));
-                    System.out.println("FPS: " + FPS);
+                    double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / 100);
+                    double FPS = 1000 / AverageTimeForOneFrame;
+                    System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
                     i = 0;
-                    timeOld = System.nanoTime();
+                    timeOld = System.currentTimeMillis();
                 }
                 i++;
             }
