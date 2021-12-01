@@ -22,8 +22,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Class for displaying gameplay
@@ -32,7 +30,6 @@ import java.util.TimerTask;
  */
 public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener, ActionListener {
     //attributes
-    Timer timer;
     private  int[] playerPos;
     char lastKey;
 
@@ -44,6 +41,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
     private int framerate = 60;                     //rate of draw loop repetitions
+    private int tickrate = 2;                      //rate of which the logic is called
     public char[][] map;                            //char-array from which a frame will be drawn
     public int score;                               //for keeping track of the score
     private int hudHeight = 21;                     //determines the height of the HUD
@@ -114,14 +112,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         getPlayerPos();
 
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameLogic();
-            }
-        },0,500);
-
     }
 
 
@@ -134,13 +124,12 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         double frametime = 1000 / (double)framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
         long timeOld = System.currentTimeMillis();
-        int i = 0;
+        int frameCounter = 0;
+        int tickCounter =0;
 
         while(threadRunning) {
 
-            while (gameRunning) {                                  //start of the draw loop
-                //gameLogic();                                        //TO BE REPLACED see above
-                repaint();                                          //draws the frame
+            while (gameRunning) {                                  //start of the draw loop                 //draws the frame
                 try {
                     double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
                     if (remainingTime < 0) {                  //determines how long the thread should sleep for
@@ -152,14 +141,25 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                     e.printStackTrace();
                 }
 
-                if (i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
-                    double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / 100);
+                if(frameCounter % (framerate/tickrate) == 0){
+                    gameLogic();
+                    tickCounter++;
+                }
+
+                repaint();
+
+                if (frameCounter == framerate) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
+                    double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / frameCounter);
+                    double AverageTimeForOneTick = ((double)(System.currentTimeMillis() - timeOld) / tickCounter);
+                    double TPS = 1000 / AverageTimeForOneTick;
                     double FPS = 1000 / AverageTimeForOneFrame;
                     System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
-                    i = 0;
+                    System.out.println("Ticks pro Sekunde: " + new DecimalFormat("#0.00").format(TPS));
+                    frameCounter = 0;
+                    tickCounter = 0;
                     timeOld = System.currentTimeMillis();
                 }
-                i++;
+                frameCounter++;
             }
         }
         System.out.println("Loop beendet");
