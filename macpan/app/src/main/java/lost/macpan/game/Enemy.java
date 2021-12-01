@@ -70,6 +70,7 @@ public class Enemy {
                     case "east" -> game.map[posX + 1][posY];
                     case "south" -> game.map[posX][posY - 1];
                     case "west" -> game.map[posX - 1][posY];
+                    default -> game.map[posX][posY];
                 };
             } case "left" -> {
                 return switch (facingDir) {
@@ -77,6 +78,7 @@ public class Enemy {
                     case "east" -> game.map[posX][posY + 1];
                     case "south" -> game.map[posX + 1][posY];
                     case "west" -> game.map[posX][posY - 1];
+                    default -> game.map[posX][posY];
                 };
             } case "right" -> {
                 return switch (facingDir) {
@@ -84,6 +86,7 @@ public class Enemy {
                     case "east" -> game.map[posX][posY - 1];
                     case "south" -> game.map[posX - 1][posY];
                     case "west" -> game.map[posX][posY + 1];
+                    default -> game.map[posX][posY];
                 };
             } case "behind" -> {
                 return switch (facingDir) {
@@ -91,6 +94,7 @@ public class Enemy {
                     case "east" -> game.map[posX - 1][posY];
                     case "south" -> game.map[posX][posY + 1];
                     case "west" -> game.map[posX + 1][posY];
+                    default -> game.map[posX][posY];
                 };
             } case "below" -> {
                 return getAbove();

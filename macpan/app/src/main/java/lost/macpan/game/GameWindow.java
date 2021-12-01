@@ -183,7 +183,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
             );
             enemies.get(i).move();
         }
-
         move(lastKey);
         lastKey = 'o';
     }
@@ -268,7 +267,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         } else if(key == 'd'){
             moveToNew(1,0);
         }
-
     }
 
     public void moveToNew(int x, int y) {
