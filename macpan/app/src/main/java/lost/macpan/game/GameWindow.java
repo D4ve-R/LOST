@@ -137,25 +137,19 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
             try {
                 double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
-                /*
-                System.out.println("Maximum possible framerate (only up to " +
-                        framerate + " displayed): " +
-                        1000000000 / (framerate - remainingTime));      //TO BE REMOVED returns maximum possible frame rate going by current frame time
-                */
-                if (remainingTime < 0)                  //determines how long the thread should sleep for
+                if (remainingTime < 0) {                  //determines how long the thread should sleep for
                     remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
+                }
                 thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
                 nextDrawTime += frametime;              //determines when the next frame should finish
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            if(i == 100) {
-                double timeForOneFrame = (System.nanoTime() - timeOld)/100;
-                //System.out.println(timeForOneFrame);
-                long FPS = Math.round((1000000000 / timeForOneFrame));
-                System.out.println("FPS: "+FPS);
-                //System.out.println(timeOld);
+            if(i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
+                double AverageTimeForOneFrame = (System.nanoTime() - timeOld)/100;
+                long FPS = Math.round((1000000000 / AverageTimeForOneFrame));
+                System.out.println("FPS: " + FPS);
                 i = 0;
                 timeOld = System.nanoTime();
             }
