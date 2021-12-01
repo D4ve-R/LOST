@@ -6,8 +6,6 @@ import lost.macpan.game.sprites.ExitSprite;
 import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
 import lost.macpan.panel.LooserMenu;
-import lost.macpan.panel.MainMenu;
-import lost.macpan.panel.OptionsMenu;
 import lost.macpan.panel.WinnerMenu;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
@@ -38,8 +36,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     char lastKey;
 
     private int originalTileSize = 16;              //corresponds to the sprite size
-    private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
-    public int tileSize = originalTileSize * scale; //tile size and effective sprite size
+    private int tileScale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
+    public int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
     protected int maxColumns = 32;                  //maximum amount of tiles that can be drawn horizontally
     private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
@@ -52,6 +50,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     private boolean gameRunning = false;
     public JFrame parentFrame;
     private boolean threadRunning;
+
+    private double windowScale;     //scaling factor for fullscreen
+    private int windowOffset;       //offset to center gameplay in fullscreen
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -96,6 +97,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         setDoubleBuffered(true);
         flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                //gets screen size
+        windowScale = (double) screenSize.height / height;                                          //sets scaling factor
+        windowOffset = (int) (screenSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
     }
 
     /**
@@ -182,6 +186,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        g2.translate(windowOffset, 0);           //offsets the picture
+        g2.scale(windowScale, windowScale);         //scales the picture according to screen size
         for (int i = 0; i < maxColumns; i++){       //parses the x-coordinate of "map"
             for (int j = 0; j < maxRows; j++){      //parses the y-coordinate of "map"
                 char c = map[i][j];                 //fetches currently examined tile identifier

@@ -36,6 +36,8 @@ public class App extends JFrame implements ActionListener {
         timer = new Timer(delay, this);
         setTitle("MacPan");
         setMinimumSize(new Dimension(width, height));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);        //sets fullscreen
+        setUndecorated(true);                           //removes window header
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(new Intro());
