@@ -66,35 +66,35 @@ public class Enemy {
         switch (direction) {
             case "inFront", "front" -> {
                 return switch (facingDir) {
-                    case "north" -> game.map[posX][posY + 1];
-                    case "east" -> game.map[posX + 1][posY];
-                    case "south" -> game.map[posX][posY - 1];
-                    case "west" -> game.map[posX - 1][posY];
-                    default -> game.map[posX][posY];
+                    case "north"    -> game.map[posX][posY + 1];
+                    case "east"     -> game.map[posX + 1][posY];
+                    case "south"    -> game.map[posX][posY - 1];
+                    case "west"     -> game.map[posX - 1][posY];
+                    default         -> game.map[posX][posY];
                 };
             } case "left" -> {
                 return switch (facingDir) {
-                    case "north" -> game.map[posX - 1][posY];
-                    case "east" -> game.map[posX][posY + 1];
-                    case "south" -> game.map[posX + 1][posY];
-                    case "west" -> game.map[posX][posY - 1];
-                    default -> game.map[posX][posY];
+                    case "north"    -> game.map[posX - 1][posY];
+                    case "east"     -> game.map[posX][posY + 1];
+                    case "south"    -> game.map[posX + 1][posY];
+                    case "west"     -> game.map[posX][posY - 1];
+                    default         -> game.map[posX][posY];
                 };
             } case "right" -> {
                 return switch (facingDir) {
-                    case "north" -> game.map[posX + 1][posY];
-                    case "east" -> game.map[posX][posY - 1];
-                    case "south" -> game.map[posX - 1][posY];
-                    case "west" -> game.map[posX][posY + 1];
-                    default -> game.map[posX][posY];
+                    case "north"    -> game.map[posX + 1][posY];
+                    case "east"     -> game.map[posX][posY - 1];
+                    case "south"    -> game.map[posX - 1][posY];
+                    case "west"     -> game.map[posX][posY + 1];
+                    default         -> game.map[posX][posY];
                 };
             } case "behind" -> {
                 return switch (facingDir) {
-                    case "north" -> game.map[posX][posY - 1];
-                    case "east" -> game.map[posX - 1][posY];
-                    case "south" -> game.map[posX][posY + 1];
-                    case "west" -> game.map[posX + 1][posY];
-                    default -> game.map[posX][posY];
+                    case "north"    -> game.map[posX][posY - 1];
+                    case "east"     -> game.map[posX - 1][posY];
+                    case "south"    -> game.map[posX][posY + 1];
+                    case "west"     -> game.map[posX + 1][posY];
+                    default         -> game.map[posX][posY];
                 };
             } case "below" -> {
                 return getAbove();
@@ -190,7 +190,7 @@ public class Enemy {
                 // continue straight
             } default -> new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
         }
-        System.out.println("Richtung nach turn: " + facing);
+        /*System.out.println("Richtung nach turn: " + facing);*/
     }
 
     /**
