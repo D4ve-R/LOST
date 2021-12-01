@@ -209,7 +209,7 @@ public class Enemy {
                     break;
                 case "west":
                     above = game.map[posX - 1][posY];
-                    game.map[posX][posY - 1] = 'g';
+                    game.map[posX - 1][posY] = 'g';
                     posX--;
                     break;
             }
@@ -250,6 +250,6 @@ public class Enemy {
      * @return true or false
      */
     public boolean isPassable(char pTile) {
-        return (pTile != 'h' && pTile != 'x' && pTile != '\0' && pTile != '\r');
+        return (pTile != 'h' && pTile != 'x' && pTile != '\0' && pTile != '\r' && pTile != 'g');
     }
 }
