@@ -39,6 +39,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
 
     /**
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Hauptmenue gehören auf dem Frame
+     * Update durch Janosch & William
      *
      * @param frame
      */
@@ -91,7 +92,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-            GameWindow gameWindow = new GameWindow(parentFrame);
+            GameWindow gameWindow = new GameWindow(parentFrame, this);
             parentFrame.setContentPane(gameWindow);
             gameWindow.start();
             parentFrame.revalidate();

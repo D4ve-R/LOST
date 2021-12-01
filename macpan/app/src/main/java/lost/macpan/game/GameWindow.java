@@ -5,10 +5,7 @@ import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
 import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
-import lost.macpan.panel.LooserMenu;
-import lost.macpan.panel.MainMenu;
-import lost.macpan.panel.OptionsMenu;
-import lost.macpan.panel.WinnerMenu;
+import lost.macpan.panel.*;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -17,6 +14,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -52,6 +50,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     private boolean gameRunning = false;
     public JFrame parentFrame;
     private boolean threadRunning;
+    public Container before;
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -89,8 +88,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
 
-    public GameWindow(JFrame frame){
+    public GameWindow(JFrame frame, Container beforeMenu){
         parentFrame = frame;
+        before = beforeMenu;
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
@@ -123,21 +123,22 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
 
+
     /**
      * draw loop
      */
     @Override
     public void run() {
-        fetchSprites();                                         //assigns sprites
+                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
         long timeOld = System.nanoTime();
         int i = 0;
         while(threadRunning) {
+            fetchSprites();
             while (gameRunning) {                                  //start of the draw loop
                 //gameLogic();                                        //TO BE REPLACED see above
                 repaint();                                          //draws the frame
-
                 try {
                     double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
                     if (remainingTime < 0) {                  //determines how long the thread should sleep for
@@ -280,7 +281,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                     flags[0] = false;
                     gameRunning = false;
 
-                    LooserMenu looserMenu = new LooserMenu(parentFrame);
+                    LooserMenu looserMenu = new LooserMenu(parentFrame, before);
                     parentFrame.setContentPane(looserMenu);
                     parentFrame.revalidate();
                     //Direkt mit Todes Bildschirm
@@ -288,13 +289,14 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
             }
             else if(onNewPos == 'k'){
                 flags[3] = true;
+                flags[6] = true;
             }else if(onNewPos == 'x') {
                 if(!flags[3] == true){
                     return;
                 }else{
                     gameRunning = false;
 
-                    WinnerMenu winnerMenu = new WinnerMenu(parentFrame);
+                    WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before);
                     parentFrame.setContentPane(winnerMenu);
                     parentFrame.revalidate();
                     //Bildschirm (Todes oder Erfolgs)
@@ -322,19 +324,29 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         map[playerPos[0]][playerPos[1]] = 'p';
     }
 
+    public void spielFortsetzen(){
+        gameRunning = true;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
-
+        System.out.println("KeyTyped");
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode()== KeyEvent.VK_ESCAPE)
         {
-            System.out.println("Geht");
+            System.out.println("ESC");
+            lastKey = 'o';
+            gameRunning = false;
+            PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
+            parentFrame.setContentPane(pauseMenu);
+            parentFrame.revalidate();
+
         }
         lastKey = e.getKeyChar();
+
     }
 
     @Override
