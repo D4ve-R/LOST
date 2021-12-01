@@ -69,7 +69,7 @@ public class Enemy {
                     case "east"     -> game.map[posX + 1][posY];
                     case "south"    -> game.map[posX][posY - 1];
                     case "west"     -> game.map[posX - 1][posY];
-                    default         -> game.map[posX][posY];
+                    default         -> game.map[posX][posY]; // just in case. should not come true
                 };
             } case "left" -> {
                 return switch (facingDir) {
@@ -77,7 +77,7 @@ public class Enemy {
                     case "east"     -> game.map[posX][posY + 1];
                     case "south"    -> game.map[posX + 1][posY];
                     case "west"     -> game.map[posX][posY - 1];
-                    default         -> game.map[posX][posY];
+                    default         -> game.map[posX][posY]; // just in case. should not come true
                 };
             } case "right" -> {
                 return switch (facingDir) {
@@ -85,7 +85,7 @@ public class Enemy {
                     case "east"     -> game.map[posX][posY - 1];
                     case "south"    -> game.map[posX - 1][posY];
                     case "west"     -> game.map[posX][posY + 1];
-                    default         -> game.map[posX][posY];
+                    default         -> game.map[posX][posY]; // just in case. should not come true
                 };
             } case "behind" -> {
                 return switch (facingDir) {
@@ -93,9 +93,10 @@ public class Enemy {
                     case "east"     -> game.map[posX - 1][posY];
                     case "south"    -> game.map[posX][posY + 1];
                     case "west"     -> game.map[posX + 1][posY];
-                    default         -> game.map[posX][posY];
+                    default         -> game.map[posX][posY]; // just in case. should not come true
                 };
-            } case "below" -> {
+            }
+            case "below" -> {
                 return getAbove();
             } default -> new RuntimeException("'" + direction + "' is an invalid direction. Must be 'inFront', 'left', 'right' or 'behind'.").printStackTrace();
         }
@@ -117,13 +118,12 @@ public class Enemy {
                     case 2, 3 -> turn("right");
                     case 4 -> turn("behind");
                 }
-            } else if (!isPassable(detect("right")) && isPassable(detect("left"))) {
+            } else if (!isPassable(detect("right")) && isPassable(detect("left")))
                 turn("left");
-            } else if (isPassable(detect("right")) && !isPassable(detect("left"))) {
+            else if (isPassable(detect("right")) && !isPassable(detect("left")))
                 turn("right");
-            } else if (!isPassable(detect("right")) && !isPassable(detect("left"))) {
+            else if (!isPassable(detect("right")) && !isPassable(detect("left")))
                 turn("behind");
-            }
         } else if(isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead left and right are good to go
             int randomTurn = (int)(Math.random()*4); // 50% chance of continuing straight
             switch (randomTurn) {
@@ -132,14 +132,12 @@ public class Enemy {
             }
         } else if(!isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead and left are good to go
             int randomTurn = (int)(Math.random()*3); // 2/3 chance of continuing straight
-            if (randomTurn == 0) {
+            if (randomTurn == 0)
                 turn("left");
-            }
         } else if(isPassable(detect("right")) && !isPassable(detect("left"))) { // straight ahead and right are good to go
             int randomTurn = (int)(Math.random()*3); // 2/3 chance of continuing straight
-            if (randomTurn == 0) {
+            if (randomTurn == 0)
                 turn("right");
-            }
         }
 
         // Actual enemy movement
