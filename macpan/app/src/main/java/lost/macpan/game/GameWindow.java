@@ -11,7 +11,8 @@ import lost.macpan.panel.OptionsMenu;
 import lost.macpan.panel.WinnerMenu;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -48,7 +49,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     public int score;                               //for keeping track of the score
     private int hudHeight = 21;                     //determines the height of the HUD
     private Thread thread;
+    private boolean gameRunning = false;
     public JFrame parentFrame;
+    private boolean threadRunning;
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -101,7 +104,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     public void start(){
         thread = new Thread(this);
         thread.start();
-
+        gameRunning = true;
+        threadRunning = true;
         this.addKeyListener(this);
         this.setFocusable(true);
         this.grabFocus();
@@ -127,24 +131,35 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         fetchSprites();                                         //assigns sprites
         double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
-        while(thread != null){                                  //start of the draw loop
-            //gameLogic();                                        //TO BE REPLACED see above
-            repaint();                                          //draws the frame
-            try {
-                double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
-                /*
-                System.out.println("Maximum possible framerate (only up to " +
-                        framerate + " displayed): " +
-                        1000000000 / (framerate - remainingTime));      //TO BE REMOVED returns maximum possible frame rate going by current frame time
-                 */
-                if (remainingTime < 0)                  //determines how long the thread should sleep for
-                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                nextDrawTime += frametime;              //determines when the next frame should finish
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        long timeOld = System.nanoTime();
+        int i = 0;
+        while(threadRunning) {
+            while (gameRunning) {                                  //start of the draw loop
+                //gameLogic();                                        //TO BE REPLACED see above
+                repaint();                                          //draws the frame
+
+                try {
+                    double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
+                    if (remainingTime < 0) {                  //determines how long the thread should sleep for
+                        remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
+                    }
+                    thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
+                    nextDrawTime += frametime;              //determines when the next frame should finish
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
+                    double AverageTimeForOneFrame = (System.nanoTime() - timeOld) / 100;
+                    long FPS = Math.round((1000000000 / AverageTimeForOneFrame));
+                    System.out.println("FPS: " + FPS);
+                    i = 0;
+                    timeOld = System.nanoTime();
+                }
+                i++;
             }
         }
+        System.out.println("Loop beendet");
     }
 
     /**
@@ -207,8 +222,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
 
-        for(int i = 0; i < rows.length;i++ ) {           //For every row
-            for (int o = 0; o < rows[i].length(); o++) {  //for every char in the row
+        for(int i = 0; i < Math.min(rows.length,maxRows);i++ ) {           //For every row
+            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) {  //for every char in the row
                 map[o][i] = rows[i].charAt(o);            //insert char into the map array
             }
         }
@@ -263,7 +278,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }
                 else {
                     flags[0] = false;
-                    thread.stop();
+                    gameRunning = false;
 
                     LooserMenu looserMenu = new LooserMenu(parentFrame);
                     parentFrame.setContentPane(looserMenu);
@@ -277,7 +292,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 if(!flags[3] == true){
                     return;
                 }else{
-                    thread.stop();
+                    gameRunning = false;
 
                     WinnerMenu winnerMenu = new WinnerMenu(parentFrame);
                     parentFrame.setContentPane(winnerMenu);

@@ -8,16 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch an.
@@ -81,18 +78,15 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             e.printStackTrace();
         }
         String[] parts = highscores.split("\n");
-        int length = 0;
-        if (parts.length > 10) {
-            length = 10;
-        } else length = parts.length;
+
         String[] temp;
-        String out = "";
-        for (int i = 0; i < length; i++) {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < Math.min(parts.length, 10); i++) {
             temp = parts[i].split(";");
-            out += i + 1 + "           " + temp[0] + "          " + temp[1] + "\n";
+            out.append(i + 1 + "           " + temp[0] + "          " + temp[1] + "\n");
         }
         setLayout(null);
-        String[] lastStringHopefully = out.split("\n");
+        String[] lastStringHopefully = out.toString().split("\n");
         if (lastStringHopefully.length > 0) {
             JLabel hLb1 = new JLabel(lastStringHopefully[0]);
             hLb1.setBounds(290, 190, 500, 100);
@@ -181,9 +175,5 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             parentFrame.revalidate();
         }
     }
-    /*
-        http://www.java2s.com/Code/Android/File/getResourceAsStreamLoadstheresourcefromclasspath.htm
-     */
-
 
 }

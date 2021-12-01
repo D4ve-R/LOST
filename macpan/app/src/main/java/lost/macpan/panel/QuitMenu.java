@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 
 /**
@@ -80,6 +81,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == yesBtn) {
             // Fenster wird geschlossen und das Spiel ist beendet
+            parentFrame.dispatchEvent(new WindowEvent(parentFrame, WindowEvent.WINDOW_CLOSING));
             parentFrame.dispose();
         } else if (e.getSource() == noBtn) {
             //Hauptmenü wird geladen
