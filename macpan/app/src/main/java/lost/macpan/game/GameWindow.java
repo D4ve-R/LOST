@@ -5,6 +5,7 @@ import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
 import lost.macpan.game.sprites.PlayerSprite;
 import lost.macpan.game.sprites.Sprite;
+import lost.macpan.game.Enemy;
 import lost.macpan.panel.LooserMenu;
 import lost.macpan.panel.MainMenu;
 import lost.macpan.panel.OptionsMenu;
@@ -22,6 +23,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,6 +50,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     public char[][] map;                            //char-array from which a frame will be drawn
     public int score;                               //for keeping track of the score
     private int hudHeight = 21;                     //determines the height of the HUD
+    private List<Enemy> enemies = new ArrayList<Enemy>();
     private Thread thread;
     public JFrame parentFrame;
 
@@ -108,6 +112,15 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         getPlayerPos();
 
+        /* ENEMY INITIATION */
+        for (int i = 0; i < maxColumns; i++) {
+            for (int j = 0; j < maxRows; j++) {
+                if(map[i][j] == 'g') {
+                    enemies.add(new Enemy(i, j,this));
+                }
+            }
+        }
+
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -155,6 +168,11 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         /*for (int i = 1; i < 8; i++) {
             flags[i] = true;
         }*/
+
+        /* ENEMY LOGIC */
+        for(int i = 0; i < enemies.size(); i++)
+            enemies.get(i).move();
+
         move(lastKey);
         lastKey = 'o';
     }
