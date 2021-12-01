@@ -27,7 +27,7 @@ public class Enemy {
         posY = yCoordinate;
         this.game = pGame;
         facing = (int)(Math.random()*3);
-        above = '.';
+        above = '.'; //game.map[xCoordinate][yCoordinate];
     }
 
     /* GETTER & SETTER */
@@ -139,7 +139,7 @@ public class Enemy {
             turn("left");
         } else if(!isPassable(detect("front")) && isPassable(detect("right")) && !isPassable(detect("left"))) {
             turn("right");
-        } else {
+        } else if(!isPassable(detect("front")) && !isPassable(detect("right")) && !isPassable(detect("left"))) {
             turn("behind");
         }
 
@@ -180,12 +180,18 @@ public class Enemy {
             case "left":
                 if(facing > 0) facing--;
                 else facing = 3;
+                System.out.println("I did a left turn!");
+                break;
             case "right":
                 if(facing < 3) facing++;
                 else facing = 0;
+                System.out.println("I did a right turn!");
+                break;
             case "behind", "180":
                 if(facing < 2) facing += 2;
                 else facing -= 2;
+                System.out.println("I did a 180 no scope!");
+                break;
             default:
                 new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
                 break;
