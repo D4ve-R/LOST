@@ -54,8 +54,9 @@ public class Enemy {
                 return "south";
             case 3:
                 return "west";
+            default:
+                return "";
         }
-        return "";
     }
     public char getAbove() { return above; }
 
@@ -115,6 +116,8 @@ public class Enemy {
                     case "west":
                         return game.map[posX+1][posY];
                 }
+            case "below":
+                return getAbove();
             default:
                 new RuntimeException("'" + direction + "' is an invalid direction. Must be 'inFront', 'left', 'right' or 'behind'.").printStackTrace();
                 break;
@@ -127,25 +130,62 @@ public class Enemy {
      */
     public void move() {
         // Turn towards new direction in case the enemy hits a wall
-        if(!isPassable(detect("front")) && isPassable(detect("right")) && isPassable(detect("left"))) {
-            // Right and Left path are good to go, but not in front. Enemy decides new direction randomly
+        if(!isPassable(detect("front"))) { // Wall in front of enemy
+            if (isPassable(detect("right")) && isPassable(detect("left"))) {
+                // Right and Left path are good to go, but not in front. Enemy decides new direction randomly
+                int randomTurn = (int) (Math.random() * 5);
+                switch (randomTurn) {
+                    // Right now enemy can do a 180 deg turn when facing a wall. Change to random()*2 and remove case 2 to only allow left and right turns
+                    case 0, 1:
+                        turn("left");
+                        break;
+                    case 2, 3:
+                        turn("right");
+                        break;
+                    case 4:
+                        turn("behind");
+                        break;
+                }
+            } else if (!isPassable(detect("right")) && isPassable(detect("left"))) {
+                turn("left");
+            } else if (isPassable(detect("right")) && !isPassable(detect("left"))) {
+                turn("right");
+            } else if (!isPassable(detect("right")) && !isPassable(detect("left"))) {
+                turn("behind");
+            }
+        } else if(isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead left and right are good to go
+            int randomTurn = (int)(Math.random()*4);
+            switch (randomTurn) {
+                case 0, 1:
+                    // continue straight
+                    break;
+                case 2:
+                    turn("left");
+                    break;
+                case 3:
+                    turn("right");
+                    break;
+            }
+        } else if(!isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead and left are good to go
             int randomTurn = (int)(Math.random()*3);
             switch (randomTurn) {
-                // Right now enemy can do a 180 deg turn when facing a wall. Change to random()*2 and remove case 2 to only allow left and right turns
-                case 0:
-                    turn("left");
-                case 1:
-                    turn("right");
+                case 0, 1:
+                    // continue straight
+                    break;
                 case 2:
-                    turn("behind");
+                    turn("left");
+                    break;
             }
-        } else if(!isPassable(detect("front")) && !isPassable(detect("right")) && isPassable(detect("left"))) {
-            // right now when in a corner youll only turn left and right and not 180 deg. add random()*2 and switch case if wanted
-            turn("left");
-        } else if(!isPassable(detect("front")) && isPassable(detect("right")) && !isPassable(detect("left"))) {
-            turn("right");
-        } else if(!isPassable(detect("front")) && !isPassable(detect("right")) && !isPassable(detect("left"))) {
-            turn("behind");
+        } else if(isPassable(detect("right")) && !isPassable(detect("left"))) { // straight ahead and right are good to go
+            int randomTurn = (int)(Math.random()*3);
+            switch (randomTurn) {
+                case 0, 1:
+                    // continue straight
+                    break;
+                case 2:
+                    turn("right");
+                    break;
+            }
         }
 
         // Actual enemy movement
@@ -201,6 +241,7 @@ public class Enemy {
                 new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
                 break;
         }
+        System.out.println("Richtung nach turn: " + facing);
     }
 
     /**
