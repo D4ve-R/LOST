@@ -51,6 +51,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     private Thread thread;
     private boolean gameRunning = false;
     public JFrame parentFrame;
+    private boolean threadRunning;
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -104,6 +105,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         thread = new Thread(this);
         thread.start();
         gameRunning = true;
+        threadRunning = true;
         this.addKeyListener(this);
         this.setFocusable(true);
         this.grabFocus();
@@ -131,30 +133,31 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
         long timeOld = System.nanoTime();
         int i = 0;
-        while(gameRunning){                                  //start of the draw loop
-            //gameLogic();                                        //TO BE REPLACED see above
-            repaint();                                          //draws the frame
+        while(threadRunning) {
+            while (gameRunning) {                                  //start of the draw loop
+                //gameLogic();                                        //TO BE REPLACED see above
+                repaint();                                          //draws the frame
 
-            try {
-                double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
-                if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
+                try {
+                    double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
+                    if (remainingTime < 0) {                  //determines how long the thread should sleep for
+                        remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
+                    }
+                    thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
+                    nextDrawTime += frametime;              //determines when the next frame should finish
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                nextDrawTime += frametime;              //determines when the next frame should finish
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            if(i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
-                double AverageTimeForOneFrame = (System.nanoTime() - timeOld)/100;
-                long FPS = Math.round((1000000000 / AverageTimeForOneFrame));
-                System.out.println("FPS: " + FPS);
-                i = 0;
-                timeOld = System.nanoTime();
+                if (i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
+                    double AverageTimeForOneFrame = (System.nanoTime() - timeOld) / 100;
+                    long FPS = Math.round((1000000000 / AverageTimeForOneFrame));
+                    System.out.println("FPS: " + FPS);
+                    i = 0;
+                    timeOld = System.nanoTime();
+                }
+                i++;
             }
-            i++;
-
         }
         System.out.println("Loop beendet");
     }
