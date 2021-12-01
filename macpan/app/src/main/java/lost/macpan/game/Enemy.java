@@ -2,8 +2,8 @@ package lost.macpan.game;
 
 /*
 * NOTIZ AN MICH SELBST
-* 'h', '\0', '\r', 'x'              = unpassable for enemy
-* '.', 'p', 'g', '*', 'a - e', 'k'  = passable for enemy
+* 'h', '\0', '\r', 'x', 'g'     = unpassable for enemy
+* '.', 'p', '*', 'a - e', 'k'   = passable for enemy
 *
 */
 
