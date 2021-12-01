@@ -55,7 +55,6 @@ public class Enemy {
     public char getAbove() { return above; }
 
     /* METHODS */
-
     /**
      * Helping method to detect what game tile is in a specific direction relative to the enemy object
      * @param direction either "inFront", "left", "right" or "behind" depending on the request
@@ -111,7 +110,7 @@ public class Enemy {
         if(!isPassable(detect("front"))) { // Wall in front of enemy
             if (isPassable(detect("right")) && isPassable(detect("left"))) {
                 // Right and Left path are good to go, but not in front. Enemy decides new direction randomly
-                int randomTurn = (int) (Math.random() * 5);
+                int randomTurn = (int) (Math.random() * 5); // 80% chance of turning left or right, 20% chance of turning 180 degrees
                 switch (randomTurn) {
                     // Right now enemy can do a 180 deg turn when facing a wall. Change to random()*2 and remove case 2 to only allow left and right turns
                     case 0, 1 -> turn("left");
@@ -126,18 +125,18 @@ public class Enemy {
                 turn("behind");
             }
         } else if(isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead left and right are good to go
-            int randomTurn = (int)(Math.random()*4);
+            int randomTurn = (int)(Math.random()*4); // 50% chance of continuing straight
             switch (randomTurn) {
                 case 0 -> turn("left");
                 case 1 -> turn("right");
             }
         } else if(!isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead and left are good to go
-            int randomTurn = (int)(Math.random()*3);
+            int randomTurn = (int)(Math.random()*3); // 2/3 chance of continuing straight
             if (randomTurn == 0) {
                 turn("left");
             }
         } else if(isPassable(detect("right")) && !isPassable(detect("left"))) { // straight ahead and right are good to go
-            int randomTurn = (int)(Math.random()*3);
+            int randomTurn = (int)(Math.random()*3); // 2/3 chance of continuing straight
             if (randomTurn == 0) {
                 turn("right");
             }
