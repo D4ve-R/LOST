@@ -175,9 +175,12 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
             System.out.println(
                     "Enemy " + (i+1) +
                     " {\n\tFacing:\t\t" + enemies.get(i).getFacingDirection() +
-                    "\n\tUnter mir:\t'" + enemies.get(i).getAbove() +
-                    "'\n\tVor mir:\t'" + enemies.get(i).detect("front") +
-                    "'\n\tPassable:\t" + enemies.get(i).isPassable(enemies.get(i).detect("front")) + "\n}"
+                    "\n\tUnter mir:\t'" + enemies.get(i).getAbove() + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).getAbove()) +
+                    "\n\tVor mir:\t'" + enemies.get(i).detect("front") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("front")) +
+                    "\n\tRechts:\t\t'" + enemies.get(i).detect("right") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("right")) +
+                    "\n\tLinks:\t\t'" + enemies.get(i).detect("left") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("left")) +
+                    "\n\tHinter mir:\t'" + enemies.get(i).detect("behind") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("behind")) +
+                    "\n}"
             );
             enemies.get(i).move();
         }

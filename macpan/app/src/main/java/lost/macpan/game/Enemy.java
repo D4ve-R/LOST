@@ -7,6 +7,11 @@ package lost.macpan.game;
 *
 */
 
+/**
+ * Class that manages the enemy movement logic
+ * @author Simon Bonnie
+ * @version 1.0
+ */
 public class Enemy {
     // X and Y coordinate of the enemy entity + the facing direction of the enemy (0 = north, 1 = east, 2 = south, 3 = west)
     private int posX = 0, posY = 0, facing = 0;
