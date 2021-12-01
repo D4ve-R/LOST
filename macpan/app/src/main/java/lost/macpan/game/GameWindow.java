@@ -171,7 +171,6 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         /* ENEMY LOGIC */
         for(int i = 0; i < enemies.size(); i++) {
-            //enemies.get(i).move();
             System.out.println(
                     "Enemy " + (i+1) +
                     " {\n\tFacing:\t\t" + enemies.get(i).getFacingDirection() +
