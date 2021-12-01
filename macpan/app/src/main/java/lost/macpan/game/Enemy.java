@@ -20,7 +20,6 @@ public class Enemy {
     GameWindow game;
 
     /* CONSTRUCTOR */
-
     /**
      * Constructor method for Enemy. Initiates an enemy object at a given location
      * @param xCoordinate the x coordinate of the enemy object
@@ -45,18 +44,13 @@ public class Enemy {
      * @return facing direction (either "north", "east", "south" or "west")
      */
     public String getFacingDirection() {
-        switch (facing) {
-            case 0:
-                return "north";
-            case 1:
-                return "east";
-            case 2:
-                return "south";
-            case 3:
-                return "west";
-            default:
-                return "";
-        }
+        return switch (facing) {
+            case 0 -> "north";
+            case 1 -> "east";
+            case 2 -> "south";
+            case 3 -> "west";
+            default -> "";
+        };
     }
     public char getAbove() { return above; }
 
@@ -70,57 +64,37 @@ public class Enemy {
     public char detect(String direction) throws RuntimeException {
         String facingDir = getFacingDirection();
         switch (direction) {
-            case "inFront", "front":
-                switch (facingDir) {
-                    case "north":
-                        return game.map[posX][posY+1];
-                    case "east":
-                        return game.map[posX+1][posY];
-                    case "south":
-                        return game.map[posX][posY-1];
-                    case "west":
-                        return game.map[posX-1][posY];
-                }
-                break;
-            case "left":
-                switch (facingDir) {
-                    case "north":
-                        return game.map[posX-1][posY];
-                    case "east":
-                        return game.map[posX][posY+1];
-                    case "south":
-                        return game.map[posX+1][posY];
-                    case "west":
-                        return game.map[posX][posY-1];
-                }
-                break;
-            case "right":
-                switch (facingDir) {
-                    case "north":
-                        return game.map[posX+1][posY];
-                    case "east":
-                        return game.map[posX][posY-1];
-                    case "south":
-                        return game.map[posX-1][posY];
-                    case "west":
-                        return game.map[posX][posY+1];
-                }
-            case "behind":
-                switch (facingDir) {
-                    case "north":
-                        return game.map[posX][posY-1];
-                    case "east":
-                        return game.map[posX-1][posY];
-                    case "south":
-                        return game.map[posX][posY+1];
-                    case "west":
-                        return game.map[posX+1][posY];
-                }
-            case "below":
+            case "inFront", "front" -> {
+                return switch (facingDir) {
+                    case "north" -> game.map[posX][posY + 1];
+                    case "east" -> game.map[posX + 1][posY];
+                    case "south" -> game.map[posX][posY - 1];
+                    case "west" -> game.map[posX - 1][posY];
+                };
+            } case "left" -> {
+                return switch (facingDir) {
+                    case "north" -> game.map[posX - 1][posY];
+                    case "east" -> game.map[posX][posY + 1];
+                    case "south" -> game.map[posX + 1][posY];
+                    case "west" -> game.map[posX][posY - 1];
+                };
+            } case "right" -> {
+                return switch (facingDir) {
+                    case "north" -> game.map[posX + 1][posY];
+                    case "east" -> game.map[posX][posY - 1];
+                    case "south" -> game.map[posX - 1][posY];
+                    case "west" -> game.map[posX][posY + 1];
+                };
+            } case "behind" -> {
+                return switch (facingDir) {
+                    case "north" -> game.map[posX][posY - 1];
+                    case "east" -> game.map[posX - 1][posY];
+                    case "south" -> game.map[posX][posY + 1];
+                    case "west" -> game.map[posX + 1][posY];
+                };
+            } case "below" -> {
                 return getAbove();
-            default:
-                new RuntimeException("'" + direction + "' is an invalid direction. Must be 'inFront', 'left', 'right' or 'behind'.").printStackTrace();
-                break;
+            } default -> new RuntimeException("'" + direction + "' is an invalid direction. Must be 'inFront', 'left', 'right' or 'behind'.").printStackTrace();
         }
         return '.';
     }
@@ -136,15 +110,9 @@ public class Enemy {
                 int randomTurn = (int) (Math.random() * 5);
                 switch (randomTurn) {
                     // Right now enemy can do a 180 deg turn when facing a wall. Change to random()*2 and remove case 2 to only allow left and right turns
-                    case 0, 1:
-                        turn("left");
-                        break;
-                    case 2, 3:
-                        turn("right");
-                        break;
-                    case 4:
-                        turn("behind");
-                        break;
+                    case 0, 1 -> turn("left");
+                    case 2, 3 -> turn("right");
+                    case 4 -> turn("behind");
                 }
             } else if (!isPassable(detect("right")) && isPassable(detect("left"))) {
                 turn("left");
@@ -156,35 +124,18 @@ public class Enemy {
         } else if(isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead left and right are good to go
             int randomTurn = (int)(Math.random()*4);
             switch (randomTurn) {
-                case 0, 1:
-                    // continue straight
-                    break;
-                case 2:
-                    turn("left");
-                    break;
-                case 3:
-                    turn("right");
-                    break;
+                case 0 -> turn("left");
+                case 1 -> turn("right");
             }
         } else if(!isPassable(detect("right")) && isPassable(detect("left"))) { // straight ahead and left are good to go
             int randomTurn = (int)(Math.random()*3);
-            switch (randomTurn) {
-                case 0, 1:
-                    // continue straight
-                    break;
-                case 2:
-                    turn("left");
-                    break;
+            if (randomTurn == 0) {
+                turn("left");
             }
         } else if(isPassable(detect("right")) && !isPassable(detect("left"))) { // straight ahead and right are good to go
             int randomTurn = (int)(Math.random()*3);
-            switch (randomTurn) {
-                case 0, 1:
-                    // continue straight
-                    break;
-                case 2:
-                    turn("right");
-                    break;
+            if (randomTurn == 0) {
+                turn("right");
             }
         }
 
@@ -192,26 +143,23 @@ public class Enemy {
         if(isPassable(detect("inFront"))) {
             game.map[posX][posY] = above;   // restore the tile the enemy was above
             switch (getFacingDirection()) {
-                case "north":
+                case "north" -> {
                     above = game.map[posX][posY + 1];
                     game.map[posX][posY + 1] = 'g';
                     posY++;
-                    break;
-                case "east":
+                } case "east" -> {
                     above = game.map[posX + 1][posY];
                     game.map[posX + 1][posY] = 'g';
                     posX++;
-                    break;
-                case "south":
+                } case "south" -> {
                     above = game.map[posX][posY - 1];
                     game.map[posX][posY - 1] = 'g';
                     posY--;
-                    break;
-                case "west":
+                } case "west" -> {
                     above = game.map[posX - 1][posY];
                     game.map[posX - 1][posY] = 'g';
                     posX--;
-                    break;
+                }
             }
         }
     }
@@ -222,24 +170,21 @@ public class Enemy {
      */
     public void turn(String direction) throws RuntimeException {
         switch (direction) {
-            case "left":
-                if(facing > 0) facing--;
+            case "left" -> {
+                if (facing > 0) facing--;
                 else facing = 3;
-                System.out.println("I did a left turn!");
-                break;
-            case "right":
+                /*System.out.println("I did a left turn!");*/
+            } case "right" -> {
                 if(facing < 3) facing++;
                 else facing = 0;
-                System.out.println("I did a right turn!");
-                break;
-            case "behind", "180":
+                /*System.out.println("I did a right turn!");*/
+            } case "behind", "180" -> {
                 if(facing < 2) facing += 2;
                 else facing -= 2;
-                System.out.println("I did a 180 no scope!");
-                break;
-            default:
-                new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
-                break;
+                /*System.out.println("I did a 180 no scope!");*/
+            } case "straight" -> {
+                // continue straight
+            } default -> new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
         }
         System.out.println("Richtung nach turn: " + facing);
     }

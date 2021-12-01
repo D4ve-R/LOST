@@ -175,9 +175,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                     "Enemy " + (i+1) +
                     " {\n\tFacing:\t\t" + enemies.get(i).getFacingDirection() +
                     "\n\tUnter mir:\t'" + enemies.get(i).getAbove() + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).getAbove()) +
-                    "\n\tVor mir:\t'" + enemies.get(i).detect("front") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("front")) +
-                    "\n\tRechts:\t\t'" + enemies.get(i).detect("right") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("right")) +
-                    "\n\tLinks:\t\t'" + enemies.get(i).detect("left") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("left")) +
+                    "\n\tVor mir:\t'"   + enemies.get(i).detect("front") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("front")) +
+                    "\n\tRechts:\t\t'"  + enemies.get(i).detect("right") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("right")) +
+                    "\n\tLinks:\t\t'"   + enemies.get(i).detect("left") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("left")) +
                     "\n\tHinter mir:\t'" + enemies.get(i).detect("behind") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("behind")) +
                     "\n}"
             );
@@ -222,8 +222,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
      * @param pFileName name of the map to load (has to be in the levels folder)
      * @return charArray of the map at the filename
      */
-    private char[][] importMapArray(String pFileName){
-
+    private char[][] importMapArray(String pFileName) {
         char[][] map = new char[maxColumns][maxRows];
         String mapString = "";
 
@@ -244,7 +243,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         return map;
     }
 
-    public void getPlayerPos(){
+    public void getPlayerPos() {
         playerPos = new int [2];
 
         for (int i = 0; i < maxColumns; i++){
@@ -276,21 +275,17 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
         if(onNewPos == 'h') { // Momentan
             System.out.println("Wand im weg");
-        }
-        else{
-            if(onNewPos == '*'){
-                if(flags[5] == true){
+        } else {
+            if(onNewPos == '*') {
+                if(flags[5] == true) {
                     score += 20;
-                }else{
+                } else {
                     score +=10;
                 }
-
-            }
-            else if(onNewPos == 'g'){
-                if(flags[1]){
+            } else if(onNewPos == 'g') {
+                if(flags[1]) {
                     flags[1] = false;
-                }
-                else {
+                } else {
                     flags[0] = false;
                     thread.stop();
 
@@ -313,16 +308,15 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                     parentFrame.revalidate();
                     //Bildschirm (Todes oder Erfolgs)
                 }
-            }
-            else if(onNewPos == 'a') {//Geschwindigkeitsbuff
+            } else if(onNewPos == 'a') {//Geschwindigkeitsbuff
                 flags[2] = true;
             } else if(onNewPos == 'b') {//Gegner einfrieren
                 flags[7] = true;
-            } else if(onNewPos == 'c'){//Münzboost
+            } else if(onNewPos == 'c') {//Münzboost
                 flags[5] = true;
-            } else if(onNewPos == 'd'){//Zusatzleben
+            } else if(onNewPos == 'd') {//Zusatzleben
                 flags[1] = true;
-            }else if(onNewPos == 'e'){//Todesberührung
+            } else if(onNewPos == 'e') {//Todesberührung
                 flags[4] = true;
             }
             geh(x,y);
