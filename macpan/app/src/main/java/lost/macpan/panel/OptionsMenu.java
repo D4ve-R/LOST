@@ -2,16 +2,11 @@ package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
 
-import java.awt.Container;
-import java.awt.Image;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * Die Klasse OptionMenu stellt ein Menü dar, wo man das Tastenbelegungsfenster oder das Spielbeschreibungsfenster öffnen kann
@@ -22,6 +17,8 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
     private final JButton keyBtn = new JButton("Tastenbelegung");
     private final JButton descBtn = new JButton("Spielbeschreibung");
     private final JButton backBtn = new JButton("Zurück");
+    private String[] choices = {"Fenster (borderless)", "Vollbild"};
+    private final JComboBox windowSelect = new JComboBox<String>(choices);
     private JLabel label;
     private Image img;
     private JFrame parentFrame;
@@ -53,15 +50,18 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         label.setBounds(175, 50, 600, 200);
         keyBtn.setBounds(395, 300, 160, 50);
         descBtn.setBounds(395, 360, 160, 50);
+        windowSelect.setBounds(395, 420, 160, 50);
         backBtn.setBounds(30, 550, 160, 50);
         add(backBtn);
         add(label);
         add(keyBtn);
         add(descBtn);
+        add(windowSelect);
         add(background);
         keyBtn.addActionListener(this);
         descBtn.addActionListener(this);
         backBtn.addActionListener(this);
+        windowSelect.addActionListener(this);
     }
 
     @Override
@@ -82,6 +82,12 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
             GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(gameDescriptionMenu);
             parentFrame.revalidate();
+        } else if (e.getSource() == windowSelect) {
+            int selection = windowSelect.getSelectedIndex();
+            if (selection == 1){
+                parentFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }else
+                parentFrame.setExtendedState(JFrame.NORMAL);
         }
     }
 }

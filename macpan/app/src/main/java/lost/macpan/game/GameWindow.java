@@ -92,13 +92,16 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
     public GameWindow(JFrame frame){
         parentFrame = frame;
-        setPreferredSize(new Dimension(width, height));
+        setSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
         flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                //gets screen size
-        windowScale = (double) screenSize.height / height;                                          //sets scaling factor
+        if (parentFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)
+            windowScale = (double) screenSize.height / height;                                          //sets scaling factor
+        else
+            windowScale = 1;
         windowOffset = (int) (screenSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
     }
 
@@ -186,7 +189,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.translate(windowOffset, 0);           //offsets the picture
+        if (parentFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)
+            g2.translate(windowOffset, 0);       //offsets the picture
         g2.scale(windowScale, windowScale);         //scales the picture according to screen size
         for (int i = 0; i < maxColumns; i++){       //parses the x-coordinate of "map"
             for (int j = 0; j < maxRows; j++){      //parses the y-coordinate of "map"
