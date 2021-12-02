@@ -246,6 +246,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
     public void move(char key){ //momentan mit globaler variable
+        detectEnemy(0,0);
         if(key == 'w') {
             moveToNew(0,-1);
         } else if(key == 's'){
@@ -273,18 +274,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
             }
             else if(onNewPos == 'g'){
-                if(flags[1]){
-                    flags[1] = false;
-                }
-                else {
-                    flags[0] = false;
-                    gameRunning = false;
-
-                    LooserMenu looserMenu = new LooserMenu(parentFrame);
-                    parentFrame.setContentPane(looserMenu);
-                    parentFrame.revalidate();
-                    //Direkt mit Todes Bildschirm
-                }
+                detectEnemy(x,y);
             }
             else if(onNewPos == 'k'){
                 flags[3] = true;
@@ -312,6 +302,23 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 flags[4] = true;
             }
             geh(x,y);
+        }
+    }
+
+    public void detectEnemy(int x, int y){
+        if(map[playerPos[0]+ x][playerPos[1] + y] == 'g'){
+            if(flags[1]){
+                flags[1] = false;
+            }
+            else {
+                flags[0] = false;
+                gameRunning = false;
+
+                LooserMenu looserMenu = new LooserMenu(parentFrame);
+                parentFrame.setContentPane(looserMenu);
+                parentFrame.revalidate();
+                //Direkt mit Todes Bildschirm
+            }
         }
     }
 
