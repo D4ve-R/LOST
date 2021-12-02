@@ -38,8 +38,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int tileScale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     public int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
-    protected int maxColumns = 32;                  //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+    protected int maxColumns = 30;                  //maximum amount of tiles that can be drawn horizontally
+    private int maxRows = 21;                       //maximum amount of tiles that can be drawn vertically
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
     private int framerate = 60;                     //rate of draw loop repetitions
@@ -92,16 +92,13 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
     public GameWindow(JFrame frame){
         parentFrame = frame;
-        setSize(new Dimension(width, height));
+        //parentFrame.setSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
         flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                //gets screen size
-        if (parentFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)
-            windowScale = (double) screenSize.height / height;                                          //sets scaling factor
-        else
-            windowScale = 1;
+        windowScale = (double) parentFrame.getContentPane().getSize().height / height;              //sets scaling factor
         windowOffset = (int) (screenSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
     }
 
