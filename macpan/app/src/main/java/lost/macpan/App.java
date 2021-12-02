@@ -31,12 +31,12 @@ public class App extends JFrame implements ActionListener {
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 5000; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
+        int delay = 500; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
 
         timer = new Timer(delay, this);
         setTitle("MacPan");
         setMinimumSize(new Dimension(width, height));
-        setExtendedState(JFrame.MAXIMIZED_BOTH);        //sets fullscreen
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);        //sets fullscreen
         setUndecorated(true);                           //removes window header
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
