@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +37,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     Timer timer;
     private  int[] playerPos;
     char lastKey;
+    private ArrayList<Character> chars;
 
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
@@ -96,6 +98,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         setDoubleBuffered(true);
         flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
+        chars = new ArrayList<Character>();
     }
 
     /**
@@ -247,16 +250,17 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
     public void move(char key){ //momentan mit globaler variable
         detectEnemy(0,0);
-        if(key == 'w') {
-            moveToNew(0,-1);
-        } else if(key == 's'){
-            moveToNew(0,1);
-        } else if(key == 'a'){
-            moveToNew(-1,0);
-        } else if(key == 'd'){
-            moveToNew(1,0);
+        if(!chars.isEmpty()){
+            if(chars.get(chars.size()-1) == 'w') {
+                moveToNew(0,-1);
+            } else if(chars.get(chars.size()-1) == 's'){
+                moveToNew(0,1);
+            } else if(chars.get(chars.size()-1) == 'a'){
+                moveToNew(-1,0);
+            } else if(chars.get(chars.size()-1) == 'd'){
+                moveToNew(1,0);
+            }
         }
-
     }
 
     public void moveToNew(int x, int y) {
@@ -337,15 +341,31 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode()== KeyEvent.VK_ESCAPE)
-        {
+        if(e.getKeyCode()== KeyEvent.VK_ESCAPE) {
             System.out.println("Geht");
         }
+        if(e.getKeyChar() == 'w' && !chars.contains('w')){
+            chars.add('w');
+        }
+        if(e.getKeyChar() == 'a' && !chars.contains('a')){
+            chars.add('a');
+        }
+        if(e.getKeyChar() == 's' && !chars.contains('s')){
+            chars.add('s');
+        }
+        if(e.getKeyChar() == 'd' && !chars.contains('d')){
+            chars.add('d');
+            System.out.println("geht");
+        }
+        System.out.println(chars);
         lastKey = e.getKeyChar();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if(chars.contains((Character) e.getKeyChar())){
+            chars.remove((Character) e.getKeyChar());
+        }
 
     }
     @Override
