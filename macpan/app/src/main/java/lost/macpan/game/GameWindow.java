@@ -136,7 +136,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         int tickCounter = 0;
 
         while(threadRunning) {
-            System.out.println(gameRunning);
+            System.out.print("");
             while (gameRunning) {                                  //start of the draw loop
                 try {
                     double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
