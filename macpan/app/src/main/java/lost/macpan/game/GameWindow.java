@@ -171,6 +171,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         /* ENEMY LOGIC */
         for(int i = 0; i < enemies.size(); i++) {
+            /* // Enemy debug
             System.out.println(
                     "Enemy " + (i+1) +
                     " {\n\tFacing:\t\t" + enemies.get(i).getFacingDirection() +
@@ -180,7 +181,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                     "\n\tLinks:\t\t'"   + enemies.get(i).detect("left") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("left")) +
                     "\n\tHinter mir:\t'" + enemies.get(i).detect("behind") + "' = passierbar?\t" + enemies.get(i).isPassable(enemies.get(i).detect("behind")) +
                     "\n}"
-            );
+            );*/
             enemies.get(i).move();
         }
         move(lastKey);

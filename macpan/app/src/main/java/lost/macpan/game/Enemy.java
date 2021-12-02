@@ -1,12 +1,5 @@
 package lost.macpan.game;
 
-/*
-* NOTIZ AN MICH SELBST
-* 'h', '\0', '\r', 'x', 'g'     = unpassable for enemy
-* '.', 'p', '*', 'a - e', 'k'   = passable for enemy
-*
-*/
-
 /**
  * Class that manages the enemy movement logic
  * @author Simon Bonnie
@@ -31,7 +24,7 @@ public class Enemy {
         posY = yCoordinate;
         this.game = pGame;
         facing = (int)(Math.random()*3);
-        above = '.'; //game.map[xCoordinate][yCoordinate];
+        above = '.';
     }
 
     /* GETTER & SETTER */
@@ -142,7 +135,9 @@ public class Enemy {
 
         // Actual enemy movement
         if(isPassable(detect("inFront"))) {
-            game.map[posX][posY] = above;   // restore the tile the enemy was above
+            if(above != 'p')
+                game.map[posX][posY] = above;   // restore the tile the enemy was above
+            else game.map[posX][posY] = '.';
             switch (getFacingDirection()) {
                 case "north" -> {
                     above = game.map[posX][posY + 1];
@@ -187,7 +182,6 @@ public class Enemy {
                 // continue straight
             } default -> new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
         }
-        /*System.out.println("Richtung nach turn: " + facing);*/
     }
 
     /**
@@ -196,6 +190,11 @@ public class Enemy {
      * @return true or false
      */
     public boolean isPassable(char pTile) {
+        /*
+         * NOTE:
+         * 'h', '\0', '\r', 'x', 'g'     = unpassable for enemy
+         * '.', 'p', '*', 'a - e', 'k'   = passable for enemy
+         */
         return (pTile != 'h' && pTile != 'x' && pTile != '\0' && pTile != '\r' && pTile != 'g');
     }
 }
