@@ -189,7 +189,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         //SpeedBoost
         if(flags[2] && TimerSpeed == 0){
-            TimerSpeed = (int)(SpeedCooldown * tickrate);
+            TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
         }
         if(flags[2] && TimerSpeed == 1){
             flags[2] = false;
@@ -200,7 +200,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         //Death Touch
         if(flags[4] && TimerDeathTouch == 0){
-            TimerDeathTouch = (int)(DeathTouchCooldown * tickrate);
+            TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
         }
         if(flags[4] && TimerDeathTouch == 1){
             flags[4] = false;
@@ -211,7 +211,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         //CoinBoost
         if(flags[5] && TimerCoinBoost == 0){
-            TimerCoinBoost = (int)(CoinBoostCooldown * tickrate);
+            TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
         }
         if(flags[5] && TimerCoinBoost == 1){
             flags[5] = false;
@@ -222,7 +222,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
 
         //Freeze
         if(flags[7] && TimerFreeze == 0){
-            TimerFreeze = (int)(FreezeCooldown * tickrate);
+            TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
         }
         if(flags[7] && TimerFreeze == 1){
             flags[7] = false;
