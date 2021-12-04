@@ -54,9 +54,9 @@ public class ExitSprite extends Sprite{
      * @param x x-coordinate measured in tiles
      * @param y y-coordinate measured in tiles
      */
-    public void draw(Graphics2D g, int x, int y) {
+    public void draw(Graphics2D g, int x, int y, boolean[] pFlags) {
         super.draw(g, x, y, game.wall);                             //underlays wall sprite
-        super.draw(g, x, y, exitSpriteSelect(game.flags[6]));     //draws exit sprite
+        super.draw(g, x, y, exitSpriteSelect(pFlags[6]));     //draws exit sprite
     }
 
     /**

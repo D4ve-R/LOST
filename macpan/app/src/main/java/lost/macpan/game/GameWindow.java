@@ -9,8 +9,7 @@ import lost.macpan.game.sprites.Sprite;
 import lost.macpan.panel.*;
 import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,8 +17,8 @@ import java.awt.Graphics2D;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -29,34 +28,33 @@ import java.text.DecimalFormat;
  * @author Leon Wigro
  * @version 0.1.1
  */
-public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener, ActionListener {
+public class GameWindow extends JPanel implements ResourceHandler {
     //attributes
-    private  int[] playerPos;
     char lastKey;
+
+    private Game game;
+
+    public char[][] currentMap;
+    public boolean currentFlags[];
+    public int currentScore;
+
+    protected int maxColumns = 32;                  //maximum amount of tiles that can be drawn horizontally
+    protected int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+
 
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     public int tileSize = originalTileSize * scale; //tile size and effective sprite size
-    protected int maxColumns = 32;                  //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
-    private int framerate = 60;                     //rate of draw loop repetitions
-    private int tickrate = 2;                      //rate of which the logic is called
-    public char[][] map;                            //char-array from which a frame will be drawn
-    public int score;                               //for keeping track of the score
+
+
+
     private int hudHeight = 21;                     //determines the height of the HUD
-    private Thread thread;
-    private boolean gameRunning = false;
     public JFrame parentFrame;
-    private boolean threadRunning;
     public Container before;
 
-    //Cooldown for Boosts in seconds
-    private final double SpeedCooldown = 5;
-    private final double DeathTouchCooldown = 5;
-    private final double CoinBoostCooldown = 5;
-    private final double FreezeCooldown = 5;
 
     public BufferedImage path;
     public BufferedImage wall;
@@ -66,20 +64,47 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     ExitSprite exitSprite = new ExitSprite(this);           //handles drawing the exit sprite
     CoinSprite coinSprite = new CoinSprite(this);           //handles drawing coin sprites
     Sprite sprite = new Sprite(this);                       //handles drawing miscellaneous sprites
-    HUD hud = new HUD(this);                                //handles drawing the in-game HUD
+    HUD hud = new HUD();                                //handles drawing the in-game HUD
 
-    /**
-     * Flag array is built as follows: <br>
-     * [0] = player____[true]>alive____[false]>dead <br>
-     * [1] = armor (extra life)____[true]>collected____[false]>not collected <br>
-     * [2] = speed boost____[true]>active____[false]>inactive <br>
-     * [3] = key____[true]>collected____[false]>not collected <br>
-     * [4] = pan (death touch)____[true]>active____[false]>inactive <br>
-     * [5] = coin booster____[true]>active____[false]>inactive <br>
-     * [6] = exit unlock____[true]>locked____[false]>unlocked <br>
-     * [7] = enemy freeze____[true]>active____[false]>inactive   <br>
-     */
-    public boolean flags[];
+
+
+    public GameWindow(JFrame frame, Container beforeMenu){
+        fetchSprites();             //assigns sprites
+        game = new Game(this);
+        parentFrame = frame;
+        before = beforeMenu;
+
+        setKeyBindings();
+
+        setPreferredSize(new Dimension(width, height));
+        setBackground(Color.BLACK);
+        setDoubleBuffered(true);
+
+        game.startThread();
+    }
+
+
+
+    public int getMaxColumns() {
+        return maxColumns;
+    }
+
+    public int getMaxRows() {
+        return maxRows;
+    }
+
+    public void showDeathWindow(){
+        LooserMenu looserMenu = new LooserMenu(parentFrame, before);
+        parentFrame.setContentPane(looserMenu);
+        parentFrame.revalidate();
+        //Direkt mit Todes Bildschirm
+    }
+
+    public void showWinnerMenu(){
+        WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before);
+        parentFrame.setContentPane(winnerMenu);
+        parentFrame.revalidate();
+    }
 
     /**
      * method for fetching sprites from  the "images" folder and assigning them to the corresponding BufferedImage sprite
@@ -93,157 +118,16 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         }
     }
 
-
-    public GameWindow(JFrame frame, Container beforeMenu){
-        parentFrame = frame;
-        before = beforeMenu;
-        setPreferredSize(new Dimension(width, height));
-        setBackground(Color.BLACK);
-        setDoubleBuffered(true);
-        flags = new boolean[8];
-        map = importMapArray("test.txt"); //import the map test
+    public void allesAktualisieren(){
+        currentFlags = game.getFlags();
+        currentMap = game.getMap();
+        currentScore = game.getScore();
     }
 
-    /**
-     * Thread starter
-     */
-    public void start(){
-        fetchSprites();             //assigns sprites
-        thread = new Thread(this);
-        thread.start();
-        gameRunning = true;
-        threadRunning = true;
-        this.addKeyListener(this);
-        this.setFocusable(true);
-        this.grabFocus();
-
-        getPlayerPos();
-
+    public void spielFortsetzen(){
+        game.spielFortsetzen();
     }
 
-
-
-    /**
-     * draw loop
-     */
-    @Override
-    public void run() {
-        double frametime = 1000 / (double)framerate;              //determines the time span any frame should be displayed
-        double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
-        long timeOld = System.currentTimeMillis();
-        long contframeCounter = 0;
-        int frameCounter = 0;
-        int tickCounter = 0;
-
-        while(threadRunning) {
-            System.out.print("");
-            while (gameRunning) {                                  //start of the draw loop
-                try {
-                    double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-                    if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                        remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                    }
-                    thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                    nextDrawTime += frametime;              //determines when the next frame should finish
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if(contframeCounter % (framerate/tickrate) == 0){
-                    gameLogic();                        //Game Logic
-                    tickCounter++;
-                }
-
-                repaint();                   //draws the frame
-
-                if (contframeCounter % framerate == 0 ) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
-                    double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / frameCounter);
-                    double AverageTimeForOneTick = ((double)(System.currentTimeMillis() - timeOld) / tickCounter);
-                    double TPS = 1000 / AverageTimeForOneTick;
-                    double FPS = 1000 / AverageTimeForOneFrame;
-                    System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
-                    System.out.println("TPS: " + new DecimalFormat("#0.00").format(TPS));
-                    frameCounter = 0;
-                    tickCounter = 0;
-                    timeOld = System.currentTimeMillis();
-                }
-                contframeCounter++;
-                frameCounter++;
-            }
-        }
-        System.out.println("Loop beendet");
-    }
-
-    private int TimerSpeed = 0;
-    private int TimerDeathTouch = 0;
-    private int TimerCoinBoost = 0;
-    private int TimerFreeze = 0;
-
-    /**
-     * method for the Logic of the game
-     * @author Sebastian
-     *
-     *
-     */
-    public void gameLogic(){
-
-        //SpeedBoost
-        if(flags[2] && TimerSpeed == 0){
-            TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
-        }
-        if(flags[2] && TimerSpeed == 1){
-            flags[2] = false;
-        }
-        if(TimerSpeed > 0){
-            TimerSpeed = TimerSpeed -1;
-        }
-
-        //Death Touch
-        if(flags[4] && TimerDeathTouch == 0){
-            TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
-        }
-        if(flags[4] && TimerDeathTouch == 1){
-            flags[4] = false;
-        }
-        if(TimerDeathTouch > 0){
-            TimerDeathTouch = TimerDeathTouch -1;
-        }
-
-        //CoinBoost
-        if(flags[5] && TimerCoinBoost == 0){
-            TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
-        }
-        if(flags[5] && TimerCoinBoost == 1){
-            flags[5] = false;
-        }
-        if(TimerCoinBoost > 0){
-            TimerCoinBoost = TimerCoinBoost -1;
-        }
-
-        //Freeze
-        if(flags[7] && TimerFreeze == 0){
-            TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
-        }
-        if(flags[7] && TimerFreeze == 1){
-            flags[7] = false;
-        }
-        if(TimerFreeze > 0){
-            TimerFreeze = TimerFreeze -1;
-        }
-
-        System.out.println("Gameloop");
-        /*
-        System.out.println("TimerSpeed: " +TimerSpeed);
-        System.out.println("TimerDeathTouch: " + TimerDeathTouch);
-        System.out.println("TimerCoinBoost: " +TimerCoinBoost);
-        System.out.println("TimerFreeze: " +TimerFreeze);
-
-
-         */
-
-        move(lastKey);
-        lastKey = 'o';
-    }
 
     /**
      * method for drawing a frame <br>
@@ -251,180 +135,57 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
      * @param g not to be edited
      */
     public void paintComponent(Graphics g){
+        allesAktualisieren();
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         for (int i = 0; i < maxColumns; i++){       //parses the x-coordinate of "map"
             for (int j = 0; j < maxRows; j++){      //parses the y-coordinate of "map"
-                char c = map[i][j];                 //fetches currently examined tile identifier
+                char c = currentMap[i][j];                 //fetches currently examined tile identifier
                 if (c == 'p')
                     playerSprite.draw(g2, i, j);    //handles player sprite
                 else if (c == 'g')
                     enemySprite.draw(g2, i, j);     //handles enemy sprite
                 else if (c == 'x')
-                    exitSprite.draw(g2, i, j);      //handles exit sprite
+                    exitSprite.draw(g2, i, j, currentFlags);      //handles exit sprite
                 else if (c == '*')
-                    coinSprite.draw(g2, i, j);      //handles coin sprite
+                    coinSprite.draw(g2, i, j, currentFlags);      //handles coin sprite
                 else
                     sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
-        hud.draw(g2, hudHeight);
+        hud.draw(g2, hudHeight, currentScore, tileSize, currentFlags, maxColumns);
         g2.dispose();
     }
 
-    /**
-     * method for importing a map as a char array
-     * @author Sebastian
-     *
-     * @param pFileName name of the map to load (has to be in the levels folder)
-     * @return charArray of the map at the filename
-     */
-    private char[][] importMapArray(String pFileName){
+    private void setKeyBindings() {
+        ActionMap actionMap = getActionMap();
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = getInputMap(condition);
 
-        char[][] map = new char[maxColumns][maxRows];
-        String mapString = "";
+        String vkLeft = "VK_LEFT";
+        String vkRight = "VK_RIGHT";
+        String vkUP = "VK_UP";
 
-        try {
-            InputStream inputStream = getFileResourcesAsStream("levels/"+pFileName);
-            mapString = convertStreamToString(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkLeft);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkRight);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkUP);
 
-        String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
+        actionMap.put(vkLeft, new KeyAction(vkLeft));
+        actionMap.put(vkRight, new KeyAction(vkRight));
+        actionMap.put(vkUP, new KeyAction(vkUP));
 
-        for(int i = 0; i < Math.min(rows.length,maxRows);i++ ) {           //For every row
-            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) {  //for every char in the row
-                map[o][i] = rows[i].charAt(o);            //insert char into the map array
-            }
-        }
-        return map;
     }
 
-    public void getPlayerPos(){
-        playerPos = new int [2];
+    private class KeyAction extends AbstractAction {
+        public KeyAction(String actionCommand) {
+            putValue(ACTION_COMMAND_KEY, actionCommand);
+        }
 
-        for (int i = 0; i < maxColumns; i++){
-            for (int j = 0; j < maxRows; j++) {
-                if(map[i][j] == 'p'){
-                    playerPos[0] = i;
-                    playerPos[1] = j;
-                    System.out.println(i + "und" + j);
-                    return;
-                }
-            }
+        @Override
+        public void actionPerformed(ActionEvent actionEvt) {
+            game.keyPressed(actionEvt.getActionCommand());
         }
     }
 
-    public void move(char key){ //momentan mit globaler variable
-        if(key == 'w') {
-            moveToNew(0,-1);
-        } else if(key == 's'){
-            moveToNew(0,1);
-        } else if(key == 'a'){
-            moveToNew(-1,0);
-        } else if(key == 'd'){
-            moveToNew(1,0);
-        }
 
-    }
-
-    public void moveToNew(int x, int y) {
-        char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
-        if(onNewPos == 'h') { // Momentan
-            System.out.println("Wand im weg");
-        }
-        else{
-            if(onNewPos == '*'){
-                if(flags[5] == true){
-                    score += 20;
-                }else{
-                    score +=10;
-                }
-
-            }
-            else if(onNewPos == 'g'){
-                if(flags[1]){
-                    flags[1] = false;
-                }
-                else {
-                    flags[0] = false;
-                    gameRunning = false;
-
-                    LooserMenu looserMenu = new LooserMenu(parentFrame, before);
-                    parentFrame.setContentPane(looserMenu);
-                    parentFrame.revalidate();
-                    //Direkt mit Todes Bildschirm
-                }
-            }
-            else if(onNewPos == 'k'){
-                flags[3] = true;
-                flags[6] = true;
-            }else if(onNewPos == 'x') {
-                if(!flags[3] == true){
-                    return;
-                }else{
-                    gameRunning = false;
-
-                    WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before);
-                    parentFrame.setContentPane(winnerMenu);
-                    parentFrame.revalidate();
-                    //Bildschirm (Todes oder Erfolgs)
-                }
-            }
-            else if(onNewPos == 'a') {//Geschwindigkeitsbuff
-                flags[2] = true;
-            } else if(onNewPos == 'b') {//Gegner einfrieren
-                flags[7] = true;
-            } else if(onNewPos == 'c'){//Münzboost
-                flags[5] = true;
-            } else if(onNewPos == 'd'){//Zusatzleben
-                flags[1] = true;
-            }else if(onNewPos == 'e'){//Todesberührung
-                flags[4] = true;
-            }
-            geh(x,y);
-        }
-    }
-
-    public void geh(int x, int y){
-        map[playerPos[0]][playerPos[1]] = '.';
-        playerPos[0] += x;
-        playerPos[1] += y;
-        map[playerPos[0]][playerPos[1]] = 'p';
-    }
-
-    public void spielFortsetzen(){
-        gameRunning = true;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        //System.out.println("KeyTyped");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode()== KeyEvent.VK_ESCAPE)
-        {
-            System.out.println("ESC");
-            lastKey = 'o';
-            gameRunning = false;
-            PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
-            parentFrame.setContentPane(pauseMenu);
-            parentFrame.revalidate();
-
-        }
-        lastKey = e.getKeyChar();
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-    @Override
-    public void actionPerformed(ActionEvent e){
-
-    }
 }

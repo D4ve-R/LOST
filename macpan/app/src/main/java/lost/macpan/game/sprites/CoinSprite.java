@@ -41,9 +41,9 @@ public class CoinSprite extends Sprite{
      * @param x x-coordinate measured in tiles
      * @param y y-coordinate measured in tiles
      */
-    public void draw(Graphics2D g, int x, int y) {
+    public void draw(Graphics2D g, int x, int y, boolean[] pFlags) {
         super.draw(g, x, y, game.path);                     //underlays path sprite
-        super.draw(g, x, y, coinSpriteSelect(game.flags[5]));  //draws coin sprite
+        super.draw(g, x, y, coinSpriteSelect(pFlags[5]));  //draws coin sprite
     }
 
     /**
