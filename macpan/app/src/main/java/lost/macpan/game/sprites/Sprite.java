@@ -1,6 +1,5 @@
 package lost.macpan.game.sprites;
 
-import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
@@ -15,17 +14,19 @@ import java.io.IOException;
  */
 public class Sprite implements ResourceHandler {
     //attributes
-    GameWindow game; //used to access the sprites fetched within the GameWindow
+    private int tileSize;
     private BufferedImage boostItem;
     private BufferedImage freeze;
     private BufferedImage key;
     private BufferedImage pan;
     private BufferedImage shield;
     private BufferedImage speed;
+    private BufferedImage wall;
+    private BufferedImage path;
 
     //constructor
-    public Sprite(GameWindow game){
-        this.game = game;
+    public Sprite(int pTileSize){
+        tileSize = pTileSize;
         fetchSprites();
     }
 
@@ -40,6 +41,8 @@ public class Sprite implements ResourceHandler {
             pan = ImageIO.read(getFileResourcesAsStream("images/Pan.png"));
             shield = ImageIO.read(getFileResourcesAsStream("images/Shield.png"));
             speed = ImageIO.read(getFileResourcesAsStream("images/Speed.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
+            wall = ImageIO.read(getFileResourcesAsStream("images/Wall.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,33 +57,33 @@ public class Sprite implements ResourceHandler {
      */
     public void draw(Graphics2D g, int x, int y, char c){
         if (c == 'h' || c == '\0' || c == '\r')
-            g.drawImage(game.wall, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //draws wall sprite
+            g.drawImage(wall, tileSize * x, tileSize * y, tileSize, tileSize, null);    //draws wall sprite
         else if (c == 'k') {
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
-            g.drawImage(key, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);     //draws key sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
+            g.drawImage(key, tileSize * x, tileSize * y, tileSize, tileSize, null);     //draws key sprite
         }
         else if (c == 'a'){
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
-            g.drawImage(speed, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);   //draws speed boost sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
+            g.drawImage(speed, tileSize * x, tileSize * y, tileSize, tileSize, null);   //draws speed boost sprite
         }
         else if (c == 'b') {
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
-            g.drawImage(freeze, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);  //draws freeze sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
+            g.drawImage(freeze, tileSize * x, tileSize * y, tileSize, tileSize, null);  //draws freeze sprite
         }
         else if (c == 'c') {
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
-            g.drawImage(boostItem, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);//draws coin boost sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
+            g.drawImage(boostItem, tileSize * x, tileSize * y, tileSize, tileSize, null);//draws coin boost sprite
         }
         else if (c == 'd') {
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
-            g.drawImage(shield, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);  //draws shield sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
+            g.drawImage(shield, tileSize * x, tileSize * y, tileSize, tileSize, null);  //draws shield sprite
         }
         else if (c == 'e') {
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //underlays path sprite
-            g.drawImage(pan, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);     //draws pan sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
+            g.drawImage(pan, tileSize * x, tileSize * y, tileSize, tileSize, null);     //draws pan sprite
         }
         else if (c == '.')
-            g.drawImage(game.path, game.tileSize * x, game.tileSize * y, game.tileSize, game.tileSize, null);    //draws path sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //draws path sprite
     }
 
     /**
@@ -91,6 +94,6 @@ public class Sprite implements ResourceHandler {
      * @param spriteToUse for sprite to be drawn
      */
     public void draw(Graphics2D g, int x, int y, BufferedImage spriteToUse){
-        g.drawImage(spriteToUse, x * game.tileSize, y * game.tileSize, game.tileSize, game.tileSize, null);
+        g.drawImage(spriteToUse, x * tileSize, y * tileSize, tileSize, tileSize, null);
     }
 }

@@ -1,11 +1,9 @@
 package lost.macpan.game;
 
 
-import lost.macpan.panel.PauseMenu;
 import lost.macpan.utils.ResourceHandler;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
@@ -22,14 +20,14 @@ public class Game implements Runnable, ResourceHandler {
     private int tickrate = 2;                   //rate of which the logic is called
 
     private Thread thread;
-    private boolean gameRunning = false;
+    private boolean gamePaused = false;
     private boolean threadRunning;
 
-    public char[][] map;                            //char-array from which a frame will be drawn
+    private char[][] map;                            //char-array from which a frame will be drawn
 
-    public int score;                               //for keeping track of the score
+    private int score;                               //for keeping track of the score
 
-    public char lastKey;
+    private char lastKey;
     //Cooldown for Boosts in seconds
     private final double SpeedCooldown = 5;
     private final double DeathTouchCooldown = 5;
@@ -54,8 +52,6 @@ public class Game implements Runnable, ResourceHandler {
         gameWindow = pGameWindow;
         maxRows = pGameWindow.getMaxRows();
         maxColumns = pGameWindow.getMaxColumns();
-
-
     }
 
     public char[][] getMap() {
@@ -76,17 +72,17 @@ public class Game implements Runnable, ResourceHandler {
     public void startThread(){
         flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
-
+        threadRunning = true;
         thread = new Thread(this);
         thread.start();
-        gameRunning = true;
-        threadRunning = true;
-
 
         getPlayerPos();
 
     }
 
+    public void stopThread() {
+        threadRunning = false;
+    }
 
     /**
      * Game Loop
@@ -101,29 +97,31 @@ public class Game implements Runnable, ResourceHandler {
         int tickCounter = 0;
 
         while(threadRunning) {
-            System.out.print("");
-            while (gameRunning) {                                  //start of the draw loop
-                try {
-                    double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-                    if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                        remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                    }
-                    thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                    nextDrawTime += frametime;              //determines when the next frame should finish
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            try {
+
+                double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
+                if (remainingTime < 0) {                  //determines how long the thread should sleep for
+                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
                 }
 
-                if(contframeCounter % (framerate/tickrate) == 0){
+                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
+                nextDrawTime += frametime;              //determines when the next frame should finish
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(!gamePaused) {
+
+                if (contframeCounter % (framerate / tickrate) == 0) {
                     gameLogic();                        //Game Logic
                     tickCounter++;
                 }
 
                 gameWindow.repaint();                   //draws the frame
 
-                if (contframeCounter % framerate == 0 ) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
-                    double AverageTimeForOneFrame = ((double)(System.currentTimeMillis() - timeOld) / frameCounter);
-                    double AverageTimeForOneTick = ((double)(System.currentTimeMillis() - timeOld) / tickCounter);
+                if (contframeCounter % framerate == 0) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
+                    double AverageTimeForOneFrame = ((double) (System.currentTimeMillis() - timeOld) / frameCounter);
+                    double AverageTimeForOneTick = ((double) (System.currentTimeMillis() - timeOld) / tickCounter);
                     double TPS = 1000 / AverageTimeForOneTick;
                     double FPS = 1000 / AverageTimeForOneFrame;
                     System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
@@ -135,6 +133,10 @@ public class Game implements Runnable, ResourceHandler {
                 contframeCounter++;
                 frameCounter++;
             }
+            else {
+                timeOld = System.currentTimeMillis();
+            }
+
         }
         System.out.println("Loop beendet");
     }
@@ -209,24 +211,34 @@ public class Game implements Runnable, ResourceHandler {
          */
 
         move(lastKey);
+        lastKey = 'o';
     }
 
     public void keyPressed(String pKey) {
 
-        if(pKey == "VK_ESCAPE")
-        {
-            System.out.println("ESC");
-            lastKey = 'o';
-            /*
-            PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
-            parentFrame.setContentPane(pauseMenu);
-            parentFrame.revalidate();
+        switch (pKey){
+            case "VK_ESCAPE":
+                System.out.println("Pause");
 
-             */
+                gamePaused = true;
 
+                gameWindow.showPauseMenu();
+
+                break;
+            case "VK_W":
+                lastKey = 'w';
+                System.out.println("WWW");
+                break;
+            case "VK_A":
+                lastKey = 'a';
+                break;
+            case "VK_S":
+                lastKey = 's';
+                break;
+            case "VK_D":
+                lastKey = 'd';
+                break;
         }
-        System.out.println(pKey);
-        //lastKey = e.getKeyChar();
 
     }
 
@@ -263,7 +275,7 @@ public class Game implements Runnable, ResourceHandler {
                 }
                 else {
                     flags[0] = false;
-                    gameRunning = false;
+                    stopThread();
                     gameWindow.showDeathWindow();
                 }
             }
@@ -274,7 +286,7 @@ public class Game implements Runnable, ResourceHandler {
                 if(!flags[3] == true){
                     return;
                 }else{
-                    gameRunning = false;
+                    stopThread();
                     gameWindow.showWinnerMenu();
                     //Bildschirm (Todes oder Erfolgs)
                 }
@@ -295,14 +307,12 @@ public class Game implements Runnable, ResourceHandler {
     }
 
 
-
     public void geh(int x, int y){
         map[playerPos[0]][playerPos[1]] = '.';
         playerPos[0] += x;
         playerPos[1] += y;
         map[playerPos[0]][playerPos[1]] = 'p';
     }
-
 
 
     public void getPlayerPos(){
@@ -320,11 +330,8 @@ public class Game implements Runnable, ResourceHandler {
         }
     }
 
-
-
-
     public void spielFortsetzen(){
-        gameRunning = true;
+        gamePaused = false;
     }
 
 
