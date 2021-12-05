@@ -21,7 +21,7 @@ public class Game implements Runnable, ResourceHandler {
     private GameWindow gameWindow;
 
     private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private final int tickrate = 2;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
@@ -163,7 +163,7 @@ public class Game implements Runnable, ResourceHandler {
             if(!gamePaused) {
 
                 if (contframeCounter % (framerate / tickrate) == 0) {
-                    gameLogic();                        //Game Logic
+                    gameLogic((int)contframeCounter / (framerate/tickrate));                        //Game Logic is called with a iterating number, starts with 0
                     tickCounter++;
                 }
 
@@ -205,8 +205,9 @@ public class Game implements Runnable, ResourceHandler {
      * method for the Logic of the game, gets called every tickrate times per second
      * @author Sebastian
      *
+     * @param pContLogicCounter should be called with a continuously rising number
      */
-    public void gameLogic(){
+    public void gameLogic(int pContLogicCounter){
 
         //SpeedBoost
         if(flags[2] && TimerSpeed == 0){
@@ -260,8 +261,22 @@ public class Game implements Runnable, ResourceHandler {
         System.out.println("TimerFreeze: " +TimerFreeze);
          */
 
-        move(lastKey);
-        lastKey = 'o';
+        /*
+        if(flags[7]){   //Not yet implemented
+            gegnerEinfrieren();
+        }
+         */
+
+        if(flags[2]){
+            move(lastKey);
+            lastKey = 'o';
+        }
+        else {
+            if(pContLogicCounter % 2 == 0){
+                move(lastKey);
+                lastKey = 'o';
+            }
+        }
     }
 
     /**
@@ -297,7 +312,8 @@ public class Game implements Runnable, ResourceHandler {
      *
      * @author Benedikt
      */
-    public void move(char key){ //momentan mit globaler variable
+    public void move(char key){
+
         if(key == 'w') {
             moveToNew(0,-1);
         } else if(key == 's'){
@@ -305,7 +321,7 @@ public class Game implements Runnable, ResourceHandler {
         } else if(key == 'a'){
             moveToNew(-1,0);
         } else if(key == 'd'){
-            moveToNew(1,0);
+            moveToNew(1 ,0);
         }
 
     }
@@ -329,13 +345,17 @@ public class Game implements Runnable, ResourceHandler {
 
             }
             else if(onNewPos == 'g'){
-                if(flags[1]){
-                    flags[1] = false;
+                if(!flags[4]) {     //if not death touch
+                    if (flags[1]) {
+                        flags[1] = false;
+                    } else {
+                        flags[0] = false;
+                        stopThread();
+                        gameWindow.showDeathWindow();
+                    }
                 }
-                else {
-                    flags[0] = false;
-                    stopThread();
-                    gameWindow.showDeathWindow();
+                else {      //if death touch
+                            //currently nothing happens
                 }
             }
             else if(onNewPos == 'k'){
