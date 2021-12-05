@@ -1,10 +1,6 @@
 package lost.macpan.game;
 
-import lost.macpan.game.sprites.CoinSprite;
-import lost.macpan.game.sprites.EnemySprite;
-import lost.macpan.game.sprites.ExitSprite;
-import lost.macpan.game.sprites.PlayerSprite;
-import lost.macpan.game.sprites.Sprite;
+import lost.macpan.game.sprites.*;
 import lost.macpan.panel.*;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -35,7 +31,7 @@ public class GameWindow extends JPanel {
     private boolean currentFlags[];
     private int currentScore;
 
-    private int maxColumns = 32;                  //maximum amount of tiles that can be drawn horizontally
+    private int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
     private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
 
 
@@ -58,16 +54,21 @@ public class GameWindow extends JPanel {
     ExitSprite exitSprite = new ExitSprite(tileSize);           //handles drawing the exit sprite
     CoinSprite coinSprite = new CoinSprite(tileSize);           //handles drawing coin sprites
     Sprite sprite = new Sprite(tileSize);                       //handles drawing miscellaneous sprites
-    HUD hud = new HUD();                                //handles drawing the in-game HUD
+    HUD hud = new HUD();                                        //handles drawing the in-game HUD
 
 
-
+    /**
+     * Constructor
+     *
+     * @param frame the parent Jframe
+     * @param beforeMenu the container of the previous menu
+     */
     public GameWindow(JFrame frame, Container beforeMenu){
         game = new Game(this);
         parentFrame = frame;
         before = beforeMenu;
 
-        setKeyBindings();
+        setKeyBindings();               //Set all Key bindings
 
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
@@ -77,52 +78,85 @@ public class GameWindow extends JPanel {
     }
 
 
-
+    /**
+     * returns the maxColumns
+     * @author Sebastian
+     * @return int maxColumns
+     */
     public int getMaxColumns() {
         return maxColumns;
     }
 
+    /**
+     * returns the maxRows
+     * @author Sebastian
+     * @return int maxRows
+     */
     public int getMaxRows() {
         return maxRows;
     }
 
+    /**
+     * shows the death window
+     * @author Sebastian
+     *
+     */
     public void showDeathWindow(){
         LooserMenu looserMenu = new LooserMenu(parentFrame, before);
         parentFrame.setContentPane(looserMenu);
         parentFrame.revalidate();
     }
 
+    /**
+     * shows the Winner window
+     * @author Sebastian
+     *
+     */
     public void showWinnerMenu(){
         WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before);
         parentFrame.setContentPane(winnerMenu);
         parentFrame.revalidate();
     }
 
+    /**
+     * shows the pause window
+     * @author Sebastian
+     *
+     */
     public void showPauseMenu() {
         PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
         parentFrame.setContentPane(pauseMenu);
         parentFrame.revalidate();
     }
 
-
+    /**
+     * gets the current score, map and flags from the game Object
+     * @author Sebastian
+     *
+     */
     public void allesAktualisieren(){
         currentFlags = game.getFlags();
         currentMap = game.getMap();
         currentScore = game.getScore();
     }
 
+    /**
+     * Calls the resume game method on the game Object
+     * @author Sebastian
+     *
+     */
     public void spielFortsetzen(){
         game.spielFortsetzen();
     }
 
 
     /**
-     * method for drawing a frame <br>
+     * method for drawing a frame
      * can currently only draw sprites, no integration for any overly yet
      * @param g not to be edited
      */
     public void paintComponent(Graphics g){
-        allesAktualisieren();
+        allesAktualisieren();                       //Updates all the infromation
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         for (int i = 0; i < maxColumns; i++){       //parses the x-coordinate of "map"
@@ -144,6 +178,11 @@ public class GameWindow extends JPanel {
         g2.dispose();
     }
 
+    /**
+     * sets all the key bindings
+     * @author Sebastian
+     *
+     */
     private void setKeyBindings() {
         ActionMap actionMap = getActionMap();
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
@@ -169,6 +208,11 @@ public class GameWindow extends JPanel {
 
     }
 
+    /**
+     * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
+     * @author Sebastian
+     *
+     */
     private class KeyAction extends AbstractAction {
         public KeyAction(String actionCommand) {
             putValue(ACTION_COMMAND_KEY, actionCommand);
@@ -176,7 +220,7 @@ public class GameWindow extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            game.keyPressed(actionEvt.getActionCommand());
+            game.newKeyAction(actionEvt.getActionCommand());
         }
     }
 

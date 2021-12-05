@@ -3,10 +3,14 @@ package lost.macpan.game;
 
 import lost.macpan.utils.ResourceHandler;
 
-
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+/**
+ * Main Game class, handels all the actions and logic
+ *
+ * @author Sebastian
+ */
 public class Game implements Runnable, ResourceHandler {
 
     private  int[] playerPos;
@@ -16,18 +20,19 @@ public class Game implements Runnable, ResourceHandler {
 
     private GameWindow gameWindow;
 
-    private int framerate = 60;                     //rate of draw loop repetitions
-    private int tickrate = 2;                   //rate of which the logic is called
+    private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
+    private final int tickrate = 2;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
     private boolean threadRunning;
 
-    private char[][] map;                            //char-array from which a frame will be drawn
+    private char[][] map;                            //char-array of the map
 
     private int score;                               //for keeping track of the score
 
     private char lastKey;
+
     //Cooldown for Boosts in seconds
     private final double SpeedCooldown = 5;
     private final double DeathTouchCooldown = 5;
@@ -48,26 +53,47 @@ public class Game implements Runnable, ResourceHandler {
      */
     public boolean flags[];
 
+    /**
+     * Constructor
+     * @author Sebastian
+     * @param pGameWindow the GameWindow
+     */
     public Game(GameWindow pGameWindow){
         gameWindow = pGameWindow;
         maxRows = pGameWindow.getMaxRows();
         maxColumns = pGameWindow.getMaxColumns();
     }
 
+    /**
+     * Return the map
+     * @author Sebastian
+     * @return a char[][] array of the map
+     */
     public char[][] getMap() {
         return map;
     }
 
+    /**
+     * Return the FlagsArray
+     * @author Sebastian
+     * @return a boolean flags array
+     */
     public boolean[] getFlags() {
         return flags;
     }
 
+    /**
+     * Return the Score
+     * @return int the score
+     * @author Sebastian
+     */
     public int getScore() {
         return score;
     }
 
     /**
-     * Thread starter
+     * Starts the new thread
+     * @author Sebastian
      */
     public void startThread(){
         flags = new boolean[8];
@@ -80,16 +106,40 @@ public class Game implements Runnable, ResourceHandler {
 
     }
 
+    /**
+     * stops the game/whole thread
+     * @author Sebastian
+     */
     public void stopThread() {
         threadRunning = false;
     }
 
     /**
+     * resumes the game
+     * @author Sebastian
+     */
+    public void spielFortsetzen(){
+        gamePaused = false;
+    }
+
+    /**
+     * pauses the game
+     * @author Sebastian
+     */
+    public void spielPausieren() {
+        gamePaused = true;
+        gameWindow.showPauseMenu();
+        //System.out.println("Spiel pausiert");
+    }
+
+    /**
      * Game Loop
+     * @author Leon
+     * @author Sebastian
      */
     @Override
     public void run() {
-        double frametime = 1000 / (double)framerate;              //determines the time span any frame should be displayed
+        double frametime = 1000 / (double)framerate;                       //determines the time span any frame should be displayed
         double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
         long timeOld = System.currentTimeMillis();
         long contframeCounter = 0;
@@ -138,20 +188,22 @@ public class Game implements Runnable, ResourceHandler {
             }
 
         }
-        System.out.println("Loop beendet");
+        //System.out.println("Loop beendet");
     }
 
 
-
+    /**
+     * Internal Timers for reseting the Flags
+     *
+     */
     private int TimerSpeed = 0;
     private int TimerDeathTouch = 0;
     private int TimerCoinBoost = 0;
     private int TimerFreeze = 0;
 
     /**
-     * method for the Logic of the game
+     * method for the Logic of the game, gets called every tickrate times per second
      * @author Sebastian
-     *
      *
      */
     public void gameLogic(){
@@ -200,34 +252,32 @@ public class Game implements Runnable, ResourceHandler {
             TimerFreeze = TimerFreeze -1;
         }
 
+        /*  For Debugging the Game Loop and Items
         System.out.println("Gameloop");
-        /*
         System.out.println("TimerSpeed: " +TimerSpeed);
         System.out.println("TimerDeathTouch: " + TimerDeathTouch);
         System.out.println("TimerCoinBoost: " +TimerCoinBoost);
         System.out.println("TimerFreeze: " +TimerFreeze);
-
-
          */
 
         move(lastKey);
         lastKey = 'o';
     }
 
-    public void keyPressed(String pKey) {
-
+    /**
+     * method for key Actions, gets called every time a mapped Key is pressed
+     * To add new Keys they first have to be added to the keymap in the setKeyBindings() function in GameWindow
+     * @author Sebastian
+     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
+     *
+     */
+    public void newKeyAction(String pKey) {
         switch (pKey){
             case "VK_ESCAPE":
-                System.out.println("Pause");
-
-                gamePaused = true;
-
-                gameWindow.showPauseMenu();
-
+                spielPausieren();
                 break;
             case "VK_W":
                 lastKey = 'w';
-                System.out.println("WWW");
                 break;
             case "VK_A":
                 lastKey = 'a';
@@ -242,6 +292,11 @@ public class Game implements Runnable, ResourceHandler {
 
     }
 
+
+    /**
+     *
+     * @author Benedikt
+     */
     public void move(char key){ //momentan mit globaler variable
         if(key == 'w') {
             moveToNew(0,-1);
@@ -255,6 +310,10 @@ public class Game implements Runnable, ResourceHandler {
 
     }
 
+    /**
+     *
+     * @author Benedikt
+     */
     public void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
         if(onNewPos == 'h') { // Momentan
@@ -306,7 +365,10 @@ public class Game implements Runnable, ResourceHandler {
         }
     }
 
-
+    /**
+     *
+     * @author Benedikt
+     */
     public void geh(int x, int y){
         map[playerPos[0]][playerPos[1]] = '.';
         playerPos[0] += x;
@@ -314,7 +376,10 @@ public class Game implements Runnable, ResourceHandler {
         map[playerPos[0]][playerPos[1]] = 'p';
     }
 
-
+    /**
+     *
+     * @author Benedikt
+     */
     public void getPlayerPos(){
         playerPos = new int [2];
 
@@ -329,11 +394,6 @@ public class Game implements Runnable, ResourceHandler {
             }
         }
     }
-
-    public void spielFortsetzen(){
-        gamePaused = false;
-    }
-
 
     /**
      * method for importing a map as a char array
