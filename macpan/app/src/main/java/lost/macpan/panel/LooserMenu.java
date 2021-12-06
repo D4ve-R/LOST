@@ -8,11 +8,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Timer;
-import java.awt.Image;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.Writer;
+
 
 /**
  * Die LooserMenu Klasse stellt ein Menü dar, wenn ein Spieler das Spiel verloren hat
@@ -28,12 +34,20 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
     private JLabel background;
     private Image backgroundImg;
     private Timer timer;
+    private JTextField nameInput;
+    private JLabel nameLabel;
+    private Image nameImage;
+    private Image scoreImage;
+    private JLabel scoreLabel;
+    private int score;
+    private JLabel scoreValue;
 
-    public LooserMenu(JFrame frame, Container beforeMenu) {
+    public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
         int delay = 5000;
         timer = new Timer(delay, this);
         parentFrame = frame;
         before = beforeMenu;
+        score = currentScore;
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Loose.png"));
         } catch (Exception e) {
@@ -50,19 +64,54 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         if (backgroundImg != null) {
             background = new JLabel(new ImageIcon(backgroundImg));
         }
-        //!Funktionalität Namen einzutragen und Score auszugeben fehlt noch
+        try {
+            nameImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/nameLabel.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (nameImage != null) {
+            nameLabel = new JLabel(new ImageIcon(nameImage));
+        }
+        try {
+            scoreImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/scoreLabel.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (scoreImage != null) {
+            scoreLabel = new JLabel(new ImageIcon(scoreImage));
+        }
+        nameInput = new JTextField();
+        scoreValue = new JLabel(""+score);
+        scoreValue.setFont(new Font(Font.MONOSPACED,Font.BOLD,28));
+        scoreValue.setForeground(Color.WHITE);
 
         setLayout(null);
+
         background.setBounds(0, 0, 950, 700);
         label.setBounds(-20, 10, 950, 200);
+        nameLabel.setBounds(290,250,101,26);
+        scoreLabel.setBounds(290,210,101,26);
+        nameInput.setBounds(400, 249,200,20);
+        scoreValue.setBounds(400,210,101,26);
         add(label);
+        add(scoreValue);
+        add(nameLabel);
+        add(scoreLabel);
         add(background);
+        add(nameInput);
         timer.start();
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        try {
+            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt",true);
+            writer.write(score+";"+nameInput.getText()+"\n");
+            writer.close();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
         timer.stop();
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
