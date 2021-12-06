@@ -18,10 +18,11 @@ public class PlayerSprite extends Sprite {
     private BufferedImage player2;
     private BufferedImage player3;
     private BufferedImage player4;
+    private BufferedImage path;
 
     //constructor
-    public PlayerSprite(GameWindow game){
-        super(game);
+    public PlayerSprite(int pTilesize){
+        super(pTilesize);
     }
 
     /**
@@ -34,6 +35,7 @@ public class PlayerSprite extends Sprite {
             player2 = ImageIO.read(getFileResourcesAsStream("images/Player-2.png.png"));
             player3 = ImageIO.read(getFileResourcesAsStream("images/Player-3.png.png"));
             player4 = ImageIO.read(getFileResourcesAsStream("images/Player-4.png.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +48,7 @@ public class PlayerSprite extends Sprite {
      * @param y y-coordinate measured in tiles
      */
     public void draw(Graphics2D g, int x, int y){
-        super.draw(g, x, y, game.path);                 //underlays path sprite
+        super.draw(g, x, y, path);                 //underlays path sprite
         super.draw(g, x, y, playerSpriteSelect());      //draws player sprite
     }
 

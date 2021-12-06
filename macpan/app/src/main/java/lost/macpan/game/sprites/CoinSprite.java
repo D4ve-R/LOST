@@ -16,10 +16,11 @@ public class CoinSprite extends Sprite{
     //attributes
     private BufferedImage boostedCoin;
     private BufferedImage normalCoin;
+    private BufferedImage path;
 
     //constructor
-    public CoinSprite(GameWindow game) {
-        super(game);
+    public CoinSprite(int pTileSize) {
+        super(pTileSize);
     }
 
     /**
@@ -30,6 +31,7 @@ public class CoinSprite extends Sprite{
         try {
             boostedCoin = ImageIO.read(getFileResourcesAsStream("images/Coin boost.png"));
             normalCoin = ImageIO.read(getFileResourcesAsStream("images/Coin normal.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,9 +43,9 @@ public class CoinSprite extends Sprite{
      * @param x x-coordinate measured in tiles
      * @param y y-coordinate measured in tiles
      */
-    public void draw(Graphics2D g, int x, int y) {
-        super.draw(g, x, y, game.path);                     //underlays path sprite
-        super.draw(g, x, y, coinSpriteSelect(game.flags[5]));  //draws coin sprite
+    public void draw(Graphics2D g, int x, int y, boolean[] pFlags) {
+        super.draw(g, x, y, path);                     //underlays path sprite
+        super.draw(g, x, y, coinSpriteSelect(pFlags[5]));  //draws coin sprite
     }
 
     /**

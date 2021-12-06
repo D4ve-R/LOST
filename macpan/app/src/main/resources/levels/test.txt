@@ -1,5 +1,5 @@
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-h********************g*******h
+h**********c*********g*******h
 h*****b**********************h
 h*hhhhhhhhhhhhhhhhxhh*hhhhhh*h
 h*hhhhhhhhhhhhhhhhhhh*hhhhhh*h
@@ -11,7 +11,7 @@ h*h*************************kh
 h*h*hhhhhhhhhhhhhhhhhhhh*hhh*h
 h*h********hhhhhhhhhhhhh*hhh*h
 h*hhhhhhhh*hhhhhhhhhhhhh*hhh*h
-h****************************h
+h****e*********d*************h
 h*hhhhhhhhhhhh*hhhhh*hhhhhhh*h
 h*hhhhhhhhhhhh*hhhhh*hhhhhhh*h
 h*hhhhhh*************hhhhhhh*h
