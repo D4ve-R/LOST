@@ -1,16 +1,16 @@
 package lost.macpan.panel;
 
+import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Die Klasse MainMenu stellt das Pausemenü des Spiels auf dem JPanel dar.
@@ -24,11 +24,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private final JButton saveBtn = new JButton("Spiel Speichern");
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
-    private final JButton backBtn = new JButton("Zurück zum Hauptmenü");
-    /*
-        parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
-     */
-    private JFrame parentFrame;
+    private final JButton backBtn = new JButton("Zum Hauptmenu");
+    private App parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
@@ -39,7 +36,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
      *
      * @param frame
      */
-    public PauseMenu(JFrame frame) {
+    public PauseMenu(App frame) {
         parentFrame = frame;
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Pause.png"));

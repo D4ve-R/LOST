@@ -30,10 +30,10 @@ public class PlayerSprite extends Sprite {
     @Override
     public void fetchSprites() {
         try {
-            player1 = ImageIO.read(getFileResourcesAsStream("images/Player-1.png.png"));
-            player2 = ImageIO.read(getFileResourcesAsStream("images/Player-2.png.png"));
-            player3 = ImageIO.read(getFileResourcesAsStream("images/Player-3.png.png"));
-            player4 = ImageIO.read(getFileResourcesAsStream("images/Player-4.png.png"));
+            player1 = ImageIO.read(getFileResourcesAsStream("images/player/Player-1.png.png"));
+            player2 = ImageIO.read(getFileResourcesAsStream("images/player/Player-2.png.png"));
+            player3 = ImageIO.read(getFileResourcesAsStream("images/player/Player-3.png.png"));
+            player4 = ImageIO.read(getFileResourcesAsStream("images/player/Player-4.png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -30,10 +30,10 @@ public class EnemySprite extends Sprite{
     @Override
     public void fetchSprites() {
         try {
-            enemy1 = ImageIO.read(getFileResourcesAsStream("images/enemy-1.png.png"));
-            enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy-2.png.png"));
-            enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy-3.png.png"));
-            enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy-4.png.png"));
+            enemy1 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-1.png.png"));
+            enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-2.png.png"));
+            enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-3.png.png"));
+            enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-4.png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

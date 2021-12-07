@@ -1,10 +1,15 @@
 package lost.macpan.panel;
 
+import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,17 +21,15 @@ import java.awt.event.ActionListener;
 public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton keyBtn = new JButton("Tastenbelegung");
     private final JButton descBtn = new JButton("Spielbeschreibung");
-    private final JButton backBtn = new JButton("Zurück");
-    private String[] choices = {"Fenster (borderless)", "Vollbild"};
-    private final JComboBox windowSelect = new JComboBox<String>(choices);
+    private final JButton backBtn = new JButton("Zuruck");
     private JLabel label;
     private Image img;
-    private JFrame parentFrame;
+    private App parentFrame;
     private Container before;
     private JLabel background;
     private Image backgroundImg;
 
-    public OptionsMenu(JFrame frame, Container beforeMenu) {
+    public OptionsMenu(App frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
         try {
@@ -48,20 +51,17 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        keyBtn.setBounds(395, 300, 160, 50);
-        descBtn.setBounds(395, 360, 160, 50);
-        windowSelect.setBounds(395, 420, 160, 50);
+        keyBtn.setBounds(315, 300, 310, 50);
+        descBtn.setBounds(315, 360, 310, 50);
         backBtn.setBounds(30, 550, 160, 50);
         add(backBtn);
         add(label);
         add(keyBtn);
         add(descBtn);
-        add(windowSelect);
         add(background);
         keyBtn.addActionListener(this);
         descBtn.addActionListener(this);
         backBtn.addActionListener(this);
-        windowSelect.addActionListener(this);
     }
 
     @Override
@@ -82,12 +82,6 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
             GameDescriptionMenu gameDescriptionMenu = new GameDescriptionMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(gameDescriptionMenu);
             parentFrame.revalidate();
-        } else if (e.getSource() == windowSelect) {
-            int selection = windowSelect.getSelectedIndex();
-            if (selection == 1){
-                parentFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }else
-                parentFrame.setExtendedState(JFrame.NORMAL);
         }
     }
 }
