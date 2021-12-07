@@ -25,17 +25,19 @@ public class App extends JFrame implements ActionListener {
     private static final int height = 700;
     private static final int serializeId = 123456789;
     private Timer timer;
-
+    public Sound music = new Sound();
+    public static final int beispiel = 0;
     /**
      * Constructor method for App Class
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 500; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
+        int delay = 5000; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
 
         timer = new Timer(delay, this);
         setTitle("MacPan");
         setMinimumSize(new Dimension(width, height));
+        getContentPane().setSize(width, height);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);        //sets fullscreen
         //setUndecorated(true);                           //removes window header
         setLocationRelativeTo(null);
@@ -44,7 +46,7 @@ public class App extends JFrame implements ActionListener {
         setResizable(false);
         pack();
         setVisible(true);
-
+        playMusic(0, false);
         timer.start();
     }
 
@@ -61,4 +63,13 @@ public class App extends JFrame implements ActionListener {
         timer.stop();
     }
 
+    public void playMusic(int track, boolean iterruptingOther) {
+        music.setFile(track, iterruptingOther);
+        music.play();
+        music.loop();
+    }
+
+    public Sound getMusic() {
+        return music;
+    }
 }

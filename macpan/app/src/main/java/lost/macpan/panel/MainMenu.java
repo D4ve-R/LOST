@@ -25,6 +25,8 @@ import java.awt.event.ActionListener;
  * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
  */
 public class MainMenu extends JPanel implements ActionListener, ResourceHandler {
+    private final JButton toggleMusic = new JButton("Toggle music");
+
     // Erstellen der einzelnen Buttons
     private final JButton playBtn = new JButton("Spiel Starten");
     private final JButton loadBtn = new JButton("Spiel Laden");
@@ -75,6 +77,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.setBounds(395, 420, 160, 50);
         optionsBtn.setBounds(395, 480, 160, 50);
         quitBtn.setBounds(395, 540, 160, 50);
+        toggleMusic.setBounds(395, 600, 160, 50);
 
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);
@@ -83,6 +86,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         add(highscoresBtn);
         add(optionsBtn);
         add(quitBtn);
+        add(toggleMusic);
         add(background);
         //Buttons werden dem Listener zugeordnet
         playBtn.addActionListener(this);
@@ -90,6 +94,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
+        toggleMusic.addActionListener(this);
     }
 
     @Override
@@ -116,6 +121,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
+        } else if (e.getSource() == toggleMusic) {
         }
     }
 }
