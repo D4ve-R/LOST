@@ -30,8 +30,6 @@ public class Enemy {
     /* GETTER & SETTER */
     public int getPosX() { return posX; }
     public int getPosY() { return posY; }
-    public int getFacing() { return facing; }
-
     /**
      * Method to get the facing direction of an enemy object in form of readable text
      * @return facing direction (either "north", "east", "south" or "west")

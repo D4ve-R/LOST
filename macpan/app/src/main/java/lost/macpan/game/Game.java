@@ -5,6 +5,8 @@ import lost.macpan.utils.ResourceHandler;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main Game class, handels all the actions and logic
@@ -13,7 +15,8 @@ import java.text.DecimalFormat;
  */
 public class Game implements Runnable, ResourceHandler {
 
-    private  int[] playerPos;
+    private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
+    private int[] initPlayerPos = new int[2]; // initPlayerPos[0] = initial x coordinate, initPlayerPos[1] = initial y coordinate
 
     private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
     private int maxRows;                    //maximum amount of tiles that can be drawn vertically
@@ -27,17 +30,46 @@ public class Game implements Runnable, ResourceHandler {
     private boolean gamePaused = false;
     private boolean threadRunning;
 
-    private char[][] map;                            //char-array of the map
+    private char[][] map;                            //char-array of the map (map[0 - maxColumns][0 - maxRows])
 
     private int score;                               //for keeping track of the score
 
     private char lastKey;
 
-    //Cooldown for Boosts in seconds
+    private List<Enemy> enemies = new ArrayList<Enemy>(); // An ArrayList containing the Enemy objects
+
+    /**
+     * Cooldown for Boosts in seconds
+     */
     private final double SpeedCooldown = 5;
     private final double DeathTouchCooldown = 5;
     private final double CoinBoostCooldown = 5;
     private final double FreezeCooldown = 5;
+
+    /**
+     * Internal Timers for reseting the Flags
+     */
+    private int TimerSpeed = 0;
+    private int TimerDeathTouch = 0;
+    private int TimerCoinBoost = 0;
+    private int TimerFreeze = 0;
+
+    /**
+     * Tiles
+     */
+    private final char pathTile         = '.'; // Tile that marks path
+    private final char wallTile         = 'h';
+    private final char coinTile         = '*';
+    private final char exitTile         = 'x';
+    private final char keyTile          = 'k';
+    private final char playerTile       = 'p';
+    private final char enemyTile        = 'g';
+    private final char speedEffectTile  = 'a';
+    private final char freezeEffectTile = 'b';
+    private final char coinBoostTile    = 'c';
+    private final char extraLifeTile    = 'd';
+    private final char deathTouchTile   = 'e';
+
 
 
     /**
@@ -51,7 +83,7 @@ public class Game implements Runnable, ResourceHandler {
      * [6] = exit unlock____[true]>locked____[false]>unlocked <br>
      * [7] = enemy freeze____[true]>active____[false]>inactive   <br>
      */
-    public boolean flags[];
+    public boolean[] flags;
 
     /**
      * Constructor
@@ -103,7 +135,9 @@ public class Game implements Runnable, ResourceHandler {
         thread.start();
 
         getPlayerPos();
-
+        initPlayerPos[0] = playerPos[0];
+        initPlayerPos[1] = playerPos[1];
+        initiateEnemies();
     }
 
     /**
@@ -148,7 +182,6 @@ public class Game implements Runnable, ResourceHandler {
 
         while(threadRunning) {
             try {
-
                 double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
                 if (remainingTime < 0) {                  //determines how long the thread should sleep for
                     remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
@@ -163,11 +196,11 @@ public class Game implements Runnable, ResourceHandler {
             if(!gamePaused) {
 
                 if (contframeCounter % (framerate / tickrate) == 0) {
-                    gameLogic((int)contframeCounter / (framerate/tickrate));                        //Game Logic is called with a iterating number, starts with 0
+                    gameLogic((int)contframeCounter / (framerate/tickrate)); //Game Logic is called with a iterating number, starts with 0
                     tickCounter++;
                 }
 
-                gameWindow.repaint();                   //draws the frame
+                gameWindow.repaint(); //draws the frame
 
                 if (contframeCounter % framerate == 0) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
                     double AverageTimeForOneFrame = ((double) (System.currentTimeMillis() - timeOld) / frameCounter);
@@ -182,24 +215,13 @@ public class Game implements Runnable, ResourceHandler {
                 }
                 contframeCounter++;
                 frameCounter++;
-            }
-            else {
+            } else {
                 timeOld = System.currentTimeMillis();
             }
 
         }
         //System.out.println("Loop beendet");
     }
-
-
-    /**
-     * Internal Timers for reseting the Flags
-     *
-     */
-    private int TimerSpeed = 0;
-    private int TimerDeathTouch = 0;
-    private int TimerCoinBoost = 0;
-    private int TimerFreeze = 0;
 
     /**
      * method for the Logic of the game, gets called every tickrate times per second
@@ -210,48 +232,24 @@ public class Game implements Runnable, ResourceHandler {
     public void gameLogic(int pContLogicCounter){
 
         //SpeedBoost
-        if(flags[2] && TimerSpeed == 0){
-            TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
-        }
-        if(flags[2] && TimerSpeed == 1){
-            flags[2] = false;
-        }
-        if(TimerSpeed > 0){
-            TimerSpeed = TimerSpeed -1;
-        }
+        if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
+        if(flags[2] && TimerSpeed == 1) flags[2] = false;
+        if(TimerSpeed > 0) TimerSpeed--;
 
         //Death Touch
-        if(flags[4] && TimerDeathTouch == 0){
-            TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
-        }
-        if(flags[4] && TimerDeathTouch == 1){
-            flags[4] = false;
-        }
-        if(TimerDeathTouch > 0){
-            TimerDeathTouch = TimerDeathTouch -1;
-        }
+        if(flags[4] && TimerDeathTouch == 0) TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
+        if(flags[4] && TimerDeathTouch == 1) flags[4] = false;
+        if(TimerDeathTouch > 0) TimerDeathTouch--;
 
         //CoinBoost
-        if(flags[5] && TimerCoinBoost == 0){
-            TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
-        }
-        if(flags[5] && TimerCoinBoost == 1){
-            flags[5] = false;
-        }
-        if(TimerCoinBoost > 0){
-            TimerCoinBoost = TimerCoinBoost -1;
-        }
+        if(flags[5] && TimerCoinBoost == 0) TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
+        if(flags[5] && TimerCoinBoost == 1) flags[5] = false;
+        if(TimerCoinBoost > 0) TimerCoinBoost--;
 
         //Freeze
-        if(flags[7] && TimerFreeze == 0){
-            TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
-        }
-        if(flags[7] && TimerFreeze == 1){
-            flags[7] = false;
-        }
-        if(TimerFreeze > 0){
-            TimerFreeze = TimerFreeze -1;
-        }
+        if(flags[7] && TimerFreeze == 0) TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
+        if(flags[7] && TimerFreeze == 1) flags[7] = false;
+        if(TimerFreeze > 0) TimerFreeze--;
 
         /*  For Debugging the Game Loop and Items
         System.out.println("Gameloop");
@@ -261,21 +259,19 @@ public class Game implements Runnable, ResourceHandler {
         System.out.println("TimerFreeze: " +TimerFreeze);
          */
 
-        /*
-        if(flags[7]){   //Not yet implemented
-            gegnerEinfrieren();
-        }
-         */
-
         if(flags[2]){
             move(lastKey);
             lastKey = 'o';
-        }
-        else {
+        } else {
             if(pContLogicCounter % 2 == 0){
                 move(lastKey);
                 lastKey = 'o';
             }
+        }
+
+        for(Enemy enemy : enemies) { // TODO: Enemy movement flexible
+            if(!flags[7]) enemy.move(); // Move Enemy objects unless freeze effect is active
+            if(enemyDetection(enemy)) break; // Detect whether the player collides with the enemy
         }
     }
 
@@ -298,101 +294,76 @@ public class Game implements Runnable, ResourceHandler {
 
 
     /**
-     *
+     * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
      * @author Benedikt
      */
     public void move(char key){
-        if(key == 'w') {
-            moveToNew(0,-1);
-        } else if(key == 's'){
-            moveToNew(0,1);
-        } else if(key == 'a'){
-            moveToNew(-1,0);
-        } else if(key == 'd'){
-            moveToNew(1 ,0);
+        switch (key) {
+            case 'w' -> moveToNew(0,-1);
+            case 's' -> moveToNew(0,1);
+            case 'a' -> moveToNew(-1,0);
+            case 'd' -> moveToNew(1 ,0);
         }
     }
 
     /**
-     *
-     * @author Benedikt
+     * Trys to move the player to a new position relatively.
+     * Detects what will be at given position and acts accordingly.
+     * Finally calls the 'geh(int x, int y)' method to actually move the player.
+     * @author Benedikt // Abgeändert zu switch cases von Simon
      */
     public void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
-        if(onNewPos == 'h') { // Momentan
-            System.out.println("Wand im weg");
-        }
-        else{
-            if(onNewPos == '*'){
-                if(flags[5]){
-                    score += 20;
-                }else{
-                    score +=10;
-                }
-
-            }
-            else if(onNewPos == 'g'){
-                if(!flags[4]) {     //if not death touch
-                    if (flags[1]) {
-                        flags[1] = false;
-                    } else {
-                        flags[0] = false;
+        if(onNewPos != wallTile) {
+            geh(x, y);
+            switch (onNewPos) {
+                case coinTile -> {
+                    if(flags[5]) score += 20;
+                    else score +=10;
+                } case enemyTile -> {
+                    enemyDetection();
+                } case keyTile -> {
+                    flags[3] = true;
+                    flags[6] = true;
+                } case exitTile -> {
+                    if(!flags[3]) return; // TODO: Wofür?
+                    else {
                         stopThread();
-                        gameWindow.showDeathWindow();
+                        gameWindow.showWinnerMenu();
+                        //Bildschirm (Todes oder Erfolgs)
                     }
                 }
-                else {      //if death touch
-                            //currently nothing happens
-                }
+                case speedEffectTile    -> flags[2] = true; // Geschwindigkeitsbuff
+                case freezeEffectTile   -> flags[7] = true; // Gegner einfrieren
+                case coinBoostTile      -> flags[5] = true; // Münzboost
+                case extraLifeTile      -> flags[1] = true; // Zusatzleben
+                case deathTouchTile     -> flags[4] = true; // Todesberührung
             }
-            else if(onNewPos == 'k'){
-                flags[3] = true;
-                flags[6] = true;
-            }else if(onNewPos == 'x') {
-                if(!flags[3] == true){
-                    return;
-                }else{
-                    stopThread();
-                    gameWindow.showWinnerMenu();
-                    //Bildschirm (Todes oder Erfolgs)
-                }
-            }
-            else if(onNewPos == 'a') {//Geschwindigkeitsbuff
-                flags[2] = true;
-            } else if(onNewPos == 'b') {//Gegner einfrieren
-                flags[7] = true;
-            } else if(onNewPos == 'c'){//Münzboost
-                flags[5] = true;
-            } else if(onNewPos == 'd'){//Zusatzleben
-                flags[1] = true;
-            }else if(onNewPos == 'e'){//Todesberührung
-                flags[4] = true;
-            }
-            geh(x,y);
-        }
+        } else System.out.println("Wand im weg"); // TODO: remove debugging message
     }
 
     /**
-     *
+     * Moves the Player to a relative coordinate in the grid
+     * @param x coordinate on the X axes
+     * @param y coordinate on the Y axes
      * @author Benedikt
      */
     public void geh(int x, int y){
-        map[playerPos[0]][playerPos[1]] = '.';
+        map[playerPos[0]][playerPos[1]] = pathTile;
         playerPos[0] += x;
         playerPos[1] += y;
-        map[playerPos[0]][playerPos[1]] = 'p';
+        map[playerPos[0]][playerPos[1]] = playerTile;
     }
 
     /**
-     *
+     * Gets the Players coordinates in the grid and stores them in 'int[2] playerPos'
      * @author Benedikt
      */
     public void getPlayerPos(){
         playerPos = new int [2];
-
         for (int i = 0; i < maxColumns; i++){
             for (int j = 0; j < maxRows; j++) {
-                if(map[i][j] == 'p'){
+                if(map[i][j] == playerTile){
                     playerPos[0] = i;
                     playerPos[1] = j;
                     System.out.println(i + "und" + j);
@@ -403,6 +374,65 @@ public class Game implements Runnable, ResourceHandler {
     }
 
     /**
+     * Method to overwrite the enemies ArrayList with the enemies position given by the 'g's in the map grid
+     * @author Simon Bonnie
+     */
+    public void initiateEnemies() {
+        enemies.clear(); // Remove Enemy objects from last session
+        for(int i = 0; i < maxColumns; i++)
+            for (int j = 0; j < maxRows; j++)
+                if(this.getMap()[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
+    }
+
+    /**
+     * Method to detect if a player collides with an Enemy object and act accordingly
+     * @param enemy the Enemy object to be checked for collision
+     * @return whether a collision between enemy and player was detected or not
+     * @author Simon Bonnie
+     */
+    public boolean enemyDetection(Enemy enemy) {
+        if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
+            if(!flags[4]) {     // If player has not death touch effect
+                if (flags[1]) { // If player has got an extra life
+                    System.out.println("Well... You didnt die");
+                    System.out.println(initPlayerPos);
+                    System.out.println(playerPos);
+                    flags[1] = false; // Reset extra life
+                    map[playerPos[0]][playerPos[1]] = pathTile;
+                    playerPos[0] = initPlayerPos[0];
+                    playerPos[1] = initPlayerPos[1];
+                    map[initPlayerPos[0]][initPlayerPos[1]] = playerTile;
+                    System.out.println(playerPos);
+                } else {
+                    flags[0] = false; // Kill player
+                    stopThread();
+                    gameWindow.showDeathWindow();
+                }
+            } else {      // If player has death touch effect active
+                this.getMap()[enemy.getPosX()][enemy.getPosY()] = enemy.getAbove();
+                enemies.remove(enemy);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Extension to method 'enemyDetection(Enemy)'
+     * Instead of checking for one specific enemy, it looks through the whole list
+     * @return whether a collision was detected or not
+     * @author Simon Bonnie
+     */
+    public boolean enemyDetection() {
+        boolean rueckgabe = false;
+        for (Enemy enemy : enemies) {
+            rueckgabe = enemyDetection(enemy);
+            if(rueckgabe) break;
+        }
+        return rueckgabe;
+    }
+
+    /**
      * method for importing a map as a char array
      * @author Sebastian
      *
@@ -410,24 +440,18 @@ public class Game implements Runnable, ResourceHandler {
      * @return charArray of the map at the filename
      */
     private char[][] importMapArray(String pFileName){
-
         char[][] map = new char[maxColumns][maxRows];
         String mapString = "";
-
         try {
             InputStream inputStream = getFileResourcesAsStream("levels/"+pFileName);
             mapString = convertStreamToString(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
-
-        for(int i = 0; i < Math.min(rows.length,maxRows);i++ ) {           //For every row
-            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) {  //for every char in the row
-                map[o][i] = rows[i].charAt(o);            //insert char into the map array
-            }
-        }
+        for(int i = 0; i < Math.min(rows.length,maxRows);i++ )              //For every row
+            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) //for every char in the row
+                map[o][i] = rows[i].charAt(o);  //insert char into the map array
         return map;
     }
 }
