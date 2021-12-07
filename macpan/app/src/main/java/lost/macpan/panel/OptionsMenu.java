@@ -5,6 +5,7 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.App;
 import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
@@ -12,7 +13,6 @@ import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Container;
@@ -31,12 +31,12 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
     private final CustomButton backBtn = new CustomButton("Zur\u00fcck");
     private JLabel label;
     private Image img;
-    private JFrame parentFrame;
+    private App parentFrame;
     private Container before;
     private JLabel background;
     private Image backgroundImg;
 
-    public OptionsMenu(JFrame frame, Container beforeMenu) {
+    public OptionsMenu(App frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
         try {

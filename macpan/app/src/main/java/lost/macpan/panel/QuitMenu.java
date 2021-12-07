@@ -5,6 +5,7 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.App;
 import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
@@ -12,7 +13,6 @@ import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Container;
@@ -30,14 +30,14 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler,
     private final CustomButton yesBtn = new CustomButton("Ja");
     private final CustomButton noBtn = new CustomButton("Nein");
 
-    private JFrame parentFrame;
+    private App parentFrame;
     private JLabel topLabel, subLabel;
     private Image img_1, img_2;
     private JLabel background;
     private Image backgroundImg;
     private Container before;
 
-    public QuitMenu(JFrame frame, Container beforeMenu) {
+    public QuitMenu(App frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
         try {
