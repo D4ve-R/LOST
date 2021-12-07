@@ -97,9 +97,9 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         setDoubleBuffered(true);
         flags = new boolean[8];
         map = importMapArray("test.txt"); //import the map test
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                //gets screen size
-        windowScale = (double) parentFrame.getContentPane().getSize().height / height;              //sets scaling factor
-        windowOffset = (int) (screenSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
+        Dimension panelSize = parentFrame.getContentPane().getSize();                              //gets screen size
+        windowScale = (double) panelSize.height / height;                                          //sets scaling factor
+        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
     }
 
     /**
