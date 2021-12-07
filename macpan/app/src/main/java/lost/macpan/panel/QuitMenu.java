@@ -1,14 +1,15 @@
 package lost.macpan.panel;
 
+import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -16,7 +17,6 @@ import java.awt.event.WindowEvent;
 
 /**
  * Die Klasse QuitMenu erstellt das Bestätigungsfenster, wenn der Benutzer das Spiel beenden möchte
- *
  * @author Fatih
  */
 public class QuitMenu extends JPanel implements ActionListener, ResourceHandler {
@@ -24,14 +24,14 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     private final JButton yesBtn = new JButton("Ja");
     private final JButton noBtn = new JButton("Nein");
 
-    private JFrame parentFrame;
+    private App parentFrame;
     private JLabel topLabel, subLabel;
     private Image img_1, img_2;
     private JLabel background;
     private Image backgroundImg;
     private Container before;
 
-    public QuitMenu(JFrame frame, Container beforeMenu) {
+    public QuitMenu(App frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
         // Laden der Bilder, falls diese vorhanden sind

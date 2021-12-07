@@ -1,5 +1,6 @@
 package lost.macpan.game;
 
+import lost.macpan.App;
 import lost.macpan.game.sprites.CoinSprite;
 import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
@@ -27,7 +28,6 @@ import java.util.TimerTask;
 /**
  * Class for displaying gameplay
  * @author Leon Wigro
- * @version 0.1.1
  */
 public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener, ActionListener {
     //attributes
@@ -48,7 +48,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     private int hudHeight = 21;                     //determines the height of the HUD
     private Thread thread;
     private boolean gameRunning = false;
-    public JFrame parentFrame;
+    public App parentFrame;
     private boolean threadRunning;
 
     private double windowScale;     //scaling factor for fullscreen
@@ -90,7 +90,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
     }
 
 
-    public GameWindow(JFrame frame){
+    public GameWindow(App frame){
         parentFrame = frame;
         //parentFrame.setSize(new Dimension(width, height));
         setBackground(Color.BLACK);
@@ -301,6 +301,8 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }else{
                     gameRunning = false;
 
+                    parentFrame.stopMusic();
+                    parentFrame.playMusicLooped(1, false);
                     WinnerMenu winnerMenu = new WinnerMenu(parentFrame);
                     parentFrame.setContentPane(winnerMenu);
                     parentFrame.revalidate();
