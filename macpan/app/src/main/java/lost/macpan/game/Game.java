@@ -287,24 +287,13 @@ public class Game implements Runnable, ResourceHandler {
      *
      */
     public void newKeyAction(String pKey) {
-        switch (pKey){
-            case "VK_ESCAPE":
-                spielPausieren();
-                break;
-            case "VK_W":
-                lastKey = 'w';
-                break;
-            case "VK_A":
-                lastKey = 'a';
-                break;
-            case "VK_S":
-                lastKey = 's';
-                break;
-            case "VK_D":
-                lastKey = 'd';
-                break;
+        switch (pKey) {
+            case "VK_ESCAPE" -> spielPausieren();
+            case "VK_W" -> lastKey = 'w';
+            case "VK_A" -> lastKey = 'a';
+            case "VK_S" -> lastKey = 's';
+            case "VK_D" -> lastKey = 'd';
         }
-
     }
 
 
@@ -313,7 +302,6 @@ public class Game implements Runnable, ResourceHandler {
      * @author Benedikt
      */
     public void move(char key){
-
         if(key == 'w') {
             moveToNew(0,-1);
         } else if(key == 's'){
@@ -323,7 +311,6 @@ public class Game implements Runnable, ResourceHandler {
         } else if(key == 'd'){
             moveToNew(1 ,0);
         }
-
     }
 
     /**
@@ -337,7 +324,7 @@ public class Game implements Runnable, ResourceHandler {
         }
         else{
             if(onNewPos == '*'){
-                if(flags[5] == true){
+                if(flags[5]){
                     score += 20;
                 }else{
                     score +=10;

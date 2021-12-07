@@ -10,16 +10,16 @@ public class Enemy {
     private int posX = 0, posY = 0, facing = 0;
     // Stores the tile the enemy is above
     private char above = '.';
-    GameWindow game;
+    Game game;
 
     /* CONSTRUCTOR */
     /**
      * Constructor method for Enemy. Initiates an enemy object at a given location
      * @param xCoordinate the x coordinate of the enemy object
      * @param yCoordinate the y coordinate of the enemy object
-     * @param pGame the GameWindow allowing to manipulate the GameWindow.map
+     * @param pGame the GameWindow allowing to manipulate the GameWindow.getMap()
      */
-    public Enemy(int xCoordinate, int yCoordinate, GameWindow pGame) {
+    public Enemy(int xCoordinate, int yCoordinate, Game pGame) {
         posX = xCoordinate;
         posY = yCoordinate;
         this.game = pGame;
@@ -58,35 +58,35 @@ public class Enemy {
         switch (direction) {
             case "inFront", "front" -> {
                 return switch (facingDir) {
-                    case "north"    -> game.map[posX][posY + 1];
-                    case "east"     -> game.map[posX + 1][posY];
-                    case "south"    -> game.map[posX][posY - 1];
-                    case "west"     -> game.map[posX - 1][posY];
-                    default         -> game.map[posX][posY]; // just in case. should not come true
+                    case "north"    -> game.getMap()[posX][posY + 1];
+                    case "east"     -> game.getMap()[posX + 1][posY];
+                    case "south"    -> game.getMap()[posX][posY - 1];
+                    case "west"     -> game.getMap()[posX - 1][posY];
+                    default         -> game.getMap()[posX][posY]; // just in case. should not come true
                 };
             } case "left" -> {
                 return switch (facingDir) {
-                    case "north"    -> game.map[posX - 1][posY];
-                    case "east"     -> game.map[posX][posY + 1];
-                    case "south"    -> game.map[posX + 1][posY];
-                    case "west"     -> game.map[posX][posY - 1];
-                    default         -> game.map[posX][posY]; // just in case. should not come true
+                    case "north"    -> game.getMap()[posX - 1][posY];
+                    case "east"     -> game.getMap()[posX][posY + 1];
+                    case "south"    -> game.getMap()[posX + 1][posY];
+                    case "west"     -> game.getMap()[posX][posY - 1];
+                    default         -> game.getMap()[posX][posY]; // just in case. should not come true
                 };
             } case "right" -> {
                 return switch (facingDir) {
-                    case "north"    -> game.map[posX + 1][posY];
-                    case "east"     -> game.map[posX][posY - 1];
-                    case "south"    -> game.map[posX - 1][posY];
-                    case "west"     -> game.map[posX][posY + 1];
-                    default         -> game.map[posX][posY]; // just in case. should not come true
+                    case "north"    -> game.getMap()[posX + 1][posY];
+                    case "east"     -> game.getMap()[posX][posY - 1];
+                    case "south"    -> game.getMap()[posX - 1][posY];
+                    case "west"     -> game.getMap()[posX][posY + 1];
+                    default         -> game.getMap()[posX][posY]; // just in case. should not come true
                 };
             } case "behind" -> {
                 return switch (facingDir) {
-                    case "north"    -> game.map[posX][posY - 1];
-                    case "east"     -> game.map[posX - 1][posY];
-                    case "south"    -> game.map[posX][posY + 1];
-                    case "west"     -> game.map[posX + 1][posY];
-                    default         -> game.map[posX][posY]; // just in case. should not come true
+                    case "north"    -> game.getMap()[posX][posY - 1];
+                    case "east"     -> game.getMap()[posX - 1][posY];
+                    case "south"    -> game.getMap()[posX][posY + 1];
+                    case "west"     -> game.getMap()[posX + 1][posY];
+                    default         -> game.getMap()[posX][posY]; // just in case. should not come true
                 };
             }
             case "below" -> {
@@ -97,7 +97,7 @@ public class Enemy {
     }
 
     /**
-     * Method that makes the enemy object move once towards the facing direction and turn in case it hits a wall
+     * Method that makes the enemy move considering the surrounding terrain. (Random turns at forks or crossroads)
      */
     public void move() {
         // Turn towards new direction in case the enemy hits a wall
@@ -136,24 +136,24 @@ public class Enemy {
         // Actual enemy movement
         if(isPassable(detect("inFront"))) {
             if(above != 'p')
-                game.map[posX][posY] = above;   // restore the tile the enemy was above
-            else game.map[posX][posY] = '.';
+                game.getMap()[posX][posY] = above;   // restore the tile the enemy was above
+            else game.getMap()[posX][posY] = '.';
             switch (getFacingDirection()) {
                 case "north" -> {
-                    above = game.map[posX][posY + 1];
-                    game.map[posX][posY + 1] = 'g';
+                    above = game.getMap()[posX][posY + 1];
+                    game.getMap()[posX][posY + 1] = 'g';
                     posY++;
                 } case "east" -> {
-                    above = game.map[posX + 1][posY];
-                    game.map[posX + 1][posY] = 'g';
+                    above = game.getMap()[posX + 1][posY];
+                    game.getMap()[posX + 1][posY] = 'g';
                     posX++;
                 } case "south" -> {
-                    above = game.map[posX][posY - 1];
-                    game.map[posX][posY - 1] = 'g';
+                    above = game.getMap()[posX][posY - 1];
+                    game.getMap()[posX][posY - 1] = 'g';
                     posY--;
                 } case "west" -> {
-                    above = game.map[posX - 1][posY];
-                    game.map[posX - 1][posY] = 'g';
+                    above = game.getMap()[posX - 1][posY];
+                    game.getMap()[posX - 1][posY] = 'g';
                     posX--;
                 }
             }
