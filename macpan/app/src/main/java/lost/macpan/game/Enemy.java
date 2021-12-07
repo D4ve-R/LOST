@@ -6,11 +6,11 @@ package lost.macpan.game;
  * @version 1.0
  */
 public class Enemy {
+    Game game;
     // X and Y coordinate of the enemy entity + the facing direction of the enemy (0 = north, 1 = east, 2 = south, 3 = west)
     private int posX = 0, posY = 0, facing = 0;
     // Stores the tile the enemy is above
-    private char above = '.';
-    Game game;
+    private char above = '.'; // pathTile below Enemy
 
     /* CONSTRUCTOR */
     /**
@@ -24,7 +24,7 @@ public class Enemy {
         posY = yCoordinate;
         this.game = pGame;
         facing = (int)(Math.random()*3);
-        above = '.';
+        above = game.pathTile;
     }
 
     /* GETTER & SETTER */
@@ -91,7 +91,7 @@ public class Enemy {
                 return getAbove();
             } default -> new RuntimeException("'" + direction + "' is an invalid direction. Must be 'inFront', 'left', 'right' or 'behind'.").printStackTrace();
         }
-        return '.';
+        return game.pathTile;
     }
 
     /**
@@ -133,25 +133,25 @@ public class Enemy {
 
         // Actual enemy movement
         if(isPassable(detect("inFront"))) {
-            if(above != 'p')
+            if(above != game.playerTile)
                 game.getMap()[posX][posY] = above;   // restore the tile the enemy was above
-            else game.getMap()[posX][posY] = '.';
+            else game.getMap()[posX][posY] = game.pathTile;
             switch (getFacingDirection()) {
                 case "north" -> {
                     above = game.getMap()[posX][posY + 1];
-                    game.getMap()[posX][posY + 1] = 'g';
+                    game.getMap()[posX][posY + 1] = game.enemyTile;
                     posY++;
                 } case "east" -> {
                     above = game.getMap()[posX + 1][posY];
-                    game.getMap()[posX + 1][posY] = 'g';
+                    game.getMap()[posX + 1][posY] = game.enemyTile;
                     posX++;
                 } case "south" -> {
                     above = game.getMap()[posX][posY - 1];
-                    game.getMap()[posX][posY - 1] = 'g';
+                    game.getMap()[posX][posY - 1] = game.enemyTile;
                     posY--;
                 } case "west" -> {
                     above = game.getMap()[posX - 1][posY];
-                    game.getMap()[posX - 1][posY] = 'g';
+                    game.getMap()[posX - 1][posY] = game.enemyTile;
                     posX--;
                 }
             }
@@ -190,9 +190,9 @@ public class Enemy {
     public boolean isPassable(char pTile) {
         /*
          * NOTE:
-         * 'h', '\0', '\r', 'x', 'g'     = unpassable for enemy
-         * '.', 'p', '*', 'a - e', 'k'   = passable for enemy
+         * 'h', '\0', '\r', 'x', game.enemyTile     = unpassable for enemy
+         * game.pathTile, game.playerTile, '*', 'a - e', 'k'   = passable for enemy
          */
-        return (pTile != 'h' && pTile != 'x' && pTile != '\0' && pTile != '\r' && pTile != 'g');
+        return (pTile != game.wallTile && pTile != game.exitTile && pTile != '\0' && pTile != '\r' && pTile != game.enemyTile);
     }
 }
