@@ -36,7 +36,7 @@ public class Game implements Runnable, ResourceHandler {
 
     private char lastKey;
 
-    private List<Enemy> enemies = new ArrayList<Enemy>(); // An ArrayList containing the Enemy objects
+    private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
     /**
      * Cooldown for Boosts in seconds
@@ -57,18 +57,18 @@ public class Game implements Runnable, ResourceHandler {
     /**
      * Tiles
      */
-    private final char pathTile         = '.'; // Tile that marks path
-    private final char wallTile         = 'h';
-    private final char coinTile         = '*';
-    private final char exitTile         = 'x';
-    private final char keyTile          = 'k';
-    private final char playerTile       = 'p';
-    private final char enemyTile        = 'g';
-    private final char speedEffectTile  = 'a';
-    private final char freezeEffectTile = 'b';
-    private final char coinBoostTile    = 'c';
-    private final char extraLifeTile    = 'd';
-    private final char deathTouchTile   = 'e';
+    public final char pathTile         = '.'; // Tile that marks path elements on the map
+    public final char wallTile         = 'h'; // Tile that marks wall elements on the map
+    public final char coinTile         = '*'; // Tile that marks coin elements on the map
+    public final char exitTile         = 'x'; // Tile that marks exit elements on the map
+    public final char keyTile          = 'k'; // Tile that marks key elements on the map
+    public final char playerTile       = 'p'; // Tile that marks the player element on the map
+    public final char enemyTile        = 'g'; // Tile that marks enemy elements on the map
+    public final char speedEffectTile  = 'a'; // Tile that marks speed effect item elements on the map
+    public final char freezeEffectTile = 'b'; // Tile that marks freeze item effect elements on the map
+    public final char coinBoostTile    = 'c'; // Tile that marks coin boost item elements on the map
+    public final char extraLifeTile    = 'd'; // Tile that marks extra life item elements on the map
+    public final char deathTouchTile   = 'e'; // Tile that marks death touch effect item elements on the map
 
 
 
@@ -392,25 +392,21 @@ public class Game implements Runnable, ResourceHandler {
      */
     public boolean enemyDetection(Enemy enemy) {
         if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
-            if(!flags[4]) {     // If player has not death touch effect
+            if(flags[4]) { // If death touch is active
+                this.getMap()[enemy.getPosX()][enemy.getPosY()] = enemy.getAbove();
+                enemies.remove(enemy);
+            } else {
                 if (flags[1]) { // If player has got an extra life
-                    System.out.println("Well... You didnt die");
-                    System.out.println(initPlayerPos);
-                    System.out.println(playerPos);
                     flags[1] = false; // Reset extra life
-                    map[playerPos[0]][playerPos[1]] = pathTile;
-                    playerPos[0] = initPlayerPos[0];
-                    playerPos[1] = initPlayerPos[1];
+                    map[playerPos[0]][playerPos[1]] = pathTile; // Reset the player
+                    playerPos[0] = initPlayerPos[0];            // position to the
+                    playerPos[1] = initPlayerPos[1];            // starting position
                     map[initPlayerPos[0]][initPlayerPos[1]] = playerTile;
-                    System.out.println(playerPos);
                 } else {
                     flags[0] = false; // Kill player
                     stopThread();
                     gameWindow.showDeathWindow();
                 }
-            } else {      // If player has death touch effect active
-                this.getMap()[enemy.getPosX()][enemy.getPosY()] = enemy.getAbove();
-                enemies.remove(enemy);
             }
             return true;
         }
