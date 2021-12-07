@@ -30,6 +30,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
     private static final int height = 700;
     private static final int serializeId = 123456789;
     private Timer timer;
+    public Sound music = new Sound();
     public Font fontWrite;
     /**
      * Constructor method for App Class
@@ -40,7 +41,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         Font fontRead = null;
         {
             try {
-                InputStream stream = getFileResourcesAsStream("fonts/alagard_bearbeitet.ttf");
+                InputStream stream = getFileResourcesAsStream("fonts/alagard.ttf");
                 fontRead = Font.createFont(Font.TRUETYPE_FONT, stream);
             } catch (FontFormatException e) {
                 e.printStackTrace();
@@ -73,6 +74,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         setResizable(false);
         pack();
         setVisible(true);
+        playMusicLooped(0, false);
         initStorage();
         timer.start();
     }
@@ -88,5 +90,20 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         setContentPane(mM);
         revalidate();
         timer.stop();
+    }
+
+    public void playMusicLooped(int track, boolean interruptingOther) {
+        music.setFile(track, interruptingOther);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic() {
+        music.stop();
+    }
+
+    public void playMusicOnce(int track, boolean interruptingOther) {
+        music.setFile(track, interruptingOther);
+        music.play();
     }
 }
