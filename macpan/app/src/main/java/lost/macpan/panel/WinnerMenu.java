@@ -52,8 +52,8 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         //!Funktionalität Namen einzutragen und Score auszugeben fehlt noch
 
         setLayout(null);
-        background.setBounds(0, 0, 950, 700);
-        label.setBounds(175, 50, 600, 200);
+        background.setBounds(0, 0, 960, 700);
+        label.setBounds(50, 50, 950, 200);
         add(label);
         add(background);
 

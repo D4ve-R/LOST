@@ -69,7 +69,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         setLayout(null);
 
         // Positionierung der Buttons und Labels
-        background.setBounds(0, 0, 950, 700);
+        background.setBounds(0, 0, 960, 700);
         label.setBounds(175, 50, 600, 200);
         playBtn.setBounds(395, 300, 160, 50);
         loadBtn.setBounds(395, 360, 160, 50);

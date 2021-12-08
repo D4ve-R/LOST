@@ -49,7 +49,7 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
             background = new JLabel(new ImageIcon(backgroundImg));
         }
         setLayout(null);
-        background.setBounds(0, 0, 950, 700);
+        background.setBounds(0, 0, 960, 700);
         label.setBounds(175, 50, 600, 200);
         keyBtn.setBounds(395, 300, 160, 50);
         descBtn.setBounds(395, 360, 160, 50);

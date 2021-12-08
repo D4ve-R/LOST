@@ -62,8 +62,8 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         }
         setLayout(null);
         // Positionierung der Labels und Buttons
-        background.setBounds(0, 0, 950, 700);
-        topLabel.setBounds(-20, 10, 950, 200);
+        background.setBounds(0, 0, 960, 700);
+        topLabel.setBounds(-20, 10, 960, 200);
         subLabel.setBounds(175, 250, 600, 200);
         yesBtn.setBounds(740, 550, 160, 50);
         noBtn.setBounds(30, 550, 160, 50);

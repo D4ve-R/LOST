@@ -109,6 +109,6 @@ public class HUD implements ResourceHandler {
             g.drawImage(freezeEffect, pTileSize * 13 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
 
         //draws Score
-        g.drawString("SCORE: " + pScore, 15, 665);
+        g.drawString("SCORE: " + pScore, 20, 665);
     }
 }

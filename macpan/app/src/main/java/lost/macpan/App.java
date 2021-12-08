@@ -10,8 +10,8 @@ package lost.macpan;
 
 import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
-import lost.macpan.panel.PauseMenu;
-import lost.macpan.panel.QuitMenu;
+import lost.macpan.utils.ResourceHandler;
+
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 /**
  * App Class that handles the application
  */
-public class App extends JFrame implements ActionListener {
+public class App extends JFrame implements ActionListener, ResourceHandler {
     private static final int width = 960;
     private static final int height = 700;
     private static final int serializeId = 123456789;
@@ -44,9 +44,11 @@ public class App extends JFrame implements ActionListener {
         setResizable(false);
         pack();
         setVisible(true);
+        initStorage();
 
         timer.start();
     }
+
 
     /**
      * handles the timeout to change the panels when the app starts

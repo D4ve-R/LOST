@@ -53,7 +53,7 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         //!Funktionalität Namen einzutragen und Score auszugeben fehlt noch
 
         setLayout(null);
-        background.setBounds(0, 0, 950, 700);
+        background.setBounds(0, 0, 960, 700);
         label.setBounds(-20, 10, 950, 200);
         add(label);
         add(background);
