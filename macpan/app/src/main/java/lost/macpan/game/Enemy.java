@@ -3,13 +3,20 @@ package lost.macpan.game;
 /**
  * Class that manages the enemy movement logic
  * @author Simon Bonnie
- * @version 1.0
+ * @version 1.2
  */
 public class Enemy {
+    /**
+     * The game class object needed to access and edit the map grid
+     */
     Game game;
-    // X and Y coordinate of the enemy entity + the facing direction of the enemy (0 = north, 1 = east, 2 = south, 3 = west)
+    /**
+     * X and Y coordinate of the enemy entity + the facing direction of the enemy (0 = north, 1 = east, 2 = south, 3 = west)
+     */
     private int posX = 0, posY = 0, facing = 0;
-    // Stores the tile the enemy is above
+    /**
+     * Stores the tile the enemy is above
+     */
     private char above = '.'; // pathTile below Enemy
 
     /* CONSTRUCTOR */
@@ -28,7 +35,15 @@ public class Enemy {
     }
 
     /* GETTER & SETTER */
+    /**
+     * Method to be able to read the x coordinate of an enemy object externally
+     * @return the x coordinate as an integer
+     */
     public int getPosX() { return posX; }
+    /**
+     * Method to be able to read the y coordinate of an enemy object externally
+     * @return the y coordinate as an integer
+     */
     public int getPosY() { return posY; }
     /**
      * Method to get the facing direction of an enemy object in form of readable text
@@ -43,6 +58,11 @@ public class Enemy {
             default -> "";
         };
     }
+
+    /**
+     * Method to access the tile the enemy object is currently above externally
+     * @return the tile as a character symbol
+     */
     public char getAbove() { return above; }
 
     /* METHODS */
@@ -104,7 +124,7 @@ public class Enemy {
                 // Right and Left path are good to go, but not in front. Enemy decides new direction randomly
                 int randomTurn = (int) (Math.random() * 5); // 80% chance of turning left or right, 20% chance of turning 180 degrees
                 switch (randomTurn) {
-                    // Right now enemy can do a 180 deg turn when facing a wall. Change to random()*2 and remove case 2 to only allow left and right turns
+                    // Right now enemy can do a 180 deg turn when facing a wall. Change to random()*4 and remove case 4 to only allow left and right turns
                     case 0, 1 -> turn("left");
                     case 2, 3 -> turn("right");
                     case 4 -> turn("behind");
@@ -164,26 +184,23 @@ public class Enemy {
      */
     public void turn(String direction) throws RuntimeException {
         switch (direction) {
-            case "left" -> {
+            case "left", "-90", "270" -> {
                 if (facing > 0) facing--;
                 else facing = 3;
-                /*System.out.println("I did a left turn!");*/
-            } case "right" -> {
+            } case "right", "90" -> {
                 if(facing < 3) facing++;
                 else facing = 0;
-                /*System.out.println("I did a right turn!");*/
             } case "behind", "180" -> {
                 if(facing < 2) facing += 2;
                 else facing -= 2;
-                /*System.out.println("I did a 180 no scope!");*/
-            } case "straight" -> {
+            } case "straight", "360", "0" -> {
                 // continue straight
             } default -> new RuntimeException("'" + direction + "' is an invalid turn direction. Must be 'left', 'right' or 'behind'.").printStackTrace();
         }
     }
 
     /**
-     * Helping method to detect wether a game tile is passable or not
+     * Helping method to detect whether a game tile is passable for the enemy or not
      * @param pTile the tile to be checked
      * @return true or false
      */
@@ -194,5 +211,50 @@ public class Enemy {
          * game.pathTile, game.playerTile, '*', 'a - e', 'k'   = passable for enemy
          */
         return (pTile != game.wallTile && pTile != game.exitTile && pTile != '\0' && pTile != '\r' && pTile != game.enemyTile);
+    }
+
+    /**
+     * Method to properly compare to enemy objects
+     * @param o the Enemy object to compare with
+     * @return true or false whether the objects are the same or not
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Enemy enemy = (Enemy) o;
+        return (
+                this.posX == enemy.posX &&
+                this.posY == enemy.posY &&
+                this.facing == enemy.facing &&
+                this.above == enemy.above
+        );
+    }
+    /**
+     * Method that returns the hash code of an enemy object
+     * @return the hash code as an integer
+     */
+    @Override
+    public int hashCode() {
+        int result = game.hashCode();
+        result = 31 * result + posX;
+        result = 31 * result + posY;
+        result = 31 * result + facing;
+        result = 31 * result + (int) above;
+        return result;
+    }
+
+    /**
+     * Method that returns the enemy object in form of readable text
+     * @return a String containing all relevant information
+     */
+    @Override
+    public String toString() {
+        return "Enemy {\n" +
+                "\tcoordinate (X/Y):\t[" + getPosX() + "|" + getPosY() + "]\n" +
+                "\tfacing direction:\t'" + getFacingDirection() + "'\n" +
+                "\tabove tile:\t\t\t'" + getAbove() + "'\n" +
+                '}';
     }
 }
