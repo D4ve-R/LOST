@@ -134,7 +134,11 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
     /**
      * plays a sound effect <br>
      * Available effects: <br>
-     * 4: coin
+     * 4: coin <br>
+     * 5: exit opening <br>
+     * 6: item pickup <br>
+     * 7: kill enemy <br>
+     * 8: take damage
      * @param effect selected effect
      */
     public void playSoundEffect(int effect){

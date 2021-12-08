@@ -24,6 +24,10 @@ public class Sound {
         soundURL[2] = getClass().getResource("/music/Birth of a Wish.wav");
         soundURL[3] = getClass().getResource("/music/Windows XP Shutdown.wav");
         soundURL[4] = getClass().getResource("/sound effects/coin.wav");
+        soundURL[5] = getClass().getResource("/sound effects/exit opening.wav");
+        soundURL[6] = getClass().getResource("/sound effects/item pickup.wav");
+        soundURL[7] = getClass().getResource("/sound effects/kill enemy.wav");
+        soundURL[8] = getClass().getResource("/sound effects/take damage.wav");
     }
 
     /**
