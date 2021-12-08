@@ -15,6 +15,6 @@ h*h***********d***********h*hh
 h*h*hhhhhh*hhh*hhh*hh*hhh*h*hh
 h*h*hhhhhh*hhh*hhh*hh*hhh*h*hh
 hgh*h******hhh*hhh*hh*hhh*h*hh
-h*h***hhhh**hh*hhh*hh*hhh*hkhh
-h*****hhhhx****hhh****hhh****.
+h*h***hhhh**hh*hhh*hh*hhhahkhh
+h*****hhhhx****hhh****hhh***ph
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh

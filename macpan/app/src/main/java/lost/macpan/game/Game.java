@@ -165,6 +165,7 @@ public class Game implements Runnable, ResourceHandler {
     public void run() {
         long timer = System.currentTimeMillis();
         long timer2 = timer;
+        long timer3 = timer;
         int frames = 0 ;
         while(running.get()) {
             while (!gamePaused) {
@@ -176,6 +177,14 @@ public class Game implements Runnable, ResourceHandler {
                     timer2 = System.currentTimeMillis();
                 }
 
+                int speed = 1;
+                if(flags[2])
+                    speed = 5;
+                if (System.currentTimeMillis() - timer3 > 250/speed) {
+                    movePlayer();
+                    timer3 = System.currentTimeMillis();
+                }
+
                 // prints out framerate to terminal
                 if (System.currentTimeMillis() - timer > 1000) {
                     System.out.println("fps: " + frames);
@@ -184,14 +193,14 @@ public class Game implements Runnable, ResourceHandler {
                 }
 
                 try {
-                    thread.sleep(14);     // roughly 60 fps
+                    thread.sleep(45);     //15 =  roughly 60 fps
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
             try {
-                thread.sleep(20);
+                thread.sleep(40);
             }catch(Exception e) {e.printStackTrace();}
         }
     }
@@ -235,7 +244,10 @@ public class Game implements Runnable, ResourceHandler {
             gegnerEinfrieren();
         }
         */
+        moveEnemies();
+    }
 
+    public void movePlayer(){
         if(flags[2]){
             move(lastKey);
             lastKey = 'o';
@@ -243,7 +255,9 @@ public class Game implements Runnable, ResourceHandler {
             move(lastKey);
             lastKey = 'o';
         }
+    }
 
+    public void moveEnemies(){
         if(!flags[7]) {
             for (Enemy enemy : enemies) { // TODO: Enemy movement flexible
                 enemy.move(); // Move Enemy objects unless freeze effect is active
@@ -301,7 +315,7 @@ public class Game implements Runnable, ResourceHandler {
             case 'w' -> moveToNew(0,-1);
             case 's' -> moveToNew(0,1);
             case 'a' -> moveToNew(-1,0);
-            case 'd' -> moveToNew(1 ,0);
+            case 'd' -> moveToNew(1,0);
         }
     }
 
