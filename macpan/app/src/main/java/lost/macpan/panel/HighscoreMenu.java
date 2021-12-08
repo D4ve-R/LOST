@@ -14,6 +14,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
@@ -72,7 +73,9 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             Laden der Highscores.txt Datei
          */
         try {
-            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
+            //inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
+            inputStream = new FileInputStream(getFilefromFS("Highscores.txt"));
+
             highscores = convertStreamToString(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
