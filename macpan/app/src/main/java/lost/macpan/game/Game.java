@@ -42,6 +42,8 @@ public class Game implements Runnable, ResourceHandler {
 
     private int score;                               //for keeping track of the score
 
+    private Sound fx = new Sound();
+
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
     /**
@@ -350,8 +352,13 @@ public class Game implements Runnable, ResourceHandler {
             case coinTile -> {
                 if(flags[5]) score += 20;
                 else score +=10;
+                fx.playSoundEffect(4);
             }
-            case keyTile -> flags[3] = true;
+            case keyTile -> {
+                flags[3] = true;
+                fx.playSoundEffect(6);
+                fx.playSoundEffect(5);
+            }
             case exitTile -> {
                 if(!flags[3]) {
                     step = false;
@@ -361,11 +368,26 @@ public class Game implements Runnable, ResourceHandler {
                     step = false;
                 }
             }
-            case speedEffectTile -> flags[2] = true;
-            case freezeEffectTile -> flags[7] = true;
-            case coinBoostTile -> flags[5] = true;
-            case extraLifeTile -> flags[1] = true;
-            case deathTouchTile -> flags[4] = true;
+            case speedEffectTile -> {
+                flags[2] = true;
+                fx.playSoundEffect(6);
+            }
+            case freezeEffectTile -> {
+                flags[7] = true;
+                fx.playSoundEffect(6);
+            }
+            case coinBoostTile -> {
+                flags[5] = true;
+                fx.playSoundEffect(6);
+            }
+            case extraLifeTile -> {
+                flags[1] = true;
+                fx.playSoundEffect(6);
+            }
+            case deathTouchTile -> {
+                flags[4] = true;
+                fx.playSoundEffect(6);
+            }
         }
 
         if(step) {
@@ -451,6 +473,7 @@ public class Game implements Runnable, ResourceHandler {
             if(flags[4]) { // If death touch is active
                 map[enemy.getPosX()][enemy.getPosY()] = playerTile;
                 enemies.remove(enemy);
+                fx.playSoundEffect(7);
             } else {
                 // If player has got an extra life
                 if (flags[1]) {
@@ -460,9 +483,11 @@ public class Game implements Runnable, ResourceHandler {
                     map[playerPos[0]][playerPos[1]] = playerTile;
                     enemy.frozen = true;
                     enemy.timer = tickRate;
+                    fx.playSoundEffect(8);
                 } else {
                     flags[0] = false; // Kill player
                     gameWindow.repaint();
+                    fx.playSoundEffect(8);
                     gameWindow.showDeathWindow();
                     stopThread();
                 }

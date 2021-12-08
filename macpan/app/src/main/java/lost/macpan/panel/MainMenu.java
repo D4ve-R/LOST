@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
 import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.GameSerializer;
+import lost.macpan.App;
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
@@ -18,7 +19,6 @@ import lost.macpan.utils.ResourceHandler;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
@@ -39,7 +39,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
     private final CustomButton highscoresBtn = new CustomButton("Highscores");
     private final CustomButton optionsBtn = new CustomButton("Optionen");
     private final CustomButton quitBtn = new CustomButton("Spiel Beenden");
-    private JFrame parentFrame;
+    private App parentFrame;
     private Image img;
     private JLabel label;
     private JLabel background;
@@ -52,7 +52,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
      *
      * @param frame
      */
-    public MainMenu(JFrame frame) {
+    public MainMenu(App frame) {
         parentFrame = frame;
 
         try {
@@ -103,12 +103,16 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
+            parentFrame.stopMusic();
+            parentFrame.playMusicLooped(2);
             GameWindow gameWindow = new GameWindow(parentFrame, this);
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
             gameWindow.requestFocusInWindow();
 
         } else if (e.getSource() == loadBtn) {
+            parentFrame.stopMusic();
+            parentFrame.playMusicLooped(2);
             if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
                 GameWindow gameWindow = new GameWindow(parentFrame, this);
 
@@ -155,6 +159,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
             optionsMenu.requestFocusInWindow();
 
         } else if (e.getSource() == quitBtn) {
+            parentFrame.pauseMusic();
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();

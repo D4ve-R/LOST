@@ -86,6 +86,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler,
             parentFrame.dispatchEvent(new WindowEvent(parentFrame, WindowEvent.WINDOW_CLOSING));
             parentFrame.dispose();
         } else if (e.getSource() == noBtn) {
+            parentFrame.resumeMusic();
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
             before.requestFocusInWindow();

@@ -31,7 +31,6 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
     private static final int serializeId = 123456789;
     private Timer timer;
     public Sound music = new Sound();
-    public Sound fx = new Sound();
     public Font fontWrite;
     /**
      * Constructor method for App Class
@@ -75,8 +74,8 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         setResizable(false);
         pack();
         setVisible(true);
-        playMusicLooped(0, false);
         initStorage();
+        playMusicLooped(0);
         timer.start();
     }
 
@@ -102,11 +101,25 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
      * 2: in-game music placeholder <br>
      * 3: defeat music placeholder <br>
      * @param track selected track
-     * @param interruptingOther whether the previous song is paused and to be continued later
      */
-    public void playMusicLooped(int track, boolean interruptingOther) {
-        music.setFile(track, interruptingOther);
+    public void playMusicLooped(int track) {
+        music.setFile(track, false);
         music.play();
+        music.loop();
+    }
+
+    /**
+     * pauses playback and saves from where the track should be resumed
+     */
+    public void pauseMusic(){
+        music.pause();
+    }
+
+    /**
+     * resumes playback after a track has been paused
+     */
+    public void resumeMusic(){
+        music.resume();
         music.loop();
     }
 
@@ -124,26 +137,20 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
      * 1: victory music placeholder <br>
      * 2: in-game music placeholder <br>
      * 3: defeat music placeholder <br>
+     * 9: pause menu music
      * @param track selected track
-     * @param interruptingOther whether the previous song is paused and to be continued later
      */
-    public void playMusicOnce(int track, boolean interruptingOther) {
-        music.setFile(track, interruptingOther);
+    public void playMusicOnce(int track) {
+        music.setFile(track, false);
         music.play();
     }
 
-    /**
-     * plays a sound effect <br>
-     * Available effects: <br>
-     * 4: coin <br>
-     * 5: exit opening <br>
-     * 6: item pickup <br>
-     * 7: kill enemy <br>
-     * 8: take damage
-     * @param effect selected effect
-     */
-    public void playSoundEffect(int effect){
-        fx.setFile(effect, false);
-        fx.play();
+    public void playPauseMusic(){
+        music.playPauseMenu();
+        music.loop();
+    }
+
+    public void stopPauseMusic(){
+        music.stopPauseMenu();
     }
 }

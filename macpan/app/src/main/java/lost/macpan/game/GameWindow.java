@@ -5,6 +5,7 @@
 
 package lost.macpan.game;
 
+import lost.macpan.App;
 import lost.macpan.game.sprites.CoinSprite;
 import lost.macpan.game.sprites.EnemySprite;
 import lost.macpan.game.sprites.ExitSprite;
@@ -13,19 +14,17 @@ import lost.macpan.game.sprites.Sprite;
 import lost.macpan.panel.LooserMenu;
 import lost.macpan.panel.PauseMenu;
 import lost.macpan.panel.WinnerMenu;
-
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -57,7 +56,7 @@ public class GameWindow extends JPanel {
 
 
 
-    private JFrame parentFrame;
+    private App parentFrame;
     private Container before;
 
     private double windowScale;     //scaling factor for fullscreen
@@ -76,7 +75,7 @@ public class GameWindow extends JPanel {
      * @param frame the parent Jframe
      * @param beforeMenu the container of the previous menu
      */
-    public GameWindow(JFrame frame, Container beforeMenu){
+    public GameWindow(App frame, Container beforeMenu){
         game = new Game(this, maxMapColumns, maxMapRows);
         parentFrame = frame;
         before = beforeMenu;
@@ -130,6 +129,8 @@ public class GameWindow extends JPanel {
      */
     public void showDeathWindow(){
         LooserMenu looserMenu = new LooserMenu(parentFrame, before,currentScore);
+        parentFrame.stopMusic();
+        parentFrame.playMusicOnce(3);
         parentFrame.setContentPane(looserMenu);
         parentFrame.revalidate();
         looserMenu.setFocusOnInput();
@@ -142,6 +143,8 @@ public class GameWindow extends JPanel {
      */
     public void showWinnerMenu(){
         WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before,currentScore);
+        parentFrame.stopMusic();
+        parentFrame.playMusicLooped(1);
         parentFrame.setContentPane(winnerMenu);
         parentFrame.revalidate();
         winnerMenu.setFocusOnInput();
@@ -153,6 +156,8 @@ public class GameWindow extends JPanel {
      *
      */
     public void showPauseMenu() {
+        parentFrame.pauseMusic();
+        parentFrame.playPauseMusic();
         PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
         parentFrame.setContentPane(pauseMenu);
         parentFrame.revalidate();

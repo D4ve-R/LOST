@@ -5,6 +5,8 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.App;
+import lost.macpan.utils.ResourceHandler;
 import lost.macpan.utils.HighscoreHandler;
 
 import javax.imageio.ImageIO;
@@ -13,9 +15,11 @@ import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.Container;
+import java.awt.Image;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import java.awt.Color;
@@ -34,7 +38,7 @@ import java.awt.event.KeyEvent;
  * @author fatih
  */
 public class LooserMenu extends JPanel implements HighscoreHandler {
-    private JFrame parentFrame;
+    private App parentFrame;
     private Container before;
     private JLabel loselabel;
     private Image loseImg;
@@ -45,7 +49,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
     private int score;
     private JLabel scoreValue;
 
-    public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
+    public LooserMenu(App frame, Container beforeMenu, int currentScore) {
         parentFrame = frame;
         before = beforeMenu;
         score = currentScore;
@@ -157,6 +161,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
      */
     public void saveHighscores(int pScore, String pName) {
         saveNewScore(pScore,pName);
+        parentFrame.playMusicLooped(0);
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
         before.requestFocusInWindow();
