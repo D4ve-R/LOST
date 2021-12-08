@@ -194,17 +194,32 @@ public class GameWindow extends JPanel {
         String vkD = "VK_D";
         String vkESCAPE = "VK_ESCAPE";
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkW);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), vkA);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkS);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), vkD);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), vkESCAPE);
+        String released = "_released";
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0,false), vkW);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0,false), vkA);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0,false), vkS);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0,false), vkD);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0,false), vkESCAPE);
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0,true), vkW + released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0,true), vkA+ released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0,true), vkS+ released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0,true), vkD+ released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0,true), vkESCAPE+ released);
 
         actionMap.put(vkW, new KeyAction(vkW));
         actionMap.put(vkA, new KeyAction(vkA));
         actionMap.put(vkS, new KeyAction(vkS));
         actionMap.put(vkD, new KeyAction(vkD));
         actionMap.put(vkESCAPE, new KeyAction(vkESCAPE));
+
+        actionMap.put(vkW + released, new KeyAction(vkW+ released));
+        actionMap.put(vkA+ released, new KeyAction(vkA+ released));
+        actionMap.put(vkS+ released, new KeyAction(vkS+ released));
+        actionMap.put(vkD+ released, new KeyAction(vkD+ released));
+        actionMap.put(vkESCAPE+ released, new KeyAction(vkESCAPE+ released));
+
 
     }
 
@@ -223,6 +238,5 @@ public class GameWindow extends JPanel {
             game.newKeyAction(actionEvt.getActionCommand());
         }
     }
-
 
 }

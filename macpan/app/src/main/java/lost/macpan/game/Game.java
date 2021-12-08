@@ -265,7 +265,7 @@ public class Game implements Runnable, ResourceHandler {
         if(flags[7]){   //Not yet implemented
             gegnerEinfrieren();
         }
-         */
+        */
 
         if(flags[2]){
             move(lastKey);
@@ -293,20 +293,31 @@ public class Game implements Runnable, ResourceHandler {
                 break;
             case "VK_W":
                 lastKey = 'w';
+                System.out.println("W pressed");
+                break;
+            case "VK_W_released":
+                System.out.println("W released");
                 break;
             case "VK_A":
                 lastKey = 'a';
                 break;
+            case "VK_A_released":
+
+                break;
             case "VK_S":
                 lastKey = 's';
+                break;
+            case "VK_S_released":
+
                 break;
             case "VK_D":
                 lastKey = 'd';
                 break;
+            case "VK_D_released":
+
+                break;
         }
-
     }
-
 
     /**
      *
