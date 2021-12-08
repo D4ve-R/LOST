@@ -53,7 +53,7 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
 
         setLayout(null);
         background.setBounds(0, 0, 960, 700);
-        label.setBounds(50, 50, 950, 200);
+        label.setBounds(-20, 50, 950, 200);
         add(label);
         add(background);
 

@@ -248,13 +248,8 @@ public class Game implements Runnable, ResourceHandler {
     }
 
     public void movePlayer(){
-        if(flags[2]){
-            move(lastKey);
-            lastKey = 'o';
-        } else {
-            move(lastKey);
-            lastKey = 'o';
-        }
+        move(lastKey);
+        lastKey = 'o';
     }
 
     public void moveEnemies(){
