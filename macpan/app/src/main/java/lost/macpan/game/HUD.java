@@ -17,23 +17,33 @@ import java.io.InputStream;
  * @version 0.1
  */
 public class HUD implements ResourceHandler {
-    //attributes
-    BufferedImage fieldOpener;
-    BufferedImage fieldSpacer;
-    BufferedImage fieldCloser;
-    BufferedImage effectField;
-    BufferedImage filler;
-    BufferedImage key;
-    BufferedImage lifeEffect;
-    BufferedImage speedEffect;
-    BufferedImage attack;
-    BufferedImage boostEffect;
-    BufferedImage freezeEffect;
+    private int hudHeight = 20;
+    private Font font;
+     BufferedImage fieldOpener;
+     BufferedImage fieldSpacer;
+     BufferedImage fieldCloser;
+     BufferedImage effectField;
+     BufferedImage filler;
+     BufferedImage key;
+     BufferedImage lifeEffect;
+     BufferedImage speedEffect;
+     BufferedImage attack;
+     BufferedImage boostEffect;
+     BufferedImage freezeEffect;
 
 
     //constructor
     public HUD (){
         fetchSprites();
+        try {
+            InputStream stream = getFileResourcesAsStream("fonts/alagard.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, stream);
+            font = font.deriveFont(Font.PLAIN, 31);
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -57,61 +67,43 @@ public class HUD implements ResourceHandler {
         }
     }
 
-    //importing custom font
-    Font fontRead; //"fonts/alagard.ttf"
-    {
-        try {
-            InputStream stream = getFileResourcesAsStream("fonts/alagard.ttf");
-            fontRead = Font.createFont(Font.TRUETYPE_FONT, stream);
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    Font fontWrite = fontRead.deriveFont(Font.PLAIN, 31);
 
     /**
      * draw call for the HUD
      * @param g entity to be drawn to
-     * @param hudHeight where the HUD is to be drawn
      */
-    public void draw(Graphics2D g, int hudHeight,int pScore, int pTileSize, boolean[] pFlags, int pMaxColumns){
+    public void draw(Graphics2D g, int pScore, int pTileSize, boolean[] pFlags, int pMaxColumns){
         int iterator = 0;
-        g.setFont(fontWrite);
+        g.setFont(font);
         g.setColor(Color.white);
 
         //draws HUD bar
-        g.drawImage(fieldOpener, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(fieldCloser, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(filler, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
-        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        for(;iterator < 6; iterator++) {
+            g.drawImage(fieldOpener, pTileSize * iterator, hudHeight * pTileSize, pTileSize, pTileSize, null);
+        }
+
+        g.drawImage(filler, pTileSize * iterator++, hudHeight * pTileSize, pTileSize, pTileSize, null);
+
+        for(;iterator < 15; iterator++) {
+            g.drawImage(effectField, pTileSize * iterator, hudHeight * pTileSize, pTileSize, pTileSize, null);
+        }
+
         for (int i = iterator; i < pMaxColumns; i++)
-            g.drawImage(filler, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+            g.drawImage(filler, pTileSize * iterator++, hudHeight * pTileSize, pTileSize, pTileSize, null);
 
         //draws active effects
         if (pFlags[3])
-            g.drawImage(key, pTileSize * 8, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+            g.drawImage(key, pTileSize * 8, hudHeight * pTileSize, pTileSize, pTileSize, null);
         if (pFlags[1])
-            g.drawImage(lifeEffect, pTileSize * 9 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+            g.drawImage(lifeEffect, pTileSize * 9 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
         if (pFlags[2])
-            g.drawImage(speedEffect, pTileSize * 10 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+            g.drawImage(speedEffect, pTileSize * 10 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
         if (pFlags[4])
-            g.drawImage(attack, pTileSize * 11 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+            g.drawImage(attack, pTileSize * 11 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
         if (pFlags[5])
-            g.drawImage(boostEffect, pTileSize * 12 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+            g.drawImage(boostEffect, pTileSize * 12 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
         if (pFlags[7])
-            g.drawImage(freezeEffect, pTileSize * 13 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+            g.drawImage(freezeEffect, pTileSize * 13 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
 
         //draws Score
         g.drawString("SCORE: " + pScore, 15, hudHeight * pTileSize - 5);

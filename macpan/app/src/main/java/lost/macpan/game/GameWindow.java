@@ -28,7 +28,7 @@ public class GameWindow extends JPanel {
     private Game game;
 
     private char[][] currentMap;
-    private boolean currentFlags[];
+    private boolean[] currentFlags;
     private int currentScore;
 
     private int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
@@ -43,18 +43,16 @@ public class GameWindow extends JPanel {
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
 
 
-
-    private int hudHeight = 21;                     //determines the height of the HUD
     private JFrame parentFrame;
     private Container before;
 
 
-    PlayerSprite playerSprite = new PlayerSprite(tileSize);     //handles drawing the player sprite
-    EnemySprite enemySprite = new EnemySprite(tileSize);        //handles drawing enemy sprites
-    ExitSprite exitSprite = new ExitSprite(tileSize);           //handles drawing the exit sprite
-    CoinSprite coinSprite = new CoinSprite(tileSize);           //handles drawing coin sprites
-    Sprite sprite = new Sprite(tileSize);                       //handles drawing miscellaneous sprites
-    HUD hud = new HUD();                                        //handles drawing the in-game HUD
+    private PlayerSprite playerSprite = new PlayerSprite(tileSize);     //handles drawing the player sprite
+    private EnemySprite enemySprite = new EnemySprite(tileSize);        //handles drawing enemy sprites
+    private ExitSprite exitSprite = new ExitSprite(tileSize);           //handles drawing the exit sprite
+    private CoinSprite coinSprite = new CoinSprite(tileSize);           //handles drawing coin sprites
+    private Sprite sprite = new Sprite(tileSize);                       //handles drawing miscellaneous sprites
+    private HUD hud = new HUD();                                        //handles drawing the in-game HUD
 
 
     /**
@@ -174,7 +172,7 @@ public class GameWindow extends JPanel {
                     sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
-        hud.draw(g2, hudHeight, currentScore, tileSize, currentFlags, maxColumns);
+        hud.draw(g2, currentScore, tileSize, currentFlags, maxColumns);
         g2.dispose();
     }
 

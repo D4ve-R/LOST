@@ -33,7 +33,7 @@ public class App extends JFrame implements ActionListener {
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 5000; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
+        int delay = 4500;
 
         timer = new Timer(delay, this);
         setTitle("MacPan");
