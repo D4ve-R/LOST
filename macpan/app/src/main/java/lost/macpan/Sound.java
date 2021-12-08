@@ -23,6 +23,7 @@ public class Sound {
         soundURL[1] = getClass().getResource("/music/Emil's Shop.wav");
         soundURL[2] = getClass().getResource("/music/Birth of a Wish.wav");
         soundURL[3] = getClass().getResource("/music/Windows XP Shutdown.wav");
+        soundURL[4] = getClass().getResource("/sound effects/coin.wav");
     }
 
     /**

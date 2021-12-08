@@ -31,6 +31,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
     private static final int serializeId = 123456789;
     private Timer timer;
     public Sound music = new Sound();
+    public Sound fx = new Sound();
     public Font fontWrite;
     /**
      * Constructor method for App Class
@@ -93,18 +94,52 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         timer.stop();
     }
 
+    /**
+     * plays a music piece looped <br>
+     * Available tracks: <br>
+     * 0: menu music placeholder <br>
+     * 1: victory music placeholder <br>
+     * 2: in-game music placeholder <br>
+     * 3: defeat music placeholder <br>
+     * @param track selected track
+     * @param interruptingOther whether the previous song is paused and to be continued later
+     */
     public void playMusicLooped(int track, boolean interruptingOther) {
         music.setFile(track, interruptingOther);
         music.play();
         music.loop();
     }
 
+    /**
+     * stops current music track
+     */
     public void stopMusic() {
         music.stop();
     }
 
+    /**
+     * plays a music piece once <br>
+     * Available tracks: <br>
+     * 0: menu music placeholder <br>
+     * 1: victory music placeholder <br>
+     * 2: in-game music placeholder <br>
+     * 3: defeat music placeholder <br>
+     * @param track selected track
+     * @param interruptingOther whether the previous song is paused and to be continued later
+     */
     public void playMusicOnce(int track, boolean interruptingOther) {
         music.setFile(track, interruptingOther);
         music.play();
+    }
+
+    /**
+     * plays a sound effect <br>
+     * Available effects: <br>
+     * 4: coin
+     * @param effect selected effect
+     */
+    public void playSoundEffect(int effect){
+        fx.setFile(effect, false);
+        fx.play();
     }
 }
