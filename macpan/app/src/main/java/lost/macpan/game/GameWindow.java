@@ -277,6 +277,7 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
                 }else{
                     score +=10;
                 }
+                parentFrame.playSoundEffect(4);
 
             }
             else if(onNewPos == 'g'){
