@@ -23,29 +23,20 @@ import java.awt.event.KeyEvent;
  * @version 0.1.1
  */
 public class GameWindow extends JPanel {
-    //attributes
 
     private Game game;
-
     private char[][] currentMap;
     private boolean[] currentFlags;
     private int currentScore;
-
     private int maxColumns = 30;                    //maximum amount of tiles that can be drawn horizontally
     private int maxRows = 20;                       //maximum amount of tiles that can be drawn vertically
-
-
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     private int tileSize = originalTileSize * scale; //tile size and effective sprite size
-
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
-
-
     private JFrame parentFrame;
     private Container before;
-
 
     private PlayerSprite playerSprite = new PlayerSprite(tileSize);     //handles drawing the player sprite
     private EnemySprite enemySprite = new EnemySprite(tileSize);        //handles drawing enemy sprites
@@ -67,7 +58,6 @@ public class GameWindow extends JPanel {
         before = beforeMenu;
 
         setKeyBindings();               //Set all Key bindings
-
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
@@ -217,8 +207,6 @@ public class GameWindow extends JPanel {
         actionMap.put(vkS+ released, new KeyAction(vkS+ released));
         actionMap.put(vkD+ released, new KeyAction(vkD+ released));
         actionMap.put(vkESCAPE+ released, new KeyAction(vkESCAPE+ released));
-
-
     }
 
     /**

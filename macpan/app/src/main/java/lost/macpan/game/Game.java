@@ -280,10 +280,8 @@ public class Game implements Runnable, ResourceHandler {
                 break;
             case "VK_W":
                 lastKey = 'w';
-                System.out.println("W pressed");
                 break;
             case "VK_W_released":
-                System.out.println("W released");
                 break;
             case "VK_A":
                 lastKey = 'a';
