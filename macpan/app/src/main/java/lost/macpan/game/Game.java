@@ -4,9 +4,9 @@ package lost.macpan.game;
 import lost.macpan.utils.ResourceHandler;
 
 import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Main Game class, handels all the actions and logic
@@ -15,27 +15,20 @@ import java.util.List;
  */
 public class Game implements Runnable, ResourceHandler {
 
+    private int levelNr;
     private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
     private int[] initPlayerPos = new int[2]; // initPlayerPos[0] = initial x coordinate, initPlayerPos[1] = initial y coordinate
-
     private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
     private int maxRows;                    //maximum amount of tiles that can be drawn vertically
-
     private GameWindow gameWindow;
-
-    private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
     private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
-
     private Thread thread;
     private boolean gamePaused = false;
     private boolean threadRunning;
-
+    private final AtomicBoolean running = new AtomicBoolean(true);
     private char[][] map;                            //char-array of the map (map[0 - maxColumns][0 - maxRows])
-
     private int score;                               //for keeping track of the score
-
     private char lastKey;
-
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
     /**
@@ -70,8 +63,6 @@ public class Game implements Runnable, ResourceHandler {
     public final char extraLifeTile    = 'd'; // Tile that marks extra life item elements on the map
     public final char deathTouchTile   = 'e'; // Tile that marks death touch effect item elements on the map
 
-
-
     /**
      * Flag array is built as follows: <br>
      * [0] = player____[true]>alive____[false]>dead <br>
@@ -94,6 +85,7 @@ public class Game implements Runnable, ResourceHandler {
         gameWindow = pGameWindow;
         maxRows = pGameWindow.getMaxRows();
         maxColumns = pGameWindow.getMaxColumns();
+        levelNr = 1;
     }
 
     /**
@@ -129,7 +121,7 @@ public class Game implements Runnable, ResourceHandler {
      */
     public void startThread(){
         flags = new boolean[8];
-        map = importMapArray("test.txt"); //import the map test
+        map = importMapArray("level_1.txt"); //import the map test
         threadRunning = true;
         thread = new Thread(this);
         thread.start();
@@ -145,7 +137,8 @@ public class Game implements Runnable, ResourceHandler {
      * @author Sebastian
      */
     public void stopThread() {
-        threadRunning = false;
+        gamePaused = true;
+        running.set(false);
     }
 
     /**
@@ -163,73 +156,51 @@ public class Game implements Runnable, ResourceHandler {
     public void spielPausieren() {
         gamePaused = true;
         gameWindow.showPauseMenu();
-        //System.out.println("Spiel pausiert");
     }
 
     /**
      * Game Loop
-     * @author Leon
-     * @author Sebastian
      */
     @Override
     public void run() {
-        double frametime = 1000 / (double)framerate;                       //determines the time span any frame should be displayed
-        double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
-        long timeOld = System.currentTimeMillis();
-        long contframeCounter = 0;
-        int frameCounter = 0;
-        int tickCounter = 0;
+        long timer = System.currentTimeMillis();
+        long timer2 = timer;
+        int frames = 0 ;
+        while(running.get()) {
+            while (!gamePaused) {
+                gameWindow.repaint();
+                frames++;
 
-        while(threadRunning) {
+                if (System.currentTimeMillis() - timer2 > 250) {
+                    gameLogic();
+                    timer2 = System.currentTimeMillis();
+                }
+
+                // prints out framerate to terminal
+                if (System.currentTimeMillis() - timer > 1000) {
+                    System.out.println("fps: " + frames);
+                    frames = 0;
+                    timer = System.currentTimeMillis();
+                }
+
+                try {
+                    thread.sleep(14);     // roughly 60 fps
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             try {
-                double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-                if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                }
-
-                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                nextDrawTime += frametime;              //determines when the next frame should finish
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(!gamePaused) {
-
-                if (contframeCounter % (framerate / tickrate) == 0) {
-                    gameLogic((int)contframeCounter / (framerate/tickrate)); //Game Logic is called with a iterating number, starts with 0
-                    tickCounter++;
-                }
-
-                gameWindow.repaint(); //draws the frame
-
-                if (contframeCounter % framerate == 0) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
-                    double AverageTimeForOneFrame = ((double) (System.currentTimeMillis() - timeOld) / frameCounter);
-                    double AverageTimeForOneTick = ((double) (System.currentTimeMillis() - timeOld) / tickCounter);
-                    double TPS = 1000 / AverageTimeForOneTick;
-                    double FPS = 1000 / AverageTimeForOneFrame;
-                    System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
-                    System.out.println("TPS: " + new DecimalFormat("#0.00").format(TPS));
-                    frameCounter = 0;
-                    tickCounter = 0;
-                    timeOld = System.currentTimeMillis();
-                }
-                contframeCounter++;
-                frameCounter++;
-            } else {
-                timeOld = System.currentTimeMillis();
-            }
-
+                thread.sleep(20);
+            }catch(Exception e) {e.printStackTrace();}
         }
-        //System.out.println("Loop beendet");
     }
 
     /**
      * method for the Logic of the game, gets called every tickrate times per second
      * @author Sebastian
-     *
-     * @param pContLogicCounter should be called with a continuously rising number
      */
-    public void gameLogic(int pContLogicCounter){
+    public void gameLogic(){
 
         //SpeedBoost
         if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
@@ -269,15 +240,15 @@ public class Game implements Runnable, ResourceHandler {
             move(lastKey);
             lastKey = 'o';
         } else {
-            if(pContLogicCounter % 2 == 0){
-                move(lastKey);
-                lastKey = 'o';
-            }
+            move(lastKey);
+            lastKey = 'o';
         }
 
-        for(Enemy enemy : enemies) { // TODO: Enemy movement flexible
-            if(!flags[7]) enemy.move(); // Move Enemy objects unless freeze effect is active
-            if(enemyDetection(enemy)) break; // Detect whether the player collides with the enemy
+        if(!flags[7]) {
+            for (Enemy enemy : enemies) { // TODO: Enemy movement flexible
+                enemy.move(); // Move Enemy objects unless freeze effect is active
+                if (enemyDetection(enemy)) break; // Detect whether the player collides with the enemy
+            }
         }
     }
 
@@ -348,26 +319,59 @@ public class Game implements Runnable, ResourceHandler {
                 case coinTile -> {
                     if(flags[5]) score += 20;
                     else score +=10;
+                    break;
                 } case enemyTile -> {
-                    enemyDetection();
+                    for (Enemy enemy : enemies) {
+                        if (enemyDetection(enemy))
+                            break;
+                    }
+                    break;
                 } case keyTile -> {
                     flags[3] = true;
                     flags[6] = true;
+                    break;
                 } case exitTile -> {
                     if(!flags[3]) return; // TODO: Wofür?
                     else {
-                        stopThread();
-                        gameWindow.showWinnerMenu();
-                        //Bildschirm (Todes oder Erfolgs)
+                        levelNr++;
+                        flags[3] = false;
+                        flags[6] = false;
+                        switch(levelNr){
+                            case 2:
+                                map = importMapArray("level_2.txt");
+                                break;
+                            case 3:
+                                map = importMapArray("level_3.txt");
+                                break;
+                            default:
+                                gameWindow.showWinnerMenu();
+                                stopThread();
+                        }
                     }
+                    break;
                 }
-                case speedEffectTile    -> flags[2] = true; // Geschwindigkeitsbuff
-                case freezeEffectTile   -> flags[7] = true; // Gegner einfrieren
-                case coinBoostTile      -> flags[5] = true; // Münzboost
-                case extraLifeTile      -> flags[1] = true; // Zusatzleben
-                case deathTouchTile     -> flags[4] = true; // Todesberührung
+                case speedEffectTile -> {
+                    flags[2] = true;
+                    break;
+                }
+                case freezeEffectTile -> {
+                    flags[7] = true;
+                    break;
+                }
+                case coinBoostTile -> {
+                    flags[5] = true;
+                    break;
+                }
+                case extraLifeTile -> {
+                    flags[1] = true;
+                    break;
+                }
+                case deathTouchTile -> {
+                    flags[4] = true;
+                    break;
+                }
             }
-        } else System.out.println("Wand im weg"); // TODO: remove debugging message
+        }
     }
 
     /**
@@ -432,28 +436,13 @@ public class Game implements Runnable, ResourceHandler {
                     map[initPlayerPos[0]][initPlayerPos[1]] = playerTile;
                 } else {
                     flags[0] = false; // Kill player
-                    stopThread();
                     gameWindow.showDeathWindow();
+                    stopThread();
                 }
             }
             return true;
         }
         return false;
-    }
-
-    /**
-     * Extension to method 'enemyDetection(Enemy)'
-     * Instead of checking for one specific enemy, it looks through the whole list
-     * @return whether a collision was detected or not
-     * @author Simon Bonnie
-     */
-    public boolean enemyDetection() {
-        boolean rueckgabe = false;
-        for (Enemy enemy : enemies) {
-            rueckgabe = enemyDetection(enemy);
-            if(rueckgabe) break;
-        }
-        return rueckgabe;
     }
 
     /**

@@ -31,8 +31,8 @@ public class GameWindow extends JPanel {
     private boolean[] currentFlags;
     private int currentScore;
 
-    private int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+    private int maxColumns = 30;                    //maximum amount of tiles that can be drawn horizontally
+    private int maxRows = 20;                       //maximum amount of tiles that can be drawn vertically
 
 
     private int originalTileSize = 16;              //corresponds to the sprite size

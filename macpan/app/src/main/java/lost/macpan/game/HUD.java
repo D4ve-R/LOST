@@ -38,7 +38,7 @@ public class HUD implements ResourceHandler {
         try {
             InputStream stream = getFileResourcesAsStream("fonts/alagard.ttf");
             font = Font.createFont(Font.TRUETYPE_FONT, stream);
-            font = font.deriveFont(Font.PLAIN, 31);
+            font = font.deriveFont(Font.PLAIN, 25);
         } catch (FontFormatException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -77,10 +77,13 @@ public class HUD implements ResourceHandler {
         g.setFont(font);
         g.setColor(Color.white);
 
-        //draws HUD bar
+        g.drawImage(fieldOpener, pTileSize * iterator++, hudHeight * pTileSize, pTileSize, pTileSize, null);
+
         for(;iterator < 6; iterator++) {
-            g.drawImage(fieldOpener, pTileSize * iterator, hudHeight * pTileSize, pTileSize, pTileSize, null);
+            g.drawImage(fieldSpacer, pTileSize * iterator, hudHeight * pTileSize, pTileSize, pTileSize, null);
         }
+
+        g.drawImage(fieldCloser, pTileSize * iterator++, hudHeight * pTileSize, pTileSize, pTileSize, null);
 
         g.drawImage(filler, pTileSize * iterator++, hudHeight * pTileSize, pTileSize, pTileSize, null);
 
@@ -106,6 +109,6 @@ public class HUD implements ResourceHandler {
             g.drawImage(freezeEffect, pTileSize * 13 + 2, hudHeight * pTileSize + 1, pTileSize-2, pTileSize-2, null);
 
         //draws Score
-        g.drawString("SCORE: " + pScore, 15, hudHeight * pTileSize - 5);
+        g.drawString("SCORE: " + pScore, 15, 665);
     }
 }
