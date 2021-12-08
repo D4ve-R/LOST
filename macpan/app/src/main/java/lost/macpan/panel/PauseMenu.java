@@ -24,7 +24,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private final JButton saveBtn = new JButton("Spiel Speichern");
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
-    private final JButton backBtn = new JButton("Zum Hauptmenu");
+    private final JButton backBtn = new JButton("Zur\u00fcck zum Hauptmenu");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;

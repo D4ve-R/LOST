@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
  * @author fatih
  */
 public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton backBtn = new JButton("Zurück");
+    private final JButton backBtn = new JButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
