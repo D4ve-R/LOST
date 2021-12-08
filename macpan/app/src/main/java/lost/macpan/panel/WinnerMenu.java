@@ -1,10 +1,10 @@
 package lost.macpan.panel;
 
-import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -18,14 +18,14 @@ import java.awt.event.ActionListener;
  * @author fatih
  */
 public class WinnerMenu extends JPanel implements ActionListener, ResourceHandler {
-    private App parentFrame;
+    private JFrame parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
     private Image backgroundImg;
     private Timer timer;
 
-    public WinnerMenu(App frame) {
+    public WinnerMenu(JFrame frame) {
         int delay = 5000;
         timer = new Timer(delay, this);
         parentFrame = frame;

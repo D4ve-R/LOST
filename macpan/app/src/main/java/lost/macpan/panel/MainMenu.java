@@ -8,13 +8,13 @@
 
 package lost.macpan.panel;
 
-import lost.macpan.App;
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
@@ -25,8 +25,6 @@ import java.awt.event.ActionListener;
  * Die Klasse MainMenu stellt das Hauptmenü des Spiels auf dem JPanel dar.
  */
 public class MainMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton toggleMusic = new JButton("Toggle music");
-    private boolean playing = true;
 
     // Erstellen der einzelnen Buttons
     private final JButton playBtn = new JButton("Spiel Starten");
@@ -34,7 +32,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton quitBtn = new JButton("Spiel Beenden");
-    private App parentFrame;
+    private JFrame parentFrame;
     private Image img;
     private JLabel label;
     private JLabel background;
@@ -45,9 +43,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Hauptmenue gehören auf dem Frame
      * @param frame
      */
-    public MainMenu(App frame) {
+    public MainMenu(JFrame frame) {
         parentFrame = frame;
-        setFont(parentFrame.fontWrite);
 
 
         try {
@@ -76,7 +73,6 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.setBounds(350, 420, 240, 50);
         optionsBtn.setBounds(350, 480, 240, 50);
         quitBtn.setBounds(350, 540, 240, 50);
-        toggleMusic.setBounds(350, 600, 240, 50);
 
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);
@@ -85,7 +81,6 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         add(highscoresBtn);
         add(optionsBtn);
         add(quitBtn);
-        add(toggleMusic);
         add(background);
         //Buttons werden dem Listener zugeordnet
         playBtn.addActionListener(this);
@@ -93,25 +88,17 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
-        toggleMusic.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-            parentFrame.stopMusic();
-            parentFrame.playMusicLooped(2, false);
             GameWindow gameWindow = new GameWindow(parentFrame);
             parentFrame.setContentPane(gameWindow);
             gameWindow.start();
             parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {
-            parentFrame.stopMusic();
-            parentFrame.playMusicLooped(1, false);
-            WinnerMenu winnerMenu = new WinnerMenu(parentFrame);
-            parentFrame.setContentPane(winnerMenu);
-            parentFrame.revalidate();
 
         } else if (e.getSource() == highscoresBtn) {
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
@@ -127,14 +114,6 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
-        } else if (e.getSource() == toggleMusic) {
-            if (playing) {
-                parentFrame.music.pause();
-                playing = false;
-            } else {
-                parentFrame.music.resume();
-                playing = true;
-            }
         }
     }
 }

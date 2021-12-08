@@ -1,11 +1,11 @@
 package lost.macpan.panel;
 
-import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
@@ -25,7 +25,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton backBtn = new JButton("Zum Hauptmenu");
-    private App parentFrame;
+    private JFrame parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
@@ -36,7 +36,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
      *
      * @param frame
      */
-    public PauseMenu(App frame) {
+    public PauseMenu(JFrame frame) {
         parentFrame = frame;
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Pause.png"));

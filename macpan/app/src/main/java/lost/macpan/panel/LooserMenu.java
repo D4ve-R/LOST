@@ -1,10 +1,10 @@
 package lost.macpan.panel;
 
-import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -18,19 +18,17 @@ import java.awt.event.ActionListener;
  * @author fatih
  */
 public class LooserMenu extends JPanel implements ActionListener, ResourceHandler {
-    private App parentFrame;
+    private JFrame parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
     private Image backgroundImg;
     private Timer timer;
 
-    public LooserMenu(App frame) {
+    public LooserMenu(JFrame frame) {
         int delay = 5000;
         timer = new Timer(delay, this);
         parentFrame = frame;
-        parentFrame.stopMusic();
-        parentFrame.playMusicOnce(3, false);
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Loose.png"));
         } catch (Exception e) {
@@ -55,7 +53,6 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         add(label);
         add(background);
         timer.start();
-        parentFrame.playMusicLooped(0, false);
     }
 
     @Override
