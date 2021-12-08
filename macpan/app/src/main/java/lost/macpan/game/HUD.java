@@ -18,7 +18,6 @@ import java.io.InputStream;
  */
 public class HUD implements ResourceHandler {
     //attributes
-    GameWindow game;
     BufferedImage fieldOpener;
     BufferedImage fieldSpacer;
     BufferedImage fieldCloser;
@@ -30,11 +29,10 @@ public class HUD implements ResourceHandler {
     BufferedImage attack;
     BufferedImage boostEffect;
     BufferedImage freezeEffect;
-    int iterator;   //used for drawing the HUD bar
+
 
     //constructor
-    public HUD (GameWindow game){
-        this.game = game;
+    public HUD (){
         fetchSprites();
     }
 
@@ -78,44 +76,44 @@ public class HUD implements ResourceHandler {
      * @param g entity to be drawn to
      * @param hudHeight where the HUD is to be drawn
      */
-    public void draw(Graphics2D g, int hudHeight){
-        iterator = 0;
+    public void draw(Graphics2D g, int hudHeight,int pScore, int pTileSize, boolean[] pFlags, int pMaxColumns){
+        int iterator = 0;
         g.setFont(fontWrite);
         g.setColor(Color.white);
 
         //draws HUD bar
-        g.drawImage(fieldOpener, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(fieldSpacer, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(fieldSpacer, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(fieldSpacer, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(fieldSpacer, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(fieldSpacer, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(fieldCloser, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(filler, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(effectField, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(effectField, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(effectField, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(effectField, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(effectField, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        g.drawImage(effectField, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        for (int i = iterator; i < game.maxColumns; i++)
-            g.drawImage(filler, game.tileSize * iterator++, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
+        g.drawImage(fieldOpener, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(fieldSpacer, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(fieldCloser, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(filler, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        g.drawImage(effectField, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        for (int i = iterator; i < pMaxColumns; i++)
+            g.drawImage(filler, pTileSize * iterator++, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
 
         //draws active effects
-        if (game.flags[3])
-            g.drawImage(key, game.tileSize * 8, (hudHeight - 1) * game.tileSize, game.tileSize, game.tileSize, null);
-        if (game.flags[1])
-            g.drawImage(lifeEffect, game.tileSize * 9 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.flags[2])
-            g.drawImage(speedEffect, game.tileSize * 10 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.flags[4])
-            g.drawImage(attack, game.tileSize * 11 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.flags[5])
-            g.drawImage(boostEffect, game.tileSize * 12 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
-        if (game.flags[7])
-            g.drawImage(freezeEffect, game.tileSize * 13 + 2, (hudHeight - 1) * game.tileSize + 1, game.tileSize-2, game.tileSize-2, null);
+        if (pFlags[3])
+            g.drawImage(key, pTileSize * 8, (hudHeight - 1) * pTileSize, pTileSize, pTileSize, null);
+        if (pFlags[1])
+            g.drawImage(lifeEffect, pTileSize * 9 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+        if (pFlags[2])
+            g.drawImage(speedEffect, pTileSize * 10 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+        if (pFlags[4])
+            g.drawImage(attack, pTileSize * 11 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+        if (pFlags[5])
+            g.drawImage(boostEffect, pTileSize * 12 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
+        if (pFlags[7])
+            g.drawImage(freezeEffect, pTileSize * 13 + 2, (hudHeight - 1) * pTileSize + 1, pTileSize-2, pTileSize-2, null);
 
         //draws Score
-        g.drawString("SCORE: " + game.score, 15, hudHeight * game.tileSize - 5);
+        g.drawString("SCORE: " + pScore, 15, hudHeight * pTileSize - 5);
     }
 }

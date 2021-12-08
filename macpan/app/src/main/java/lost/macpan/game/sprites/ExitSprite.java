@@ -22,11 +22,12 @@ public class ExitSprite extends Sprite{
     private BufferedImage exit6;
     private BufferedImage exit7;
     private BufferedImage exit8;
+    private BufferedImage wall;
     private static long animationStart = 0; //used for keeping track of exit animation progression
 
     //constructor
-    public ExitSprite(GameWindow game) {
-        super(game);
+    public ExitSprite(int pTileSize) {
+        super(pTileSize);
     }
 
     /**
@@ -43,6 +44,7 @@ public class ExitSprite extends Sprite{
             exit6 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-6.png.png"));
             exit7 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-7.png.png"));
             exit8 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-8.png.png"));
+            wall = ImageIO.read(getFileResourcesAsStream("images/Wall.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,9 +56,9 @@ public class ExitSprite extends Sprite{
      * @param x x-coordinate measured in tiles
      * @param y y-coordinate measured in tiles
      */
-    public void draw(Graphics2D g, int x, int y) {
-        super.draw(g, x, y, game.wall);                             //underlays wall sprite
-        super.draw(g, x, y, exitSpriteSelect(game.flags[6]));     //draws exit sprite
+    public void draw(Graphics2D g, int x, int y, boolean[] pFlags) {
+        super.draw(g, x, y, wall);                             //underlays wall sprite
+        super.draw(g, x, y, exitSpriteSelect(pFlags[6]));     //draws exit sprite
     }
 
     /**

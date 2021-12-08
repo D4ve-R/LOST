@@ -1,189 +1,167 @@
 package lost.macpan.game;
 
-import lost.macpan.game.sprites.CoinSprite;
-import lost.macpan.game.sprites.EnemySprite;
-import lost.macpan.game.sprites.ExitSprite;
-import lost.macpan.game.sprites.PlayerSprite;
-import lost.macpan.game.sprites.Sprite;
-import lost.macpan.panel.LooserMenu;
-import lost.macpan.panel.WinnerMenu;
-import lost.macpan.utils.ResourceHandler;
-
-import javax.imageio.ImageIO;
+import lost.macpan.game.sprites.*;
+import lost.macpan.panel.*;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Class for displaying gameplay
  * @author Leon Wigro
  */
-public class GameWindow extends JPanel implements Runnable, ResourceHandler, KeyListener, ActionListener {
+public class GameWindow extends JPanel {
     //attributes
-    Timer timer;
-    private  int[] playerPos;
-    char lastKey;
+
+    private Game game;
+
+    private char[][] currentMap;
+    private boolean currentFlags[];
+    private int currentScore;
+
+    private int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
+    private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+
 
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int tileScale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     public int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
-    protected int maxColumns = 30;                  //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 21;                       //maximum amount of tiles that can be drawn vertically
+
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
-    private int framerate = 60;                     //rate of draw loop repetitions
-    public char[][] map;                            //char-array from which a frame will be drawn
-    public int score;                               //for keeping track of the score
+
+
+
     private int hudHeight = 21;                     //determines the height of the HUD
-    private Thread thread;
-    private boolean gameRunning = false;
-    public JFrame parentFrame;
-    private boolean threadRunning;
+    private JFrame parentFrame;
+    private Container before;
 
     private double windowScale;     //scaling factor for fullscreen
     private int windowOffset;       //offset to center gameplay in fullscreen
 
-    public BufferedImage path;
-    public BufferedImage wall;
+    PlayerSprite playerSprite = new PlayerSprite(tileSize);     //handles drawing the player sprite
+    EnemySprite enemySprite = new EnemySprite(tileSize);        //handles drawing enemy sprites
+    ExitSprite exitSprite = new ExitSprite(tileSize);           //handles drawing the exit sprite
+    CoinSprite coinSprite = new CoinSprite(tileSize);           //handles drawing coin sprites
+    Sprite sprite = new Sprite(tileSize);                       //handles drawing miscellaneous sprites
+    HUD hud = new HUD();                                        //handles drawing the in-game HUD
 
-    PlayerSprite playerSprite = new PlayerSprite(this);     //handles drawing the player sprite
-    EnemySprite enemySprite = new EnemySprite(this);        //handles drawing enemy sprites
-    ExitSprite exitSprite = new ExitSprite(this);           //handles drawing the exit sprite
-    CoinSprite coinSprite = new CoinSprite(this);           //handles drawing coin sprites
-    Sprite sprite = new Sprite(this);                       //handles drawing miscellaneous sprites
-    HUD hud = new HUD(this);                                //handles drawing the in-game HUD
 
     /**
-     * Flag array is built as follows: <br>
-     * [0] = player____[true]>alive____[false]>dead <br>
-     * [1] = armor (extra life)____[true]>collected____[false]>not collected <br>
-     * [2] = speed boost____[true]>active____[false]>inactive <br>
-     * [3] = key____[true]>collected____[false]>not collected <br>
-     * [4] = pan (death touch)____[true]>active____[false]>inactive <br>
-     * [5] = coin booster____[true]>active____[false]>inactive <br>
-     * [6] = exit unlock____[true]>locked____[false]>unlocked <br>
-     * [7] = enemy freeze____[true]>active____[false]>inactive   <br>
+     * Constructor
+     *
+     * @param frame the parent Jframe
+     * @param beforeMenu the container of the previous menu
      */
-    public boolean flags[];
-
-    /**
-     * method for fetching sprites from  the "images" folder and assigning them to the corresponding BufferedImage sprite
-     */
-    public void fetchSprites() {
-        try {
-            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
-            wall = ImageIO.read(getFileResourcesAsStream("images/Wall.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public GameWindow(JFrame frame){
+    public GameWindow(JFrame frame, Container beforeMenu){
+        game = new Game(this);
         parentFrame = frame;
-        //parentFrame.setSize(new Dimension(width, height));
+        before = beforeMenu;
+
+        setKeyBindings();               //Set all Key bindings
+
+        setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
-        flags = new boolean[8];
-        map = importMapArray("test.txt"); //import the map test
+
         Dimension panelSize = parentFrame.getContentPane().getSize();                              //gets screen size
         windowScale = (double) panelSize.height / height;                                          //sets scaling factor
         windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
+
+        game.startThread();
     }
 
+
     /**
-     * Thread starter
+     * returns the maxColumns
+     * @author Sebastian
+     * @return int maxColumns
      */
-    public void start(){
-        thread = new Thread(this);
-        thread.start();
-        gameRunning = true;
-        threadRunning = true;
-        this.addKeyListener(this);
-        this.setFocusable(true);
-        this.grabFocus();
-
-        getPlayerPos();
-
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameLogic();
-            }
-        },0,500);
-
+    public int getMaxColumns() {
+        return maxColumns;
     }
 
-
     /**
-     * draw loop
+     * returns the maxRows
+     * @author Sebastian
+     * @return int maxRows
      */
-    @Override
-    public void run() {
-        fetchSprites();                                         //assigns sprites
-        double frametime = 1000000000 / framerate;              //determines the time span any frame should be displayed
-        double nextDrawTime = System.nanoTime() + frametime;    //determines at which point in time the next frame should start to be drawn
-        long timeOld = System.nanoTime();
-        int i = 0;
-        while(threadRunning) {
-            while (gameRunning) {                                  //start of the draw loop
-                //gameLogic();                                        //TO BE REPLACED see above
-                repaint();                                          //draws the frame
-
-                try {
-                    double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;    //determines for how long the current frame should continue to be displayed
-                    if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                        remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                    }
-                    thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                    nextDrawTime += frametime;              //determines when the next frame should finish
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if (i == 100) { //every 100 Frames the average FPS is calculated over the last 100 Frames
-                    double AverageTimeForOneFrame = (System.nanoTime() - timeOld) / 100;
-                    long FPS = Math.round((1000000000 / AverageTimeForOneFrame));
-                    System.out.println("FPS: " + FPS);
-                    i = 0;
-                    timeOld = System.nanoTime();
-                }
-                i++;
-            }
-        }
-        System.out.println("Loop beendet");
+    public int getMaxRows() {
+        return maxRows;
     }
 
     /**
-     * generic method TO BE REPLACED
+     * shows the death window
+     * @author Sebastian
+     *
      */
-    public void gameLogic(){
-        //score = 42069;
-        /*for (int i = 1; i < 8; i++) {
-            flags[i] = true;
-        }*/
-        move(lastKey);
-        lastKey = 'o';
+    public void showDeathWindow(){
+        LooserMenu looserMenu = new LooserMenu(parentFrame, before);
+        parentFrame.setContentPane(looserMenu);
+        parentFrame.revalidate();
     }
 
     /**
-     * method for drawing a frame <br>
+     * shows the Winner window
+     * @author Sebastian
+     *
+     */
+    public void showWinnerMenu(){
+        WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before);
+        parentFrame.setContentPane(winnerMenu);
+        parentFrame.revalidate();
+    }
+
+    /**
+     * shows the pause window
+     * @author Sebastian
+     *
+     */
+    public void showPauseMenu() {
+        PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
+        parentFrame.setContentPane(pauseMenu);
+        parentFrame.revalidate();
+    }
+
+    /**
+     * gets the current score, map and flags from the game Object
+     * @author Sebastian
+     *
+     */
+    public void allesAktualisieren(){
+        currentFlags = game.getFlags();
+        currentMap = game.getMap();
+        currentScore = game.getScore();
+    }
+
+    /**
+     * Calls the resume game method on the game Object
+     * @author Sebastian
+     *
+     */
+    public void spielFortsetzen(){
+        game.spielFortsetzen();
+    }
+
+
+    /**
+     * method for drawing a frame
      * can currently only draw sprites, no integration for any overly yet
      * @param g not to be edited
      */
     public void paintComponent(Graphics g){
+        allesAktualisieren();                       //Updates all the infromation
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         if (parentFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)
@@ -191,164 +169,82 @@ public class GameWindow extends JPanel implements Runnable, ResourceHandler, Key
         g2.scale(windowScale, windowScale);         //scales the picture according to screen size
         for (int i = 0; i < maxColumns; i++){       //parses the x-coordinate of "map"
             for (int j = 0; j < maxRows; j++){      //parses the y-coordinate of "map"
-                char c = map[i][j];                 //fetches currently examined tile identifier
+                char c = currentMap[i][j];                 //fetches currently examined tile identifier
                 if (c == 'p')
                     playerSprite.draw(g2, i, j);    //handles player sprite
                 else if (c == 'g')
                     enemySprite.draw(g2, i, j);     //handles enemy sprite
                 else if (c == 'x')
-                    exitSprite.draw(g2, i, j);      //handles exit sprite
+                    exitSprite.draw(g2, i, j, currentFlags);      //handles exit sprite
                 else if (c == '*')
-                    coinSprite.draw(g2, i, j);      //handles coin sprite
+                    coinSprite.draw(g2, i, j, currentFlags);      //handles coin sprite
                 else
                     sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
-        hud.draw(g2, hudHeight);
+        hud.draw(g2, hudHeight, currentScore, tileSize, currentFlags, maxColumns);
         g2.dispose();
     }
 
     /**
-     * method for importing a map as a char array
+     * sets all the key bindings
      * @author Sebastian
      *
-     * @param pFileName name of the map to load (has to be in the levels folder)
-     * @return charArray of the map at the filename
      */
-    private char[][] importMapArray(String pFileName){
+    private void setKeyBindings() {
+        ActionMap actionMap = getActionMap();
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = getInputMap(condition);
 
-        char[][] map = new char[maxColumns][maxRows];
-        String mapString = "";
+        String vkW = "VK_W";
+        String vkA = "VK_A";
+        String vkS = "VK_S";
+        String vkD = "VK_D";
+        String vkESCAPE = "VK_ESCAPE";
 
-        try {
-            InputStream inputStream = getFileResourcesAsStream("levels/"+pFileName);
-            mapString = convertStreamToString(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String released = "_released";
 
-        String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0,false), vkW);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0,false), vkA);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0,false), vkS);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0,false), vkD);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0,false), vkESCAPE);
 
-        for(int i = 0; i < Math.min(rows.length,maxRows);i++ ) {           //For every row
-            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) {  //for every char in the row
-                map[o][i] = rows[i].charAt(o);            //insert char into the map array
-            }
-        }
-        return map;
-    }
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0,true), vkW + released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0,true), vkA+ released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0,true), vkS+ released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0,true), vkD+ released);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0,true), vkESCAPE+ released);
 
-    public void getPlayerPos(){
-        playerPos = new int [2];
+        actionMap.put(vkW, new KeyAction(vkW));
+        actionMap.put(vkA, new KeyAction(vkA));
+        actionMap.put(vkS, new KeyAction(vkS));
+        actionMap.put(vkD, new KeyAction(vkD));
+        actionMap.put(vkESCAPE, new KeyAction(vkESCAPE));
 
-        for (int i = 0; i < maxColumns; i++){
-            for (int j = 0; j < maxRows; j++) {
-                if(map[i][j] == 'p'){
-                    playerPos[0] = i;
-                    playerPos[1] = j;
-                    System.out.println(i + "und" + j);
-                    return;
-                }
-            }
-        }
-    }
+        actionMap.put(vkW + released, new KeyAction(vkW+ released));
+        actionMap.put(vkA+ released, new KeyAction(vkA+ released));
+        actionMap.put(vkS+ released, new KeyAction(vkS+ released));
+        actionMap.put(vkD+ released, new KeyAction(vkD+ released));
+        actionMap.put(vkESCAPE+ released, new KeyAction(vkESCAPE+ released));
 
-    public void move(char key){ //momentan mit globaler variable
-        if(key == 'w') {
-            moveToNew(0,-1);
-        } else if(key == 's'){
-            moveToNew(0,1);
-        } else if(key == 'a'){
-            moveToNew(-1,0);
-        } else if(key == 'd'){
-            moveToNew(1,0);
-        }
 
     }
 
-    public void moveToNew(int x, int y) {
-        char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
-        if(onNewPos == 'h') { // Momentan
-            System.out.println("Wand im weg");
+    /**
+     * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
+     * @author Sebastian
+     *
+     */
+    private class KeyAction extends AbstractAction {
+        public KeyAction(String actionCommand) {
+            putValue(ACTION_COMMAND_KEY, actionCommand);
         }
-        else{
-            if(onNewPos == '*'){
-                if(flags[5] == true){
-                    score += 20;
-                }else{
-                    score +=10;
-                }
 
-            }
-            else if(onNewPos == 'g'){
-                if(flags[1]){
-                    flags[1] = false;
-                }
-                else {
-                    flags[0] = false;
-                    gameRunning = false;
-
-                    LooserMenu looserMenu = new LooserMenu(parentFrame);
-                    parentFrame.setContentPane(looserMenu);
-                    parentFrame.revalidate();
-                    //Direkt mit Todes Bildschirm
-                }
-            }
-            else if(onNewPos == 'k'){
-                flags[3] = true;
-            }else if(onNewPos == 'x') {
-                if(!flags[3] == true){
-                    return;
-                }else{
-                    gameRunning = false;
-                    WinnerMenu winnerMenu = new WinnerMenu(parentFrame);
-                    parentFrame.setContentPane(winnerMenu);
-                    parentFrame.revalidate();
-                    //Bildschirm (Todes oder Erfolgs)
-                }
-            }
-            else if(onNewPos == 'a') {//Geschwindigkeitsbuff
-                flags[2] = true;
-            } else if(onNewPos == 'b') {//Gegner einfrieren
-                flags[7] = true;
-            } else if(onNewPos == 'c'){//Münzboost
-                flags[5] = true;
-            } else if(onNewPos == 'd'){//Zusatzleben
-                flags[1] = true;
-            }else if(onNewPos == 'e'){//Todesberührung
-                flags[4] = true;
-            }
-            geh(x,y);
+        @Override
+        public void actionPerformed(ActionEvent actionEvt) {
+            game.newKeyAction(actionEvt.getActionCommand());
         }
     }
 
-    public void geh(int x, int y){
-        map[playerPos[0]][playerPos[1]] = '.';
-        playerPos[0] += x;
-        playerPos[1] += y;
-        map[playerPos[0]][playerPos[1]] = 'p';
-    }
-
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode()== KeyEvent.VK_ESCAPE)
-        {
-            System.out.println("Geht");
-        }
-        lastKey = e.getKeyChar();
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-    @Override
-    public void actionPerformed(ActionEvent e){
-
-    }
 }

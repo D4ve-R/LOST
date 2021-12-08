@@ -32,6 +32,9 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton quitBtn = new JButton("Spiel Beenden");
+    /*
+        parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
+     */
     private JFrame parentFrame;
     private Image img;
     private JLabel label;
@@ -41,6 +44,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
 
     /**
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Hauptmenue gehören auf dem Frame
+     * Update durch Janosch & William
+     *
      * @param frame
      */
     public MainMenu(JFrame frame) {
@@ -93,9 +98,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
-            GameWindow gameWindow = new GameWindow(parentFrame);
+            GameWindow gameWindow = new GameWindow(parentFrame, this);
             parentFrame.setContentPane(gameWindow);
-            gameWindow.start();
             parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {

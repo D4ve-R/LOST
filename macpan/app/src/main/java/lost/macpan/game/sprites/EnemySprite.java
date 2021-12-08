@@ -18,10 +18,11 @@ public class EnemySprite extends Sprite{
     private BufferedImage enemy2;
     private BufferedImage enemy3;
     private BufferedImage enemy4;
+    private BufferedImage path;
 
     //constructor
-    public EnemySprite(GameWindow game) {
-        super(game);
+    public EnemySprite(int pTileSize) {
+        super(pTileSize);
     }
 
     /**
@@ -34,6 +35,7 @@ public class EnemySprite extends Sprite{
             enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-2.png.png"));
             enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-3.png.png"));
             enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-4.png.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +48,7 @@ public class EnemySprite extends Sprite{
      * @param y y-coordinate measured in tiles
      */
     public void draw(Graphics2D g, int x, int y) {
-        super.draw(g, x, y, game.path);             //underlays path sprite
+        super.draw(g, x, y, path);             //underlays path sprite
         super.draw(g, x, y, enemySpriteSelect());   //draws enemy sprite
     }
 

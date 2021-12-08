@@ -71,6 +71,9 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
                 parentFrame.setContentPane(before);
                 parentFrame.revalidate();
             } else if (before instanceof PauseMenu) {
+                //ergänzung Janosch & William
+                parentFrame.setContentPane(before);
+                parentFrame.revalidate();
                 //Spiel weiter Spielen
             }
         } else if (e.getSource() == keyBtn) {

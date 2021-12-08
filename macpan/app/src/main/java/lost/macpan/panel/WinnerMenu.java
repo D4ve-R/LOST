@@ -9,11 +9,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Image;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
  * Die Klasse WinnerMenu zeigt dem Spieler nach einem Spieldurchlauf den erreichten Score und bietet dem Spieler die Möglichkeit seinen Namen einzugragen
+ * Update durch Janosch & William
  *
  * @author fatih
  */
@@ -24,10 +26,12 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     private JLabel background;
     private Image backgroundImg;
     private Timer timer;
+    private Container before;
 
-    public WinnerMenu(JFrame frame) {
+    public WinnerMenu(JFrame frame, Container beforeWindow) {
         int delay = 5000;
         timer = new Timer(delay, this);
+        before = beforeWindow;
         parentFrame = frame;
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
@@ -59,8 +63,8 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.stop();
-        MainMenu mainMenu = new MainMenu(parentFrame);
-        parentFrame.setContentPane(mainMenu);
+
+        parentFrame.setContentPane(before);
         parentFrame.revalidate();
     }
 }

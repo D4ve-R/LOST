@@ -14,6 +14,6 @@
     <inspection_tool class="AndroidLintUntranslatable" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="AndroidLintUnusedQuantity" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="OnDemandImport" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="OnDemandImport" enabled="false" level="ERROR" enabled_by_default="false" />
   </profile>
 </component>
