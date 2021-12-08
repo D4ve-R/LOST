@@ -1,11 +1,11 @@
 package lost.macpan.panel;
 
-import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Container;
@@ -24,12 +24,12 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
     private final JButton backBtn = new JButton("Zuruck");
     private JLabel label;
     private Image img;
-    private App parentFrame;
+    private JFrame parentFrame;
     private Container before;
     private JLabel background;
     private Image backgroundImg;
 
-    public OptionsMenu(App frame, Container beforeMenu) {
+    public OptionsMenu(JFrame frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
         try {
