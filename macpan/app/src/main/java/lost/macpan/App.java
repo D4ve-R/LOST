@@ -42,7 +42,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         Font fontRead = null; //"fonts/alagard.ttf"
         {
             try {
-                InputStream stream = getFileResourcesAsStream("fonts/alagard.ttf");
+                InputStream stream = getFileResourcesAsStream("fonts/alagard_bearbeitet.ttf");
                 fontRead = Font.createFont(Font.TRUETYPE_FONT, stream);
             } catch (FontFormatException e) {
                 e.printStackTrace();
