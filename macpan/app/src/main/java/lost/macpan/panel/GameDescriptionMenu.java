@@ -1,11 +1,11 @@
 package lost.macpan.panel;
 
+import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Container;
@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
  */
 public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton backBtn = new JButton("Zurück");
-    private JFrame parentFrame;
+    private App parentFrame;
     private JLabel label;
     private Image img;
     private Container before;
@@ -28,7 +28,7 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
     private Image descriptionImg;
     private JLabel descriptionLabel;
 
-    public GameDescriptionMenu(JFrame frame, Container beforeMenu) {
+    public GameDescriptionMenu(App frame, Container beforeMenu) {
         before = beforeMenu;
         parentFrame = frame;
 
