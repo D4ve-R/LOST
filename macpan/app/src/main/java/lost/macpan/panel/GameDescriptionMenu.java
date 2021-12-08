@@ -59,8 +59,8 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         }
         setLayout(null);
         descriptionLabel.setBounds(220, 200, 514, 361);
-        background.setBounds(0, 0, 950, 700);
-        label.setBounds(-20, 10, 950, 200);
+        background.setBounds(0, 0, 960, 700);
+        label.setBounds(-20, 10, 960, 200);
         backBtn.setBounds(30, 550, 160, 50);
         add(descriptionLabel);
         add(label);

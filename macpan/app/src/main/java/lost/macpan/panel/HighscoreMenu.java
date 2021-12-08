@@ -159,8 +159,8 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         }
         highscoreBackground.setBounds(220, 200, 514, 361);
         add(highscoreBackground);
-        background.setBounds(0, 0, 950, 700);
-        label.setBounds(-20, 10, 950, 200);
+        background.setBounds(0, 0, 960, 700);
+        label.setBounds(-20, 10, 960, 200);
         backBtn.setBounds(30, 550, 160, 50);
         add(label);
         add(backBtn);
