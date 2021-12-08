@@ -1,6 +1,5 @@
 package lost.macpan.game;
 
-
 import lost.macpan.utils.ResourceHandler;
 
 import java.io.InputStream;
@@ -23,20 +22,11 @@ public class Game implements Runnable, ResourceHandler {
     private GameWindow gameWindow;
     private Thread thread;
     private boolean gamePaused = false;
-    private boolean threadRunning;
     private final AtomicBoolean running = new AtomicBoolean(true);
     private char[][] map;                            //char-array of the map (map[0 - maxColumns][0 - maxRows])
     private int score;                               //for keeping track of the score
     private char lastKey;
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
-
-    /**
-     * Cooldown for Boosts in seconds
-     */
-    private final double SpeedCooldown = 5;
-    private final double DeathTouchCooldown = 5;
-    private final double CoinBoostCooldown = 5;
-    private final double FreezeCooldown = 5;
 
     /**
      * Internal Timers for reseting the Flags
@@ -121,7 +111,6 @@ public class Game implements Runnable, ResourceHandler {
     public void startThread(){
         flags = new boolean[8];
         map = importMapArray("level_1.txt"); //import the map test
-        threadRunning = true;
         thread = new Thread(this);
         thread.start();
 
@@ -210,25 +199,29 @@ public class Game implements Runnable, ResourceHandler {
      */
     public void gameLogic(){
 
-        //SpeedBoost
         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
         int tickrate = 4;
-        if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
+        // SpeedBoost
+        double speedCooldown = 5;
+        if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(speedCooldown * tickrate) + 1;
         if(flags[2] && TimerSpeed == 1) flags[2] = false;
         if(TimerSpeed > 0) TimerSpeed--;
 
         //Death Touch
-        if(flags[4] && TimerDeathTouch == 0) TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
+        double deathTouchCooldown = 5;
+        if(flags[4] && TimerDeathTouch == 0) TimerDeathTouch = (int)(deathTouchCooldown * tickrate) + 1;
         if(flags[4] && TimerDeathTouch == 1) flags[4] = false;
         if(TimerDeathTouch > 0) TimerDeathTouch--;
 
         //CoinBoost
-        if(flags[5] && TimerCoinBoost == 0) TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
+        double coinBoostCooldown = 5;
+        if(flags[5] && TimerCoinBoost == 0) TimerCoinBoost = (int)(coinBoostCooldown * tickrate) + 1;
         if(flags[5] && TimerCoinBoost == 1) flags[5] = false;
         if(TimerCoinBoost > 0) TimerCoinBoost--;
 
         //Freeze
-        if(flags[7] && TimerFreeze == 0) TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
+        double freezeCooldown = 5;
+        if(flags[7] && TimerFreeze == 0) TimerFreeze = (int)(freezeCooldown * tickrate) +1;
         if(flags[7] && TimerFreeze == 1) flags[7] = false;
         if(TimerFreeze > 0) TimerFreeze--;
 
