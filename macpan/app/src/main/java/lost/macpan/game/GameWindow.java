@@ -28,13 +28,9 @@ public class GameWindow extends JPanel {
     private char[][] currentMap;
     private boolean[] currentFlags;
     private int currentScore;
-    private int maxColumns = 30;                    //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 20;                       //maximum amount of tiles that can be drawn vertically
-    private int originalTileSize = 16;              //corresponds to the sprite size
-    private int scale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
-    private int tileSize = originalTileSize * scale; //tile size and effective sprite size
-    private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
-    private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
+    private final int maxColumns = 30;                    //maximum amount of tiles that can be drawn horizontally
+    private final int maxRows = 20;                       //maximum amount of tiles that can be drawn vertically
+    private final int tileSize = 32; //tile size and effective sprite size
     private JFrame parentFrame;
     private Container before;
 
@@ -58,7 +54,6 @@ public class GameWindow extends JPanel {
         before = beforeMenu;
 
         setKeyBindings();               //Set all Key bindings
-        setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
 

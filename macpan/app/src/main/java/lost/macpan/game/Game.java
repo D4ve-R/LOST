@@ -21,7 +21,6 @@ public class Game implements Runnable, ResourceHandler {
     private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
     private int maxRows;                    //maximum amount of tiles that can be drawn vertically
     private GameWindow gameWindow;
-    private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
     private Thread thread;
     private boolean gamePaused = false;
     private boolean threadRunning;
@@ -212,6 +211,8 @@ public class Game implements Runnable, ResourceHandler {
     public void gameLogic(){
 
         //SpeedBoost
+        //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+        int tickrate = 4;
         if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
         if(flags[2] && TimerSpeed == 1) flags[2] = false;
         if(TimerSpeed > 0) TimerSpeed--;
