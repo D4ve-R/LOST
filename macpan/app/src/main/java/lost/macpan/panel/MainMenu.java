@@ -10,13 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
 import lost.macpan.utils.GameSerializer;
+import lost.macpan.App;
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
@@ -37,7 +37,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton quitBtn = new JButton("Spiel Beenden");
-    private JFrame parentFrame;
+    private App parentFrame;
     private Image img;
     private JLabel label;
     private JLabel background;
@@ -50,7 +50,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
      *
      * @param frame
      */
-    public MainMenu(JFrame frame) {
+    public MainMenu(App frame) {
         parentFrame = frame;
 
         try {
@@ -96,11 +96,15 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
+            parentFrame.stopMusic();
+            parentFrame.playMusicLooped(2);
             GameWindow gameWindow = new GameWindow(parentFrame, this);
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {
+            parentFrame.stopMusic();
+            parentFrame.playMusicLooped(2);
             if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
                 GameWindow gameWindow = new GameWindow(parentFrame, this);
 
@@ -140,6 +144,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.revalidate();
 
         } else if (e.getSource() == quitBtn) {
+            parentFrame.pauseMusic();
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();

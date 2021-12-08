@@ -19,15 +19,16 @@ public class Sound {
     long pausedAt;                  //progress into suspended track
 
     public Sound() {    //constructor loads audio files !CURRENTLY FILLED WITH TEST TRACKS ONLY, TO BE REPLACED!
-        soundURL[0] = getClass().getResource("/music/MenuMusic.wav");
-        soundURL[1] = getClass().getResource("/music/Emil's Shop.wav");
-        soundURL[2] = getClass().getResource("/music/Birth of a Wish.wav");
+        soundURL[0] = getClass().getResource("/music/main menu music.wav");
+        soundURL[1] = getClass().getResource("/music/victory music.wav");
+        soundURL[2] = getClass().getResource("/music/in-game music.wav");
         soundURL[3] = getClass().getResource("/music/Windows XP Shutdown.wav");
         soundURL[4] = getClass().getResource("/sound effects/coin.wav");
         soundURL[5] = getClass().getResource("/sound effects/exit opening.wav");
         soundURL[6] = getClass().getResource("/sound effects/item pickup.wav");
         soundURL[7] = getClass().getResource("/sound effects/kill enemy.wav");
         soundURL[8] = getClass().getResource("/sound effects/take damage.wav");
+        soundURL[9] = getClass().getResource("/music/pause menu music.wav");
     }
 
     /**
@@ -87,5 +88,32 @@ public class Sound {
         setFile(current, true);
         clip.start();
         clip.setMicrosecondPosition(pausedAt);
+    }
+
+    public void playPauseMenu() {
+        setFile(9, true);
+        clip.start();
+        clip.setMicrosecondPosition(pausedAt);
+    }
+
+    public void stopPauseMenu() {
+        pausedAt = clip.getMicrosecondPosition();
+        clip.stop();
+    }
+
+    /**
+     * plays a sound effect <br>
+     * Available effects: <br>
+     * 4: coin <br>
+     * 5: exit opening <br>
+     * 6: item pickup <br>
+     * 7: kill enemy <br>
+     * 8: take damage
+     * @param effect selected effect
+     */
+    public void playSoundEffect(int effect){
+        setFile(effect, false);
+        clip.start();
+        clip.loop(0);
     }
 }

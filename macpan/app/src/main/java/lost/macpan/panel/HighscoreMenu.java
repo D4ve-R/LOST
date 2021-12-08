@@ -5,12 +5,13 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.App;
+import lost.macpan.utils.ResourceHandler;
 import lost.macpan.utils.HighscoreHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -26,7 +27,7 @@ import java.awt.event.ActionListener;
  */
 public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHandler {
     private final JButton backBtn = new JButton("Zur\u00fcck");
-    private JFrame parentFrame;
+    private App parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
@@ -39,7 +40,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
      * Der Konstruktor stellt den Button sowie die Labels auf dem Frame dar.
      * @param frame der Frame, auf dem alles abgebildet wird
      */
-    public HighscoreMenu(JFrame frame, Container beforeMenu) {
+    public HighscoreMenu(App frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
         try {

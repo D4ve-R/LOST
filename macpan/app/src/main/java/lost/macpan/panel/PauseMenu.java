@@ -4,18 +4,18 @@
  */
 
 package lost.macpan.panel;
+
+import lost.macpan.App;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
 import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
-
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
@@ -40,7 +40,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton backBtn = new JButton("Zur\u00fcck zum Hauptmen\u00fc");
-    private JFrame parentFrame;
+    private App parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
@@ -53,7 +53,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
      *
      * @param frame
      */
-    public PauseMenu(JFrame frame, GameWindow gameWindows) {
+    public PauseMenu(App frame, GameWindow gameWindows) {
         parentFrame = frame;
         gameWindow = gameWindows;
         try {
@@ -101,6 +101,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playBtn) {
+            parentFrame.stopPauseMusic();
+            parentFrame.resumeMusic();
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
 
