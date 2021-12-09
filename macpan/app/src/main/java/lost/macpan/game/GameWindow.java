@@ -30,20 +30,21 @@ public class GameWindow extends JPanel {
     private boolean currentFlags[];
     private int currentScore;
 
-    private int maxColumns = 32;                    //maximum amount of tiles that can be drawn horizontally
-    private int maxRows = 24;                       //maximum amount of tiles that can be drawn vertically
+    private int windowWidthInTiles = 30;                        //maximum amount of tiles that can be drawn horizontally
+    private int windowHeightInTiles = 21;                       //maximum amount of tiles that can be drawn vertically
 
+    private int maxMapColumns = windowWidthInTiles;             //Max Map Columns
+    private int maxMapRows = windowHeightInTiles - 1;           //Max Map Rows, minus one for the HUD Row
 
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int tileScale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
     private int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
 
-    private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
-    private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
+    private int windowWidth = windowWidthInTiles * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
+    private int windowHeight = windowHeightInTiles * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
 
 
 
-    private int hudHeight = 21;                     //determines the height of the HUD
     private JFrame parentFrame;
     private Container before;
 
@@ -65,41 +66,23 @@ public class GameWindow extends JPanel {
      * @param beforeMenu the container of the previous menu
      */
     public GameWindow(JFrame frame, Container beforeMenu){
-        game = new Game(this);
+        game = new Game(this, maxMapColumns, maxMapRows);
         parentFrame = frame;
         before = beforeMenu;
 
         setKeyBindings();               //Set all Key bindings
 
-        setPreferredSize(new Dimension(width, height));
+        setPreferredSize(new Dimension(windowWidth, windowHeight));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
 
         Dimension panelSize = parentFrame.getContentPane().getSize();                              //gets screen size
-        windowScale = (double) panelSize.height / height;                                          //sets scaling factor
-        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (maxColumns / 2)));   //sets offset
+        windowScale = (double) panelSize.height / windowHeight;                                          //sets scaling factor
+        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (windowWidthInTiles / 2)));   //sets offset
 
         game.startThread();
     }
 
-
-    /**
-     * returns the maxColumns
-     * @author Sebastian
-     * @return int maxColumns
-     */
-    public int getMaxColumns() {
-        return maxColumns;
-    }
-
-    /**
-     * returns the maxRows
-     * @author Sebastian
-     * @return int maxRows
-     */
-    public int getMaxRows() {
-        return maxRows;
-    }
 
     /**
      * shows the death window
@@ -167,8 +150,8 @@ public class GameWindow extends JPanel {
         if (parentFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)
             g2.translate(windowOffset, 0);       //offsets the picture
         g2.scale(windowScale, windowScale);         //scales the picture according to screen size
-        for (int i = 0; i < maxColumns; i++){       //parses the x-coordinate of "map"
-            for (int j = 0; j < maxRows; j++){      //parses the y-coordinate of "map"
+        for (int i = 0; i < maxMapColumns; i++){       //parses the x-coordinate of "map"
+            for (int j = 0; j < maxMapRows; j++){      //parses the y-coordinate of "map"
                 char c = currentMap[i][j];                 //fetches currently examined tile identifier
                 if (c == 'p')
                     playerSprite.draw(g2, i, j);    //handles player sprite
@@ -182,7 +165,7 @@ public class GameWindow extends JPanel {
                     sprite.draw(g2, i, j, c);       //handles static sprites
             }
         }
-        hud.draw(g2, hudHeight, currentScore, tileSize, currentFlags, maxColumns);
+        hud.draw(g2, windowHeightInTiles, currentScore, tileSize, currentFlags, windowWidthInTiles);
         g2.dispose();
     }
 
