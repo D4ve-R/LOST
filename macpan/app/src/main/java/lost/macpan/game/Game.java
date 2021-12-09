@@ -17,7 +17,8 @@ public class Game implements Runnable, ResourceHandler {
 
     private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
     private int[] initPlayerPos = new int[2]; // initPlayerPos[0] = initial x coordinate, initPlayerPos[1] = initial y coordinate
-    private ArrayList<Character> lastKeyinput = new ArrayList<Character>();
+
+    private ArrayList<Character> lastKeyList = new ArrayList<Character>();
 
     private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
     private int maxRows;                    //maximum amount of tiles that can be drawn vertically
@@ -25,7 +26,7 @@ public class Game implements Runnable, ResourceHandler {
     private GameWindow gameWindow;
 
     private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private final int tickrate = 10;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int tickrate = 2;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
@@ -34,8 +35,6 @@ public class Game implements Runnable, ResourceHandler {
     private char[][] map;                            //char-array of the map (map[0 - maxColumns][0 - maxRows])
 
     private int score;                               //for keeping track of the score
-
-    private char lastKey;
 
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
@@ -294,42 +293,42 @@ public class Game implements Runnable, ResourceHandler {
                 spielPausieren();
                 break;
             case "VK_W":
-                addKey('w');
-                //lastKey = 'w';
-                System.out.println("W pressed");
+                addKeyToList('w');
+                System.out.println("W pressed"); // TODO: Remove debugging Output
                 break;
             case "VK_W_released":
-                lastKeyinput.remove((Character) 'w');
-                System.out.println("W released");
+                lastKeyList.remove((Character) 'w');
+                System.out.println("W released"); // TODO: Remove debugging Output
                 break;
             case "VK_A":
-                addKey('a');
-                //lastKey = 'a';
+                addKeyToList('a');
                 break;
             case "VK_A_released":
-                lastKeyinput.remove((Character) 'a');
+                lastKeyList.remove((Character) 'a');
                 break;
             case "VK_S":
-                addKey('s');
-                //lastKey = 's';
+                addKeyToList('s');
                 break;
             case "VK_S_released":
-                lastKeyinput.remove((Character) 's');
+                lastKeyList.remove((Character) 's');
                 break;
             case "VK_D":
-                addKey('d');
-                //lastKey = 'd';
+                addKeyToList('d');
                 break;
             case "VK_D_released":
-                lastKeyinput.remove((Character) 'd');
+                lastKeyList.remove((Character) 'd');
                 break;
         }
     }
 
-    public void addKey(char theKey){
-        if(!lastKeyinput.contains((Character) theKey))
+    /**
+     * Method that adds a character to the lastKeyInput List if it isnt already in the List.
+     * @author Benedikt
+     */
+    public void addKeyToList(char theKey){
+        if(!lastKeyList.contains((Character) theKey))
         {
-            lastKeyinput.add((Character) theKey);
+            lastKeyList.add((Character) theKey);
         }
     }
     /**
@@ -337,9 +336,9 @@ public class Game implements Runnable, ResourceHandler {
      * @author Benedikt
      */
     public void move(){
-        if(lastKeyinput.size() != 0)
+        if(!lastKeyList.isEmpty())
         {
-            switch (lastKeyinput.get(lastKeyinput.size() -1)) {
+            switch (lastKeyList.get(lastKeyList.size() -1)) {
                 case 'w' -> moveToNew(0,-1);
                 case 's' -> moveToNew(0,1);
                 case 'a' -> moveToNew(-1,0);

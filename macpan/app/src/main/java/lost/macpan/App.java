@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
  */
 public class App extends JFrame implements ActionListener {
     private static final int width = 960;
-    private static final int height = 710;
+    private static final int height = 700;
     private static final int serializeId = 123456789;
     private Timer timer;
 
