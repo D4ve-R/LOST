@@ -275,9 +275,13 @@ public class Game implements Runnable, ResourceHandler {
             }
         }
 
-        for(Enemy enemy : enemies) { // TODO: Enemy movement flexible
-            if(!flags[7]) enemy.move(); // Move Enemy objects unless freeze effect is active
-            if(enemyDetection(enemy)) break; // Detect whether the player collides with the enemy
+        if(pContLogicCounter % 2 == 0){                 //Stuff in here only gets called every second time the GameLogic gets called
+            for(Enemy enemy : enemies) {                // TODO: Enemy movement flexible
+                if(!flags[7]) enemy.move();             // Move Enemy objects unless freeze effect is active
+                if(enemyDetection(enemy)) break;        // Detect whether the player collides with the enemy
+            }
+
+            //Other Stuff that has the be called only every second tick
         }
     }
 
