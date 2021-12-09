@@ -36,7 +36,7 @@ public class GameWindow extends JPanel {
 
     private int originalTileSize = 16;              //corresponds to the sprite size
     private int tileScale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
-    public int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
+    private int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
 
     private int width = maxColumns * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
     private int height = maxRows * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
