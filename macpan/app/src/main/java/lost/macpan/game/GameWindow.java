@@ -30,18 +30,18 @@ public class GameWindow extends JPanel {
     private boolean currentFlags[];
     private int currentScore;
 
-    private int windowWidthInTiles = 30;                        //maximum amount of tiles that can be drawn horizontally
-    private int windowHeightInTiles = 21;                       //maximum amount of tiles that can be drawn vertically
+    private int windowWidthInTiles = 30;                        //Window width in amount of tiles
+    private int windowHeightInTiles = 21;                       //Window height in amount of tiles
 
     private int maxMapColumns = windowWidthInTiles;             //Max Map Columns
     private int maxMapRows = windowHeightInTiles - 1;           //Max Map Rows, minus one for the HUD Row
 
-    private int originalTileSize = 16;              //corresponds to the sprite size
-    private int tileScale = 2;                          //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
-    private int tileSize = originalTileSize * tileScale; //tile size and effective sprite size
+    private int originalTileSize = 16;                          //corresponds to the sprite size
+    private int tileScale = 2;                                  //the scale to be used for rendering of sprites (e.g. a (16px)² sprite with scale 2 will be drawn as (32px)²
+    private int tileSize = originalTileSize * tileScale;        //tile size and effective sprite size
 
-    private int windowWidth = windowWidthInTiles * tileSize;      //width of the window (automatically adjusted based on tileSize and maxColumns)
-    private int windowHeight = windowHeightInTiles * tileSize;        //height of the window (automatically adjusted based on tileSize and maxRows)
+    private int windowWidth = windowWidthInTiles * tileSize;            //width of the window (automatically adjusted based on tileSize and windowWidthInTiles)
+    private int windowHeight = windowHeightInTiles * tileSize;          //height of the window (automatically adjusted based on tileSize and windowHeightInTiles)
 
 
 
@@ -76,9 +76,9 @@ public class GameWindow extends JPanel {
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
 
-        Dimension panelSize = parentFrame.getContentPane().getSize();                              //gets screen size
-        windowScale = (double) panelSize.height / windowHeight;                                          //sets scaling factor
-        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (windowWidthInTiles / 2)));   //sets offset
+        Dimension panelSize = parentFrame.getContentPane().getSize();                                       //gets screen size
+        windowScale = (double) panelSize.height / windowHeight;                                             //sets scaling factor
+        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (windowWidthInTiles / 2)));    //sets offset
 
         game.startThread();
     }
