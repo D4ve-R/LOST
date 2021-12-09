@@ -17,6 +17,7 @@ public class Game implements Runnable, ResourceHandler {
 
     private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
     private int[] initPlayerPos = new int[2]; // initPlayerPos[0] = initial x coordinate, initPlayerPos[1] = initial y coordinate
+    private ArrayList<Character> lastKeyinput = new ArrayList<Character>();
 
     private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
     private int maxRows;                    //maximum amount of tiles that can be drawn vertically
@@ -266,12 +267,11 @@ public class Game implements Runnable, ResourceHandler {
         */
 
         if(flags[2]){
-            move(lastKey);
-            lastKey = 'o';
+            move();
+
         } else {
             if(pContLogicCounter % 2 == 0){
-                move(lastKey);
-                lastKey = 'o';
+                move();
             }
         }
 
@@ -294,29 +294,46 @@ public class Game implements Runnable, ResourceHandler {
                 spielPausieren();
                 break;
             case "VK_W":
-                lastKey = 'w';
+                if(!lastKeyinput.contains((Character) 'w'))
+                {
+                    lastKeyinput.add((Character) 'w');
+                }
+                //lastKey = 'w';
                 System.out.println("W pressed");
                 break;
             case "VK_W_released":
+                lastKeyinput.remove((Character) 'w');
                 System.out.println("W released");
                 break;
             case "VK_A":
-                lastKey = 'a';
+                if(!lastKeyinput.contains((Character) 'a'))
+                {
+                    lastKeyinput.add((Character) 'a');
+                }
+                //lastKey = 'a';
                 break;
             case "VK_A_released":
-
+                lastKeyinput.remove((Character) 'a');
                 break;
             case "VK_S":
-                lastKey = 's';
+                if(!lastKeyinput.contains((Character) 's'))
+                {
+                    lastKeyinput.add((Character) 's');
+                }
+                //lastKey = 's';
                 break;
             case "VK_S_released":
-
+                lastKeyinput.remove((Character) 's');
                 break;
             case "VK_D":
-                lastKey = 'd';
+                if(!lastKeyinput.contains((Character) 'd'))
+                {
+                    lastKeyinput.add((Character) 'd');
+                }
+                //lastKey = 'd';
                 break;
             case "VK_D_released":
-
+                lastKeyinput.remove((Character) 'd');
                 break;
         }
     }
@@ -325,12 +342,15 @@ public class Game implements Runnable, ResourceHandler {
      * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
      * @author Benedikt
      */
-    public void move(char key){
-        switch (key) {
-            case 'w' -> moveToNew(0,-1);
-            case 's' -> moveToNew(0,1);
-            case 'a' -> moveToNew(-1,0);
-            case 'd' -> moveToNew(1 ,0);
+    public void move(){
+        if(lastKeyinput.size() != 0)
+        {
+            switch (lastKeyinput.get(lastKeyinput.size() -1)) {
+                case 'w' -> moveToNew(0,-1);
+                case 's' -> moveToNew(0,1);
+                case 'a' -> moveToNew(-1,0);
+                case 'd' -> moveToNew(1 ,0);
+            }
         }
     }
 
