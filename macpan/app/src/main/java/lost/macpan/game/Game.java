@@ -25,7 +25,7 @@ public class Game implements Runnable, ResourceHandler {
     private GameWindow gameWindow;
 
     private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int tickrate = 10;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
@@ -294,10 +294,7 @@ public class Game implements Runnable, ResourceHandler {
                 spielPausieren();
                 break;
             case "VK_W":
-                if(!lastKeyinput.contains((Character) 'w'))
-                {
-                    lastKeyinput.add((Character) 'w');
-                }
+                addKey('w');
                 //lastKey = 'w';
                 System.out.println("W pressed");
                 break;
@@ -306,30 +303,21 @@ public class Game implements Runnable, ResourceHandler {
                 System.out.println("W released");
                 break;
             case "VK_A":
-                if(!lastKeyinput.contains((Character) 'a'))
-                {
-                    lastKeyinput.add((Character) 'a');
-                }
+                addKey('a');
                 //lastKey = 'a';
                 break;
             case "VK_A_released":
                 lastKeyinput.remove((Character) 'a');
                 break;
             case "VK_S":
-                if(!lastKeyinput.contains((Character) 's'))
-                {
-                    lastKeyinput.add((Character) 's');
-                }
+                addKey('s');
                 //lastKey = 's';
                 break;
             case "VK_S_released":
                 lastKeyinput.remove((Character) 's');
                 break;
             case "VK_D":
-                if(!lastKeyinput.contains((Character) 'd'))
-                {
-                    lastKeyinput.add((Character) 'd');
-                }
+                addKey('d');
                 //lastKey = 'd';
                 break;
             case "VK_D_released":
@@ -338,6 +326,12 @@ public class Game implements Runnable, ResourceHandler {
         }
     }
 
+    public void addKey(char theKey){
+        if(!lastKeyinput.contains((Character) theKey))
+        {
+            lastKeyinput.add((Character) theKey);
+        }
+    }
     /**
      * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
      * @author Benedikt
