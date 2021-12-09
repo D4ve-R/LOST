@@ -26,7 +26,7 @@ public class Game implements Runnable, ResourceHandler {
     private GameWindow gameWindow;
 
     private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private final int tickrate = 2;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
