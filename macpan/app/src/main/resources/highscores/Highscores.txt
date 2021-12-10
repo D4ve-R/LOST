@@ -1,14 +1,1 @@
-500;Test1
-500;Test2
-500;Test3
-500;Test4
-500;Test5
-500;Test6
-500;Test7
-500;Test8
-500;Test8
--4;Benedikt160
-160;fefvvvvvvvvv
-180;ppp
-360;ratt
-160;testttttttttttt
+50;Anonym

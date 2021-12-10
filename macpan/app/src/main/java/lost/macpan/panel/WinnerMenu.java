@@ -15,7 +15,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.Writer;
 
 /**
@@ -39,6 +41,11 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     private JLabel scoreLabel;
     private int score;
     private JLabel scoreValue;
+    private InputStream inputStream;
+    private String highscores;
+    private String[] parts;
+    private boolean newScore;
+    private String lastScoreWithName;
 
     public WinnerMenu(JFrame frame, Container beforeMenu, int currentScore) {
         int delay = 5000;
@@ -97,15 +104,48 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         add(scoreLabel);
         add(background);
         add(nameInput);
-
         timer.start();
+        try {
+            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
+            highscores = convertStreamToString(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        parts = highscores.split("\n");
+        lastScoreWithName = parts[9];
+        if (getScoreVal(lastScoreWithName) < score) {
+            newScore = true;
+        } else newScore = false;
+        try {
+            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", false);
+            BufferedWriter writer1 = new BufferedWriter(writer);
+            writer1.write("");
+            writer1.close();
+            writer.close();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        try {
+            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", true);
+            for (int i = 0; i < 9; i++) {
+                writer.write(parts[i] + "\n");
+            }
+            writer.close();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt",true);
-            writer.write(score+";"+nameInput.getText()+"\n");
+            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", true);
+            if (newScore) {
+                writer.write(score + ";" + nameInput.getText() + "\n");
+            }else {
+                writer.write(lastScoreWithName);
+            }
             writer.close();
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -113,5 +153,10 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         timer.stop();
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
+    }
+    private int getScoreVal(String score) {
+        String num = score.substring(0,score.indexOf(';'));
+        int numInt = Integer.parseInt(num);
+        return numInt;
     }
 }
