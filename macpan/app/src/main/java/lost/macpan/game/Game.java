@@ -105,6 +105,12 @@ public class Game implements Runnable, ResourceHandler, Serializable {
         return score;
     }
 
+    public int getTimerSpeed() { return TimerSpeed;}
+    public int getTimerDeathTouch() { return TimerDeathTouch;}
+    public int getTimerCoinBoost() {return TimerCoinBoost;}
+    public int getTimerFreeze() {return TimerFreeze;}
+
+
     /**
      * Starts the new thread
      * @author Sebastian

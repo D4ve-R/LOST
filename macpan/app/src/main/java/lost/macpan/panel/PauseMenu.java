@@ -1,5 +1,8 @@
 package lost.macpan.panel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lost.macpan.game.Game;
+import lost.macpan.game.GameSerializer;
 import lost.macpan.game.GameWindow;
 
 import lost.macpan.utils.ResourceHandler;
@@ -108,7 +111,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
             gameWindow.grabFocus();
 
         } else if (e.getSource() == loadBtn) {
-            Gson loadgame = new Gson();
+            Gson gameJson = new Gson();
 
             String inFile = "";
             try{
@@ -117,20 +120,29 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
                 a.printStackTrace();
             }
 
+            if(!inFile.equals("")){
+                Game savedGame = gameJson.fromJson(inFile, Game.class);
+                gameWindow.setGame(savedGame);
+            }
 
 
         } else if (e.getSource() == saveBtn) {
-            Gson saveGame = new Gson();
-            String data = saveGame.toJson(gameWindow.getGame());
+            Gson gameJson = new GsonBuilder()
+                    .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
+                    .setPrettyPrinting()
+                    .create();;
+            String data = gameJson.toJson(gameWindow.getGame());
 
-            if (Files.notExists(Path.of(System.getProperty("user.home")  + "/LOST")))
+            if (Files.notExists(Path.of(System.getProperty("user.home")  + File.separator + "LOST"))) {
                 try{
-                Files.createDirectories(Path.of(System.getProperty("user.home")  + "/LOST"));
-            } catch (IOException a) {
+                Files.createDirectories(Path.of(System.getProperty("user.home")  + File.separator +  "LOST"));
+                } catch (IOException a) {
                 a.printStackTrace();}
+            }
+
 
             try{
-                FileWriter writer = new FileWriter(System.getProperty("user.home") + "/LOST/MacPan.json");
+                FileWriter writer = new FileWriter(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json");
                 writer.write(data);
                 writer.close();
             } catch (IOException a){
