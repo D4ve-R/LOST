@@ -161,46 +161,6 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         }
     }
 
-    /*
-    try {
-            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
-            highscores = convertStreamToString(inputStream);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        parts = highscores.split("\n"); //txt Inhalt als Array
-        String[] all = new String[10];
-        for (int i = 0; i < 10; i++) { //Alle einträge in ein Array mit 10 stellen überschreiben
-            all[i] = parts[i];
-        }
-        if (parts.length == 10) { //Bereits 10 Einträge
-            if (getScoreVal(parts[9]) < score) {//neuer Highscore
-                if (nameInput.getText().equals("")) { //Name eingegeben?
-                    all[parts.length-1] = score+";"+"Anonym";
-                } else all[parts.length-1] = score+";"+nameInput.getText();
-                //hier ggf sortieren !!!!!
-                sortScore(all);
-            }
-        } else { //noch keine 10 Einträge
-            if (nameInput.getText().equals("")) {
-                all[9] = score+";"+"Anonym";
-            } else all[9] = score+";"+nameInput.getText();
-            //hier sortieren !!!!!!
-            sortScore(all);
-        }
-        //Txt überschreiben mit neuen Werten
-        //inhalt löschen
-        writeStringToFile("highscores/Highscores.txt","");
-
-        //Werte von all in txt übernehmen
-        StringBuilder allHighscores = new StringBuilder();
-        for (int i = 0; i < all.length && all[i] != null; i++) {
-            allHighscores.append(all[i] + "\n");
-        }
-
-        writeStringToFile("highscores/Highscores.txt", allHighscores.toString());
-     */
-
     public void saveHighscores() {
 
         try {
@@ -232,24 +192,6 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         int numInt = Integer.parseInt(num);
         return numInt;
     }
-
-    /*
-     int n = 10;
-        if (scores[0] == null || scores[0].equals("")) {
-            return;
-        }
-        String temp = "";
-        for (int i = 0; i < n; i++) {
-            for (int j = 1; j < (n - i); j++) {
-                if (getScoreVal(scores[j - 1]) < getScoreVal(scores[j])) {
-                    temp = scores[j - 1];
-                    scores[j - 1] = scores[j];
-                    scores[j] = temp;
-                }
-            }
-        }
-    }
-     */
 
     private void sortScore(String[] scores) {
         int n = 10;
