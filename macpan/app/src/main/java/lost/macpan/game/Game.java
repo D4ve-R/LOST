@@ -3,6 +3,7 @@ package lost.macpan.game;
 import lost.macpan.utils.ResourceHandler;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @author Sebastian
  */
-public class Game implements Runnable, ResourceHandler {
+public class Game implements Runnable, ResourceHandler, Serializable {
 
     private int levelNr;
     private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
@@ -419,8 +420,8 @@ public class Game implements Runnable, ResourceHandler {
 
     /**
      * Method to detect if a player collides with an Enemy object and act accordingly
-     * @param enemy the Enemy object to be checked for collision
-     * @return whether a collision between enemy and player was detected or not
+     *      * @param enemy the Enemy object to be checked for collision
+     *      * @return whether a collision between enemy and player was detected or not
      * @author Simon Bonnie
      */
     public boolean enemyDetection(Enemy enemy) {
@@ -467,5 +468,9 @@ public class Game implements Runnable, ResourceHandler {
             for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) //for every char in the row
                 map[o][i] = rows[i].charAt(o);  //insert char into the map array
         return map;
+    }
+
+    public void saveGame(){
+
     }
 }

@@ -1,4 +1,5 @@
 package lost.macpan.panel;
+import com.google.gson.Gson;
 import lost.macpan.game.GameWindow;
 
 import lost.macpan.utils.ResourceHandler;
@@ -12,6 +13,12 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Die Klasse MainMenu stellt das Pausemenü des Spiels auf dem JPanel dar.
@@ -101,8 +108,34 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
             gameWindow.grabFocus();
 
         } else if (e.getSource() == loadBtn) {
+            Gson loadgame = new Gson();
+
+            String inFile = "";
+            try{
+                inFile = new String(Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/LOST/MacPan.json")));
+            } catch (IOException a){
+                a.printStackTrace();
+            }
+
+
 
         } else if (e.getSource() == saveBtn) {
+            Gson saveGame = new Gson();
+            String data = saveGame.toJson(gameWindow.getGame());
+
+            if (Files.notExists(Path.of(System.getProperty("user.home")  + "/LOST")))
+                try{
+                Files.createDirectories(Path.of(System.getProperty("user.home")  + "/LOST"));
+            } catch (IOException a) {
+                a.printStackTrace();}
+
+            try{
+                FileWriter writer = new FileWriter(System.getProperty("user.home") + "/LOST/MacPan.json");
+                writer.write(data);
+                writer.close();
+            } catch (IOException a){
+                a.printStackTrace();
+            }
 
         } else if (e.getSource() == highscoresBtn) {
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());

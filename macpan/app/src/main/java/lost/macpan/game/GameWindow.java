@@ -60,6 +60,12 @@ public class GameWindow extends JPanel {
         game.startThread();
     }
 
+    public Game getGame(){
+        return game;
+    }
+    public void setGame(Game saveGame){
+        game = saveGame;
+    }
 
     /**
      * returns the maxColumns
