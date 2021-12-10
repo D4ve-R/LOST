@@ -46,8 +46,7 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
     private InputStream inputStream;
     private String highscores;
     private String[] parts;
-    private boolean newScore;
-    private String lastScoreWithName;
+
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
 
@@ -99,64 +98,8 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         add(background);
         add(nameInput);
         timer.start();
-        /*
-        try {
-            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
-            highscores = convertStreamToString(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        parts = highscores.split("\n");
-        lastScoreWithName = parts[parts.length-1];
-
-        if (lastScoreWithName.equals("")) {
-            newScore = true;
-        } else newScore = false;
-        if (getScoreVal(lastScoreWithName) < score) {
-            newScore = true;
-        } else newScore = false;
-        if (parts.length < 10) {
-            newScore = true;
-        }else newScore = false;
-
-        if (parts.length > 9) {
-            try {
-                Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", false);
-                BufferedWriter writer1 = new BufferedWriter(writer);
-                writer1.write("");
-                writer1.close();
-                writer.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-            try {
-                Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", true);
-                for (int i = 0; i < parts.length-1; i++) {
-                    writer.write(parts[i] + "\n");
-                }
-                writer.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        }
-         */
-
     }
-    /*
-    try {
-        Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", true);
-        if (newScore) {
-            if (nameInput.getText().equals("")) {
-                writer.write(score + ";" + "Spieler" + "\n");
-            } else writer.write(score + ";" + nameInput.getText() + "\n");
-        }else {
-            writer.write(lastScoreWithName);
-        }
-        writer.close();
-    } catch (Exception e1) {
-        e1.printStackTrace();
-    }
-     */
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
@@ -176,12 +119,14 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
                     all[parts.length-1] = score+";"+"Anonym";
                 } else all[parts.length-1] = score+";"+nameInput.getText();
                 //hier ggf sortieren !!!!!
+                sortScore(all);
             }
         } else { //noch keine 10 Einträge
             if (nameInput.getText().equals("")) {
                 all[parts.length] = score+";"+"Anonym";
             } else all[parts.length] = score+";"+nameInput.getText();
             //hier sortieren !!!!!!
+            sortScore(all);
         }
         //Txt überschreiben mit neuen Werten
         //inhalt löschen
@@ -217,6 +162,27 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         String num = score.substring(0, score.indexOf(';'));
         int numInt = Integer.parseInt(num);
         return numInt;
+    }
+    private void sortScore(String[] scores) {
+        int n = 0;
+        for (int i = 0; i < scores.length; i++) {
+            if (scores[i] == null) {
+                break;
+            } else n++;
+        }
+        if (scores[0] == null) {
+            return;
+        }
+        String temp = "";
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < (n-i); j++) {
+                if (getScoreVal(scores[j-1]) < getScoreVal(scores[j])) {
+                    temp = scores[j-1];
+                    scores[j-1] = scores[j];
+                    scores[j] = temp;
+                }
+            }
+        }
     }
 
 }
