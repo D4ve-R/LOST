@@ -73,12 +73,12 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
 
         String[] temp;
         StringBuilder out = new StringBuilder();
-        if (!parts[0].equals("")) {
-            for (int i = 0; i < Math.min(parts.length, 10); i++) {
-                temp = parts[i].split(";");
-                out.append(i + 1 + "           " + temp[0] + "          " + temp[1] + "\n");
-            }
+
+        for (int i = 0; i < 10; i++) {
+            temp = parts[i].split(";");
+            out.append(i + 1 + "           " + temp[0] + "          " + temp[1] + "\n");
         }
+
         setLayout(null);
         String[] lastStringHopefully = out.toString().split("\n");
         if (lastStringHopefully.length > 0) {

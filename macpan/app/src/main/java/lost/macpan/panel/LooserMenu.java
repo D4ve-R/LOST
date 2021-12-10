@@ -22,6 +22,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Array;
 
 
 /**
@@ -46,7 +48,8 @@ public class LooserMenu extends JPanel implements ResourceHandler {
     private JLabel scoreValue;
     private InputStream inputStream;
     private String highscores;
-    private String[] parts;
+    private String[] scores;
+    private OutputStream outputStream;
 
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
@@ -101,8 +104,8 @@ public class LooserMenu extends JPanel implements ResourceHandler {
 
     /**
      * sets all the key bindings
-     * @author Sebastian
      *
+     * @author Sebastian
      */
     private void setKeyBindings() {
         ActionMap actionMap = getActionMap();
@@ -124,8 +127,8 @@ public class LooserMenu extends JPanel implements ResourceHandler {
 
     /**
      * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
-     * @author Sebastian
      *
+     * @author Sebastian
      */
     private class KeyAction extends AbstractAction {
         public KeyAction(String actionCommand) {
@@ -141,12 +144,12 @@ public class LooserMenu extends JPanel implements ResourceHandler {
     /**
      * method for key Actions, gets called every time a mapped Key is pressed
      * To add new Keys they first have to be added to the keymap in the setKeyBindings() function
-     * @author Sebastian
-     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
      *
+     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
+     * @author Sebastian
      */
     public void newKeyAction(String pKey) {
-        switch (pKey){
+        switch (pKey) {
             case "VK_ENTER":
                 saveHighscores();
                 System.out.println("EnterPressed");
@@ -158,10 +161,8 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         }
     }
 
-
-    public void saveHighscores() {
-
-        try {
+    /*
+    try {
             inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
             highscores = convertStreamToString(inputStream);
         } catch (Exception e1) {
@@ -169,11 +170,11 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         }
         parts = highscores.split("\n"); //txt Inhalt als Array
         String[] all = new String[10];
-        for (int i = 0; i < parts.length; i++) { //Alle einträge in ein Array mit 10 stellen überschreiben
+        for (int i = 0; i < 10; i++) { //Alle einträge in ein Array mit 10 stellen überschreiben
             all[i] = parts[i];
         }
         if (parts.length == 10) { //Bereits 10 Einträge
-            if (getScoreVal(parts[parts.length-1]) < score) {//neuer Highscore
+            if (getScoreVal(parts[9]) < score) {//neuer Highscore
                 if (nameInput.getText().equals("")) { //Name eingegeben?
                     all[parts.length-1] = score+";"+"Anonym";
                 } else all[parts.length-1] = score+";"+nameInput.getText();
@@ -182,8 +183,8 @@ public class LooserMenu extends JPanel implements ResourceHandler {
             }
         } else { //noch keine 10 Einträge
             if (nameInput.getText().equals("")) {
-                all[parts.length] = score+";"+"Anonym";
-            } else all[parts.length] = score+";"+nameInput.getText();
+                all[9] = score+";"+"Anonym";
+            } else all[9] = score+";"+nameInput.getText();
             //hier sortieren !!!!!!
             sortScore(all);
         }
@@ -198,38 +199,68 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         }
 
         writeStringToFile("highscores/Highscores.txt", allHighscores.toString());
+     */
 
+    public void saveHighscores() {
+
+        try {
+            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
+            highscores = convertStreamToString(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        scores = highscores.split("\n");
+
+        if (getScoreVal(scores[9]) < score) {
+            highscores = "";
+            scores[9] = score+";"+nameInput.getText();
+            sortScore(scores);
+            for (int i = 0; i < 10; i++) {
+                highscores += scores[i]+"\n";
+            }
+            writeStringToFile("highscores/Highscores.txt","");
+            writeStringToFile("highscores/Highscores.txt",highscores);
+        }
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
-
-
     }
 
     private int getScoreVal(String score) {
-        if (score.equals("")) return 0;
+        if (score.equals("") || score.equals("\n")) return 0;
         String num = score.substring(0, score.indexOf(';'));
         int numInt = Integer.parseInt(num);
         return numInt;
     }
-    private void sortScore(String[] scores) {
-        int n = 0;
-        for (int i = 0; i < scores.length; i++) {
-            if (scores[i] == null) {
-                break;
-            } else n++;
-        }
-        if (scores[0] == null) {
+
+    /*
+     int n = 10;
+        if (scores[0] == null || scores[0].equals("")) {
             return;
         }
         String temp = "";
         for (int i = 0; i < n; i++) {
-            for (int j = 1; j < (n-i); j++) {
-                if (getScoreVal(scores[j-1]) < getScoreVal(scores[j])) {
-                    temp = scores[j-1];
-                    scores[j-1] = scores[j];
+            for (int j = 1; j < (n - i); j++) {
+                if (getScoreVal(scores[j - 1]) < getScoreVal(scores[j])) {
+                    temp = scores[j - 1];
+                    scores[j - 1] = scores[j];
                     scores[j] = temp;
                 }
             }
+        }
+    }
+     */
+
+    private void sortScore(String[] scores) {
+        int n = 10;
+        for (int j = 1; j < n; j++) {
+            String temp = scores[j];
+            int i = j - 1;
+            while ((i > -1) && (getScoreVal(scores[i]) < getScoreVal(temp))) {
+                scores[i + 1] = scores[i];
+                i--;
+            }
+            scores[i + 1] = temp;
         }
     }
 
