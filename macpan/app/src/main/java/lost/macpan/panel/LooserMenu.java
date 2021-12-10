@@ -1,25 +1,27 @@
 package lost.macpan.panel;
 
 import lost.macpan.Main;
+import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
+import javax.swing.KeyStroke;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.awt.event.KeyEvent;
 import java.io.InputStream;
-import java.io.Writer;
 
 
 /**
@@ -28,14 +30,13 @@ import java.io.Writer;
  *
  * @author fatih
  */
-public class LooserMenu extends JPanel implements ActionListener, ResourceHandler {
+public class LooserMenu extends JPanel implements ResourceHandler {
     private JFrame parentFrame;
     private Container before;
     private JLabel label;
     private Image img;
     private JLabel background;
     private Image backgroundImg;
-    private Timer timer;
     private JTextField nameInput;
     private JLabel nameLabel;
     private Image nameImage;
@@ -50,8 +51,7 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
 
-        int delay = 5000;
-        timer = new Timer(delay, this);
+        setKeyBindings();
         parentFrame = frame;
         before = beforeMenu;
         score = currentScore;
@@ -97,11 +97,70 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         add(scoreLabel);
         add(background);
         add(nameInput);
-        timer.start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    /**
+     * sets all the key bindings
+     * @author Sebastian
+     *
+     */
+    private void setKeyBindings() {
+        ActionMap actionMap = getActionMap();
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = getInputMap(condition);
+
+        String vkEnter = "VK_ENTER";
+        String vkSpace = "VK_SPACE";
+
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), vkEnter);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
+
+
+        actionMap.put(vkEnter, new KeyAction(vkEnter));
+        actionMap.put(vkSpace, new KeyAction(vkSpace));
+
+    }
+
+    /**
+     * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
+     * @author Sebastian
+     *
+     */
+    private class KeyAction extends AbstractAction {
+        public KeyAction(String actionCommand) {
+            putValue(ACTION_COMMAND_KEY, actionCommand);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvt) {
+            newKeyAction(actionEvt.getActionCommand());
+        }
+    }
+
+    /**
+     * method for key Actions, gets called every time a mapped Key is pressed
+     * To add new Keys they first have to be added to the keymap in the setKeyBindings() function
+     * @author Sebastian
+     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
+     *
+     */
+    public void newKeyAction(String pKey) {
+        switch (pKey){
+            case "VK_ENTER":
+                saveHighscores();
+                System.out.println("EnterPressed");
+                break;
+            case "VK_SPACE":
+                saveHighscores();
+                System.out.println("Space Pressed");
+                break;
+        }
+    }
+
+
+    public void saveHighscores() {
+
         try {
             inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
             highscores = convertStreamToString(inputStream);
@@ -130,31 +189,20 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         }
         //Txt überschreiben mit neuen Werten
         //inhalt löschen
-        try {
-            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", false);
-            BufferedWriter writer1 = new BufferedWriter(writer);
-            writer1.write("");
-            writer1.close();
-            writer.close();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
+        writeStringToFile("highscores/Highscores.txt","");
+
         //Werte von all in txt übernehmen
-        try {
-            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", true);
-            for (int i = 0; i < all.length; i++) {
-                if (all[i] != null) {
-                    writer.write(all[i] + "\n");
-                } else break;
-            }
-            writer.close();
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        StringBuilder allHighscores = new StringBuilder();
+        for (int i = 0; i < all.length && all[i] != null; i++) {
+            allHighscores.append(all[i] + "\n");
         }
 
-        timer.stop();
+        writeStringToFile("highscores/Highscores.txt", allHighscores.toString());
+
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
+
+
     }
 
     private int getScoreVal(String score) {

@@ -4,6 +4,8 @@
  */
 
 package lost.macpan.utils;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +26,21 @@ public interface ResourceHandler {
         }
         else{
             return in;
+        }
+    }
+
+    /**
+     * @author Sebastian
+     * @param pFilename name of file
+     * @param pFileContent content to be written in the file
+     *
+     */
+    default void writeStringToFile(String pFilename, String pFileContent) {
+        String ResourcesPath = "src/main/resources/";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ResourcesPath + pFilename))) {
+            writer.write(pFileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
