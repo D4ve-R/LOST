@@ -3,11 +3,16 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Container;
@@ -15,6 +20,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -104,6 +110,67 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         add(background);
         add(nameInput);
         timer.start();
+
+        setKeyBindings();
+    }
+
+    /**
+     * sets all the key bindings
+     * @author Sebastian
+     *
+     */
+    private void setKeyBindings() {
+        ActionMap actionMap = getActionMap();
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = getInputMap(condition);
+
+        String vkEnter = "VK_ENTER";
+        String vkSpace = "VK_SPACE";
+
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), vkEnter);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
+
+
+        actionMap.put(vkEnter, new KeyAction(vkEnter));
+        actionMap.put(vkSpace, new KeyAction(vkSpace));
+
+    }
+
+    /**
+     * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
+     * @author Sebastian
+     *
+     */
+    private class KeyAction extends AbstractAction {
+        public KeyAction(String actionCommand) {
+            putValue(ACTION_COMMAND_KEY, actionCommand);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvt) {
+            newKeyAction(actionEvt.getActionCommand());
+        }
+    }
+
+    /**
+     * method for key Actions, gets called every time a mapped Key is pressed
+     * To add new Keys they first have to be added to the keymap in the setKeyBindings() function
+     * @author Sebastian
+     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
+     *
+     */
+    public void newKeyAction(String pKey) {
+        switch (pKey){
+            case "VK_ENTER":
+                //saveHighscores();
+                System.out.println("EnterPressed"); //TODO: Remove debugging output
+                break;
+            case "VK_SPACE":
+                //saveHighscores();
+                System.out.println("Space Pressed");//TODO: Remove debugging output
+                break;
+        }
     }
 
 
