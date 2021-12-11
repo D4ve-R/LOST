@@ -18,6 +18,8 @@ public class Game implements Runnable, ResourceHandler {
     private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
     private int[] initPlayerPos = new int[2]; // initPlayerPos[0] = initial x coordinate, initPlayerPos[1] = initial y coordinate
 
+    private ArrayList<Character> lastKeyList = new ArrayList<Character>();
+
     private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
     private int maxRows;                    //maximum amount of tiles that can be drawn vertically
 
@@ -33,8 +35,6 @@ public class Game implements Runnable, ResourceHandler {
     private char[][] map;                            //char-array of the map (map[0 - maxColumns][0 - maxRows])
 
     private int score;                               //for keeping track of the score
-
-    private char lastKey;
 
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
@@ -266,12 +266,11 @@ public class Game implements Runnable, ResourceHandler {
         */
 
         if(flags[2]){
-            move(lastKey);
-            lastKey = 'o';
+            move();
+
         } else {
             if(pContLogicCounter % 2 == 0){
-                move(lastKey);
-                lastKey = 'o';
+                move();
             }
         }
 
@@ -294,43 +293,57 @@ public class Game implements Runnable, ResourceHandler {
                 spielPausieren();
                 break;
             case "VK_W":
-                lastKey = 'w';
-                System.out.println("W pressed");
+                addKeyToList('w');
+                System.out.println("W pressed"); // TODO: Remove debugging Output
                 break;
             case "VK_W_released":
-                System.out.println("W released");
+                lastKeyList.remove((Character) 'w');
+                System.out.println("W released"); // TODO: Remove debugging Output
                 break;
             case "VK_A":
-                lastKey = 'a';
+                addKeyToList('a');
                 break;
             case "VK_A_released":
-
+                lastKeyList.remove((Character) 'a');
                 break;
             case "VK_S":
-                lastKey = 's';
+                addKeyToList('s');
                 break;
             case "VK_S_released":
-
+                lastKeyList.remove((Character) 's');
                 break;
             case "VK_D":
-                lastKey = 'd';
+                addKeyToList('d');
                 break;
             case "VK_D_released":
-
+                lastKeyList.remove((Character) 'd');
                 break;
         }
     }
 
     /**
+     * Method that adds a character to the lastKeyInput List if it isnt already in the List.
+     * @author Benedikt
+     */
+    public void addKeyToList(char theKey){
+        if(!lastKeyList.contains((Character) theKey))
+        {
+            lastKeyList.add((Character) theKey);
+        }
+    }
+    /**
      * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
      * @author Benedikt
      */
-    public void move(char key){
-        switch (key) {
-            case 'w' -> moveToNew(0,-1);
-            case 's' -> moveToNew(0,1);
-            case 'a' -> moveToNew(-1,0);
-            case 'd' -> moveToNew(1 ,0);
+    public void move(){
+        if(!lastKeyList.isEmpty())
+        {
+            switch (lastKeyList.get(lastKeyList.size() -1)) {
+                case 'w' -> moveToNew(0,-1);
+                case 's' -> moveToNew(0,1);
+                case 'a' -> moveToNew(-1,0);
+                case 'd' -> moveToNew(1 ,0);
+            }
         }
     }
 
