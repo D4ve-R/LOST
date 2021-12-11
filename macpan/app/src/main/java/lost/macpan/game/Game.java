@@ -79,6 +79,21 @@ public class Game implements Runnable, ResourceHandler, Serializable {
     }
 
     /**
+     * Constructor
+     * @author Hung
+     */
+    public Game(//char[][] newmap,
+                int newscore, int newTimerDeathTouch,
+                int newTimerSpeed, int newTimerCoinBoost, int newTimerFreeze, boolean[] newflags){
+       // this.map = savedmap;
+        this.score = newscore;
+        this.TimerSpeed = newTimerSpeed;
+        this.TimerDeathTouch = newTimerDeathTouch;
+        this.TimerCoinBoost = newTimerCoinBoost;
+        this.TimerFreeze = newTimerFreeze;
+        this.flags = newflags;
+    }
+    /**
      * Return the map
      * @author Sebastian
      * @return a char[][] array of the map
@@ -105,6 +120,10 @@ public class Game implements Runnable, ResourceHandler, Serializable {
         return score;
     }
 
+    /**
+     * Return  the Timers
+     * @author Hung
+     */
     public int getTimerSpeed() { return TimerSpeed;}
     public int getTimerDeathTouch() { return TimerDeathTouch;}
     public int getTimerCoinBoost() {return TimerCoinBoost;}

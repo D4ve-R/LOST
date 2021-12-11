@@ -1,11 +1,11 @@
 package lost.macpan.panel;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import lost.macpan.game.Game;
 import lost.macpan.game.GameSerializer;
 import lost.macpan.game.GameWindow;
 
 import lost.macpan.utils.ResourceHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -16,9 +16,7 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -111,11 +109,13 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
             gameWindow.grabFocus();
 
         } else if (e.getSource() == loadBtn) {
-            Gson gameJson = new Gson();
+            Gson gameJson = new GsonBuilder()
+                    .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
+                    .create();
 
             String inFile = "";
             try{
-                inFile = new String(Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/LOST/MacPan.json")));
+                inFile = Files.readString(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json")); //get game data from user.home/LOST/MacPan.json
             } catch (IOException a){
                 a.printStackTrace();
             }
@@ -135,11 +135,10 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
             if (Files.notExists(Path.of(System.getProperty("user.home")  + File.separator + "LOST"))) {
                 try{
-                Files.createDirectories(Path.of(System.getProperty("user.home")  + File.separator +  "LOST"));
+                Files.createDirectories(Path.of(System.getProperty("user.home")  + File.separator +  "LOST")); //save game data in folder user.home/LOST
                 } catch (IOException a) {
                 a.printStackTrace();}
             }
-
 
             try{
                 FileWriter writer = new FileWriter(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json");
