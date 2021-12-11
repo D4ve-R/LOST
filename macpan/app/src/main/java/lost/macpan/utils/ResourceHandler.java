@@ -36,7 +36,7 @@ public interface ResourceHandler {
      *
      */
     default void writeStringToFile(String pFilename, String pFileContent) {
-        String ResourcesPath = "macpan/app/src/main/resources/";
+        String ResourcesPath = "build/resources/main/";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ResourcesPath + pFilename))) {
             writer.write(pFileContent);
         } catch (IOException e) {
