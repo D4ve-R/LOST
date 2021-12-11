@@ -76,8 +76,23 @@ public class Game implements Runnable, ResourceHandler, Serializable {
         maxRows = pGameWindow.getMaxRows();
         maxColumns = pGameWindow.getMaxColumns();
         levelNr = 1;
+
+        flags = new boolean[8];
+        map = importMapArray("level_1.txt"); //import the map test
     }
 
+    /**
+     * load game window onto the screen
+     * @author Hung
+     * @param pGameWindow the GameWindow
+     */
+    public void loadWindow(GameWindow pGameWindow){
+        {
+            gameWindow = pGameWindow;
+            maxRows = pGameWindow.getMaxRows();
+            maxColumns = pGameWindow.getMaxColumns();
+        }
+    }
     /**
      * Constructor
      * @author Hung
@@ -140,8 +155,7 @@ public class Game implements Runnable, ResourceHandler, Serializable {
      * @author Sebastian
      */
     public void startThread(){
-        flags = new boolean[8];
-        map = importMapArray("level_1.txt"); //import the map test
+
         thread = new Thread(this);
         thread.start();
 
@@ -150,6 +164,7 @@ public class Game implements Runnable, ResourceHandler, Serializable {
         initPlayerPos[1] = playerPos[1];
         initiateEnemies();
     }
+
 
     /**
      * stops the game/whole thread

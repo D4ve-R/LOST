@@ -32,13 +32,6 @@ public class GameSerializer implements JsonSerializer<Game>, JsonDeserializer<Ga
     public JsonElement serialize(Game game, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject jsonGame = new JsonObject();
 
-        //Gson jsonMap = new Gson();
-        //String saveMap = jsonMap.toJson(game.getMap());
-
-
-        //Gson jsonMap = new GsonBuilder().setPrettyPrinting().create();
-        //String saveMap = jsonMap.toJson(game.getMap());
-
         JsonArray mapArray = new JsonArray();
         for (int i=0; i<game.getMaxColumns(); i++){
             JsonArray rowsArray  = new JsonArray();

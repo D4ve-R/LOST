@@ -122,15 +122,12 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
             if(!inFile.equals("")){
                 Game savedGame = gameJson.fromJson(inFile, Game.class);
-                System.out.println(savedGame.getScore());
-                System.out.println(savedGame.getLevelNr());
-                for(int i=0;i<savedGame.getMaxRows(); i++){
-                    for(int j=0;j<savedGame.getMaxColumns();j++){
-                        System.out.print(savedGame.getMap()[j][i]);
-                    }
-                    System.out.println();
-                }
+                gameWindow.getGame().stopThread();
+                savedGame.loadWindow(gameWindow);
+
                 gameWindow.setGame(savedGame);
+
+                gameWindow.getGame().startThread();
             }
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
@@ -142,6 +139,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
 
         } else if (e.getSource() == saveBtn) {
+
             Gson gameJson = new GsonBuilder()
                     .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
                     .setPrettyPrinting()
@@ -150,13 +148,13 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
             if (Files.notExists(Path.of(System.getProperty("user.home")  + File.separator + "LOST"))) {
                 try{
-                Files.createDirectories(Path.of(System.getProperty("user.home")  + File.separator +  "LOST")); //save game data in folder user.home/LOST
+                Files.createDirectories(Path.of(System.getProperty("user.home")  + File.separator +  "LOST")); //create user's gamedata in folder user.home/LOST
                 } catch (IOException a) {
                 a.printStackTrace();}
             }
 
             try{
-                FileWriter writer = new FileWriter(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json");
+                FileWriter writer = new FileWriter(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"); //save game data in user.home/LOST/MacPan.json
                 writer.write(data);
                 writer.close();
             } catch (IOException a){

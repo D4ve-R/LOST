@@ -124,7 +124,13 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
 
             if(!inFile.equals("")){
                 Game savedGame = gameJson.fromJson(inFile, Game.class);
+
+                gameWindow.getGame().stopThread();
+                savedGame.loadWindow(gameWindow);
+
                 gameWindow.setGame(savedGame);
+
+                gameWindow.getGame().startThread();
             }
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
