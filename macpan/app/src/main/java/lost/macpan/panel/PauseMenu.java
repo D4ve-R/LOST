@@ -122,8 +122,23 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
             if(!inFile.equals("")){
                 Game savedGame = gameJson.fromJson(inFile, Game.class);
+                System.out.println(savedGame.getScore());
+                System.out.println(savedGame.getLevelNr());
+                for(int i=0;i<savedGame.getMaxRows(); i++){
+                    for(int j=0;j<savedGame.getMaxColumns();j++){
+                        System.out.print(savedGame.getMap()[j][i]);
+                    }
+                    System.out.println();
+                }
                 gameWindow.setGame(savedGame);
             }
+            parentFrame.setContentPane(gameWindow);
+            parentFrame.revalidate();
+
+            gameWindow.spielFortsetzen();
+            gameWindow.setFocusable(true);
+            gameWindow.grabFocus();
+
 
 
         } else if (e.getSource() == saveBtn) {

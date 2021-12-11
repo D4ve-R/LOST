@@ -82,15 +82,16 @@ public class Game implements Runnable, ResourceHandler, Serializable {
      * Constructor
      * @author Hung
      */
-    public Game(//char[][] newmap,
-                int newscore, int newTimerDeathTouch,
-                int newTimerSpeed, int newTimerCoinBoost, int newTimerFreeze, boolean[] newflags){
-       // this.map = savedmap;
+    public Game(char[][] newmap, int newscore, int newTimerDeathTouch,
+                int newTimerSpeed, int newTimerCoinBoost, int newTimerFreeze,
+                int newlevelNr, boolean[] newflags){
+        this.map = newmap;
         this.score = newscore;
         this.TimerSpeed = newTimerSpeed;
         this.TimerDeathTouch = newTimerDeathTouch;
         this.TimerCoinBoost = newTimerCoinBoost;
         this.TimerFreeze = newTimerFreeze;
+        this.levelNr =  newlevelNr;
         this.flags = newflags;
     }
     /**
@@ -120,6 +121,9 @@ public class Game implements Runnable, ResourceHandler, Serializable {
         return score;
     }
 
+    public int getMaxColumns() {return maxColumns;}
+    public int getMaxRows() {return maxRows;}
+
     /**
      * Return  the Timers
      * @author Hung
@@ -129,6 +133,7 @@ public class Game implements Runnable, ResourceHandler, Serializable {
     public int getTimerCoinBoost() {return TimerCoinBoost;}
     public int getTimerFreeze() {return TimerFreeze;}
 
+    public int getLevelNr() {return levelNr;}
 
     /**
      * Starts the new thread
