@@ -107,7 +107,7 @@ public class Game implements Runnable, ResourceHandler {
      * @author Hung
      */
     public Game(char[][] newmap, int newscore, int newTimerDeathTouch,
-                int newTimerSpeed, int newTimerCoinBoost, int newTimerFreeze,
+                int newTimerSpeed, int newTimerCoinBoost, int newTimerFreeze, int levelNr,
                 boolean[] newflags){
         this.map = newmap;
         this.score = newscore;
@@ -116,6 +116,7 @@ public class Game implements Runnable, ResourceHandler {
         this.TimerCoinBoost = newTimerCoinBoost;
         this.TimerFreeze = newTimerFreeze;
         this.flags = newflags;
+        this.levelNr = levelNr;
     }
 
     /**
@@ -136,6 +137,15 @@ public class Game implements Runnable, ResourceHandler {
      */
     public char[][] getMap() {
         return map;
+    }
+
+    /**
+     * Return current levelNr
+     * @ Dave
+     * @return current levelno
+     */
+    public int getLevelNr(){
+        return levelNr;
     }
 
     /**

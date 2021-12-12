@@ -22,6 +22,7 @@ public class GameSerializer implements JsonSerializer<Game>, JsonDeserializer<Ga
                 jsonGame.get("TimerDeathTouch").getAsInt(),
                 jsonGame.get("TimerCoinBoost").getAsInt(),
                 jsonGame.get("TimerFreeze").getAsInt(),
+                jsonGame.get("LevelNr").getAsInt(),
                 savedFlags);
     }
 
@@ -49,6 +50,7 @@ public class GameSerializer implements JsonSerializer<Game>, JsonDeserializer<Ga
         jsonGame.addProperty("TimerDeathTouch", game.getTimerDeathTouch());
         jsonGame.addProperty("TimerCoinBoost", game.getTimerCoinBoost());
         jsonGame.add("Flags", jsonFlags);
+        jsonGame.addProperty("LevelNr", game.getLevelNr());
 
 
         return jsonGame;
