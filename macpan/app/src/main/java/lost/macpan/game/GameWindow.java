@@ -83,6 +83,34 @@ public class GameWindow extends JPanel {
         game.startThread();
     }
 
+    /**
+     * @author Hung
+     * @return Game
+     */
+    public Game getGame(){
+        return game;
+    }
+    public void setGame(Game saveGame){
+        game = saveGame;
+    }
+
+    /**
+     * returns the maxColumns
+     * @author Sebastian
+     * @return int maxColumns
+     */
+    public int getMaxColumns() {
+        return maxMapColumns;
+    }
+
+    /**
+     * returns the maxRows
+     * @author Sebastian
+     * @return int maxRows
+     */
+    public int getMaxRows() {
+        return maxMapRows;
+    }
 
     /**
      * shows the death window
