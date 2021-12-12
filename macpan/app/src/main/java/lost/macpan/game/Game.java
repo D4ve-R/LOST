@@ -22,6 +22,7 @@ public class Game implements Runnable, ResourceHandler {
     private int maxMapRows;                    //maximum amount of tiles that can be drawn vertically
 
 
+    private ArrayList<Character> lastKeyList = new ArrayList<Character>();
     private GameWindow gameWindow;
 
     private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
