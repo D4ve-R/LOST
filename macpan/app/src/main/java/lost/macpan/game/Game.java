@@ -95,6 +95,36 @@ public class Game implements Runnable, ResourceHandler {
         maxMapColumns = pMaxColumns;
         maxMapRows = pMaxRows;
 
+        flags = new boolean[8];
+        map = importMapArray("test.txt"); //import the map test
+
+    }
+
+    /**
+     * Constructor
+     * @author Hung
+     */
+    public Game(char[][] newmap, int newscore, int newTimerDeathTouch,
+                int newTimerSpeed, int newTimerCoinBoost, int newTimerFreeze,
+                boolean[] newflags){
+        this.map = newmap;
+        this.score = newscore;
+        this.TimerSpeed = newTimerSpeed;
+        this.TimerDeathTouch = newTimerDeathTouch;
+        this.TimerCoinBoost = newTimerCoinBoost;
+        this.TimerFreeze = newTimerFreeze;
+        this.flags = newflags;
+    }
+
+    /**
+     * load game window onto the screen
+     * @author Hung
+     * @param pGameWindow the GameWindow
+     */
+    public void loadWindow(GameWindow pGameWindow){
+            gameWindow = pGameWindow;
+            maxMapRows = pGameWindow.getMaxRows();
+            maxMapColumns = pGameWindow.getMaxColumns();
     }
 
     /**
@@ -125,12 +155,37 @@ public class Game implements Runnable, ResourceHandler {
     }
 
     /**
+     * returns the maxColumns
+     * @author Sebastian
+     * @return int maxColumns
+     */
+    public int getMaxColumns() {
+        return maxMapColumns;
+    }
+
+    /**
+     * returns the maxRows
+     * @author Sebastian
+     * @return int maxRows
+     */
+    public int getMaxRows() {
+        return maxMapRows;
+    }
+
+    /**
+     * Return  the Timers
+     * @author Hung
+     */
+    public int getTimerSpeed() { return TimerSpeed;}
+    public int getTimerDeathTouch() { return TimerDeathTouch;}
+    public int getTimerCoinBoost() {return TimerCoinBoost;}
+    public int getTimerFreeze() {return TimerFreeze;}
+
+    /**
      * Starts the new thread
      * @author Sebastian
      */
     public void startThread(){
-        flags = new boolean[8];
-        map = importMapArray("test.txt"); //import the map test
         threadRunning = true;
         thread = new Thread(this);
         thread.start();

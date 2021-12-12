@@ -1,4 +1,8 @@
 package lost.macpan.panel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lost.macpan.game.Game;
+import lost.macpan.game.GameSerializer;
 import lost.macpan.game.GameWindow;
 
 import lost.macpan.utils.ResourceHandler;
@@ -12,6 +16,12 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Die Klasse MainMenu stellt das Pausemenü des Spiels auf dem JPanel dar.
@@ -101,8 +111,57 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
             gameWindow.grabFocus();
 
         } else if (e.getSource() == loadBtn) {
+            if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
+                Gson gameJson = new GsonBuilder()
+                        .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
+                        .create();
+
+                String inFile = "";
+                try {
+                    inFile = Files.readString(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json")); //get game data from user.home/LOST/MacPan.json
+                } catch (IOException a) {
+                    a.printStackTrace();
+                }
+
+                if (!inFile.equals("")) {
+                    Game savedGame = gameJson.fromJson(inFile, Game.class);
+                    gameWindow.getGame().stopThread();
+                    savedGame.loadWindow(gameWindow);
+
+                    gameWindow.setGame(savedGame);
+
+                    gameWindow.getGame().startThread();
+                }
+                parentFrame.setContentPane(gameWindow);
+                parentFrame.revalidate();
+
+                gameWindow.spielFortsetzen();
+                gameWindow.setFocusable(true);
+                gameWindow.grabFocus();
+            }
 
         } else if (e.getSource() == saveBtn) {
+            Gson gameJson = new GsonBuilder()
+                    .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
+                    .setPrettyPrinting()
+                    .create();
+            String data = gameJson.toJson(gameWindow.getGame());
+
+            if (Files.notExists(Path.of(System.getProperty("user.home")  + File.separator + "LOST"))) {
+                try{
+                    Files.createDirectories(Path.of(System.getProperty("user.home")  + File.separator +  "LOST")); //create user's gamedata in folder user.home/LOST
+                } catch (IOException a) {
+                    a.printStackTrace();}
+            }
+
+            try{
+                FileWriter writer = new FileWriter(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"); //save game data in user.home/LOST/MacPan.json
+                writer.write(data);
+                writer.close();
+            } catch (IOException a){
+                a.printStackTrace();
+            }
+
 
         } else if (e.getSource() == highscoresBtn) {
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());

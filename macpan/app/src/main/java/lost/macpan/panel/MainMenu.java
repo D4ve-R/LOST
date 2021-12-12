@@ -8,6 +8,10 @@
 
 package lost.macpan.panel;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lost.macpan.game.Game;
+import lost.macpan.game.GameSerializer;
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
@@ -20,6 +24,10 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Die Klasse MainMenu stellt das Hauptmenü des Spiels auf dem JPanel dar.
@@ -50,7 +58,6 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
      */
     public MainMenu(JFrame frame) {
         parentFrame = frame;
-
 
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPan.png"));
@@ -103,6 +110,33 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {
+            if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
+                GameWindow gameWindow = new GameWindow(parentFrame, this);
+
+                Gson gameJson = new GsonBuilder()
+                        .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
+                        .create();
+
+                String inFile = "";
+                try {
+                    inFile = new String(Files.readAllBytes(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json")));
+                } catch (IOException a) {
+                    a.printStackTrace();
+                }
+
+                if (!inFile.equals("")) {
+                    Game savedGame = gameJson.fromJson(inFile, Game.class);
+
+                    gameWindow.getGame().stopThread();
+                    savedGame.loadWindow(gameWindow);
+
+                    gameWindow.setGame(savedGame);
+
+                    gameWindow.getGame().startThread();
+                }
+                parentFrame.setContentPane(gameWindow);
+                parentFrame.revalidate();
+            }
 
         } else if (e.getSource() == highscoresBtn) {
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
