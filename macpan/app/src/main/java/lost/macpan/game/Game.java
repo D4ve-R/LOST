@@ -18,11 +18,11 @@ public class Game implements Runnable, ResourceHandler {
     private int[] playerPos = new int[2]; // playerPos[0] = x coordinate, playerPos[1] = y coordinate
     private int[] initPlayerPos = new int[2]; // initPlayerPos[0] = initial x coordinate, initPlayerPos[1] = initial y coordinate
 
+    private int maxMapColumns;                 //maximum amount of tiles that can be drawn horizontally
+    private int maxMapRows;                    //maximum amount of tiles that can be drawn vertically
+
+
     private ArrayList<Character> lastKeyList = new ArrayList<Character>();
-
-    private int maxColumns;                 //maximum amount of tiles that can be drawn horizontally
-    private int maxRows;                    //maximum amount of tiles that can be drawn vertically
-
     private GameWindow gameWindow;
 
     private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
@@ -90,10 +90,11 @@ public class Game implements Runnable, ResourceHandler {
      * @author Sebastian
      * @param pGameWindow the GameWindow
      */
-    public Game(GameWindow pGameWindow){
+    public Game(GameWindow pGameWindow, int pMaxColumns, int pMaxRows){
         gameWindow = pGameWindow;
-        maxRows = pGameWindow.getMaxRows();
-        maxColumns = pGameWindow.getMaxColumns();
+        maxMapColumns = pMaxColumns;
+        maxMapRows = pMaxRows;
+
     }
 
     /**
@@ -402,8 +403,8 @@ public class Game implements Runnable, ResourceHandler {
      */
     public void getPlayerPos(){
         playerPos = new int [2];
-        for (int i = 0; i < maxColumns; i++){
-            for (int j = 0; j < maxRows; j++) {
+        for (int i = 0; i < maxMapColumns; i++){
+            for (int j = 0; j < maxMapRows; j++) {
                 if(map[i][j] == playerTile){
                     playerPos[0] = i;
                     playerPos[1] = j;
@@ -420,8 +421,8 @@ public class Game implements Runnable, ResourceHandler {
      */
     public void initiateEnemies() {
         enemies.clear(); // Remove Enemy objects from last session
-        for(int i = 0; i < maxColumns; i++)
-            for (int j = 0; j < maxRows; j++)
+        for(int i = 0; i < maxMapColumns; i++)
+            for (int j = 0; j < maxMapRows; j++)
                 if(this.getMap()[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
     }
 
@@ -477,7 +478,7 @@ public class Game implements Runnable, ResourceHandler {
      * @return charArray of the map at the filename
      */
     private char[][] importMapArray(String pFileName){
-        char[][] map = new char[maxColumns][maxRows];
+        char[][] map = new char[maxMapColumns][maxMapRows];
         String mapString = "";
         try {
             InputStream inputStream = getFileResourcesAsStream("levels/"+pFileName);
@@ -486,8 +487,8 @@ public class Game implements Runnable, ResourceHandler {
             e.printStackTrace();
         }
         String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
-        for(int i = 0; i < Math.min(rows.length,maxRows);i++ )              //For every row
-            for (int o = 0; o < Math.min(rows[i].length(),maxColumns); o++) //for every char in the row
+        for(int i = 0; i < Math.min(rows.length, maxMapRows); i++ )              //For every row
+            for (int o = 0; o < Math.min(rows[i].length(), maxMapColumns); o++) //for every char in the row
                 map[o][i] = rows[i].charAt(o);  //insert char into the map array
         return map;
     }

@@ -3,11 +3,11 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JFrame;
-import javax.swing.Timer;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 import java.awt.Image;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -53,7 +53,7 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
 
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        label.setBounds(175, 50, 600, 200);
+        label.setBounds(0, 50, 900, 200);
         add(label);
         add(background);
 

@@ -12,15 +12,20 @@ import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
+ * Die Klasse MainMenu stellt das Hauptmenü des Spiels auf dem JPanel dar.
  */
 public class MainMenu extends JPanel implements ActionListener, ResourceHandler {
+
     // Erstellen der einzelnen Buttons
     private final JButton playBtn = new JButton("Spiel Starten");
     private final JButton loadBtn = new JButton("Spiel Laden");
@@ -46,6 +51,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     public MainMenu(JFrame frame) {
         parentFrame = frame;
 
+
         try {
             img = ImageIO.read(getFileResourcesAsStream("images/panelImages/MacPan.png"));
         } catch (Exception e) {
@@ -67,11 +73,11 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         // Positionierung der Buttons und Labels
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        playBtn.setBounds(395, 300, 160, 50);
-        loadBtn.setBounds(395, 360, 160, 50);
-        highscoresBtn.setBounds(395, 420, 160, 50);
-        optionsBtn.setBounds(395, 480, 160, 50);
-        quitBtn.setBounds(395, 540, 160, 50);
+        playBtn.setBounds(350, 300, 240, 50);
+        loadBtn.setBounds(350, 360, 240, 50);
+        highscoresBtn.setBounds(350, 420, 240, 50);
+        optionsBtn.setBounds(350, 480, 240, 50);
+        quitBtn.setBounds(350, 540, 240, 50);
 
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);

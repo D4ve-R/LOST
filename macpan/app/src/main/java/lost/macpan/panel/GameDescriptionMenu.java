@@ -3,23 +3,22 @@ package lost.macpan.panel;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.Image;
+import javax.swing.JPanel;
 import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
  * Die Klasse GameDescriptionMenu liefert dem Spieler eine Spielbeschreibung !!Spielbeschreibung muss noch hinzugefügt werden!!
- *
  * @author fatih
  */
 public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton backBtn = new JButton("Zurück");
+    private final JButton backBtn = new JButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;

@@ -1,6 +1,5 @@
 package lost.macpan.panel;
 
-import lost.macpan.Main;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
@@ -58,7 +57,6 @@ public class LooserMenu extends JPanel implements ActionListener, ResourceHandle
         add(label);
         add(background);
         timer.start();
-
     }
 
     @Override
