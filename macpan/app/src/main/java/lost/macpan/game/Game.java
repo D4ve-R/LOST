@@ -32,6 +32,7 @@ public class Game implements Runnable, ResourceHandler {
     private boolean gamePaused = false;
     private boolean threadRunning;
 
+    private int levelNr;
     private char[][] map;                            //char-array of the map (map[0 - maxColumns][0 - maxRows])
 
     private int score;                               //for keeping track of the score
@@ -96,7 +97,8 @@ public class Game implements Runnable, ResourceHandler {
         maxMapRows = pMaxRows;
 
         flags = new boolean[8];
-        map = importMapArray("test.txt"); //import the map test
+        map = importMapArray("level_1.txt");
+        levelNr = 1;
 
     }
 
@@ -429,9 +431,21 @@ public class Game implements Runnable, ResourceHandler {
                 } case exitTile -> {
                     if(!flags[3]) return; // TODO: Wofür?
                     else {
-                        stopThread();
-                        gameWindow.showWinnerMenu();
-                        //Bildschirm (Todes oder Erfolgs)
+                        levelNr++;
+                        flags[3] = false;
+                        flags[6] = false;
+                        switch(levelNr){
+                            case 2:
+                                map = importMapArray("level_2.txt");
+                                break;
+                            case 3:
+                                map = importMapArray("level_3.txt");
+                                break;
+                            default:
+                                gameWindow.showWinnerMenu();
+                                stopThread();
+                        }
+                        initiateEnemies();
                     }
                 }
                 case speedEffectTile    -> flags[2] = true; // Geschwindigkeitsbuff
