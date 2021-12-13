@@ -68,6 +68,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
         setResizable(false);
         pack();
         setVisible(true);
+        initStorage();
         timer.start();
     }
 
