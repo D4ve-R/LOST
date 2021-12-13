@@ -5,8 +5,8 @@
 
 package lost.macpan.utils;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +18,11 @@ import java.nio.file.Paths;
  * ResourceHandler interface to handle file opening in production mode
  */
 public interface ResourceHandler {
+    /**
+     * pathToDataDirectory String of the Directory in that all the Data (that is altered by the user or the program) is saved.
+     */
+    String pathToDataDirectory = System.getProperty("user.home") + File.separator + "LOST";
+
     /**
      * @param filename name of file
      * @return File content as InputStream
@@ -34,7 +39,7 @@ public interface ResourceHandler {
     }
 
     default File getFileFromFS(String filename){
-        return new File(System.getProperty("user.home") + File.separator + "LOST" + File.separator + filename);
+        return new File(pathToDataDirectory + File.separator + filename);
     }
 
     /**
@@ -44,11 +49,26 @@ public interface ResourceHandler {
      *
      */
     default void writeStringToFile(String pFilename, String pFileContent) {
-        String ResourcesPath = "build/resources/main/";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ResourcesPath + pFilename))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathToDataDirectory + File.separator + pFilename))) {
             writer.write(pFileContent);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @author Sebastian
+     * @param pFilename name of file
+     * @return pFileContent the content of the file
+     *
+     */
+    default String readStringFromFile(String pFilename) {
+        try {
+            return Files.readString(Paths.get(pathToDataDirectory + File.separator + pFilename), StandardCharsets.UTF_8);
+        }
+        catch ( Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -65,14 +85,14 @@ public interface ResourceHandler {
      * copies files from jar to filesystem
      */
     default void initStorage(){
-        Path path = Paths.get(System.getProperty("user.home") + File.separator + "LOST");
+        Path path = Paths.get(pathToDataDirectory);
         if(!Files.exists(path)) {
             try {
                 Files.createDirectory(path);
-                Files.copy(getFileResourcesAsStream("levels/level_1.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "level_1.txt"));
-                Files.copy(getFileResourcesAsStream("levels/level_2.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "level_2.txt"));
-                Files.copy(getFileResourcesAsStream("levels/level_3.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "level_3.txt"));
-                Files.copy(getFileResourcesAsStream("highscores/Highscores.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "Highscores.txt"));
+                Files.copy(getFileResourcesAsStream("levels/level_1.txt"), Paths.get(pathToDataDirectory + File.separator + "level_1.txt"));
+                Files.copy(getFileResourcesAsStream("levels/level_2.txt"), Paths.get(pathToDataDirectory + File.separator + "level_2.txt"));
+                Files.copy(getFileResourcesAsStream("levels/level_3.txt"), Paths.get(pathToDataDirectory + File.separator + "level_3.txt"));
+                Files.copy(getFileResourcesAsStream("highscores/Highscores.txt"), Paths.get(pathToDataDirectory + File.separator + "Highscores.txt"));
             }catch(IOException e){
                 e.printStackTrace();
             }
