@@ -1,7 +1,5 @@
 package lost.macpan.panel;
 
-import lost.macpan.Main;
-import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
@@ -22,8 +20,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
 
 
 /**
@@ -49,7 +45,6 @@ public class LooserMenu extends JPanel implements ResourceHandler {
     private InputStream inputStream;
     private String highscores;
     private String[] scores;
-    private OutputStream outputStream;
 
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {

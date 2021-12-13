@@ -32,13 +32,12 @@ import java.io.Writer;
  *
  * @author fatih
  */
-public class WinnerMenu extends JPanel implements ActionListener, ResourceHandler {
+public class WinnerMenu extends JPanel implements ResourceHandler {
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
     private JLabel background;
     private Image backgroundImg;
-    private Timer timer;
     private Container before;
     private JTextField nameInput;
     private JLabel nameLabel;
@@ -49,12 +48,10 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     private JLabel scoreValue;
     private InputStream inputStream;
     private String highscores;
-    private String[] parts;
+    private String[] scores;
 
 
     public WinnerMenu(JFrame frame, Container beforeMenu, int currentScore) {
-        int delay = 5000;
-        timer = new Timer(delay, this);
         before = beforeMenu;
         parentFrame = frame;
         score = currentScore;
@@ -109,7 +106,6 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
         add(scoreLabel);
         add(background);
         add(nameInput);
-        timer.start();
 
         setKeyBindings();
     }
@@ -163,97 +159,58 @@ public class WinnerMenu extends JPanel implements ActionListener, ResourceHandle
     public void newKeyAction(String pKey) {
         switch (pKey){
             case "VK_ENTER":
-                //saveHighscores();
+                saveHighscores();
                 System.out.println("EnterPressed"); //TODO: Remove debugging output
                 break;
             case "VK_SPACE":
-                //saveHighscores();
+                saveHighscores();
                 System.out.println("Space Pressed");//TODO: Remove debugging output
                 break;
         }
     }
 
+    public void saveHighscores() {
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
         try {
             inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
             highscores = convertStreamToString(inputStream);
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        parts = highscores.split("\n"); //txt Inhalt als Array
-        String[] all = new String[10];
-        for (int i = 0; i < parts.length; i++) { //Alle einträge in ein Array mit 10 stellen überschreiben
-            all[i] = parts[i];
-        }
-        if (parts.length == 10) { //Bereits 10 Einträge
-            if (getScoreVal(parts[parts.length-1]) < score) {//neuer Highscore
-                if (nameInput.getText().equals("")) { //Name eingegeben?
-                    all[parts.length-1] = score+";"+"Anonym";
-                } else all[parts.length-1] = score+";"+nameInput.getText();
-                //hier ggf sortieren !!!!!
-                sortScore(all);
+
+        scores = highscores.split("\n");
+
+        if (getScoreVal(scores[9]) < score) {
+            highscores = "";
+            scores[9] = score+";"+nameInput.getText();
+            sortScore(scores);
+            for (int i = 0; i < 10; i++) {
+                highscores += scores[i]+"\n";
             }
-        } else { //noch keine 10 Einträge
-            if (nameInput.getText().equals("")) {
-                all[parts.length] = score+";"+"Anonym";
-            } else all[parts.length] = score+";"+nameInput.getText();
-            //hier sortieren !!!!!!
-            sortScore(all);
+            writeStringToFile("highscores/Highscores.txt","");
+            writeStringToFile("highscores/Highscores.txt",highscores);
         }
-        //Txt überschreiben mit neuen Werten
-        //inhalt löschen
-        try {
-            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", false);
-            BufferedWriter writer1 = new BufferedWriter(writer);
-            writer1.write("");
-            writer1.close();
-            writer.close();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        //Werte von all in txt übernehmen
-        try {
-            Writer writer = new FileWriter("macpan/app/src/main/resources/highscores/Highscores.txt", true);
-            for (int i = 0; i < all.length; i++) {
-                if (all[i] != null) {
-                    writer.write(all[i] + "\n");
-                } else break;
-            }
-            writer.close();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        timer.stop();
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
     }
+
     private int getScoreVal(String score) {
-        if (score.equals("")) return 0;
+        if (score.equals("") || score.equals("\n")) return 0;
         String num = score.substring(0, score.indexOf(';'));
         int numInt = Integer.parseInt(num);
         return numInt;
     }
+
     private void sortScore(String[] scores) {
-        int n = 0;
-        for (int i = 0; i < scores.length; i++) {
-            if (scores[i] == null) {
-                break;
-            } else n++;
-        }
-        if (scores[0] == null) {
-            return;
-        }
-        String temp = "";
-        for (int i = 0; i < n; i++) {
-            for (int j = 1; j < (n-i); j++) {
-                if (getScoreVal(scores[j-1]) < getScoreVal(scores[j])) {
-                    temp = scores[j-1];
-                    scores[j-1] = scores[j];
-                    scores[j] = temp;
-                }
+        int n = 10;
+        for (int j = 1; j < n; j++) {
+            String temp = scores[j];
+            int i = j - 1;
+            while ((i > -1) && (getScoreVal(scores[i]) < getScoreVal(temp))) {
+                scores[i + 1] = scores[i];
+                i--;
             }
+            scores[i + 1] = temp;
         }
     }
 }
