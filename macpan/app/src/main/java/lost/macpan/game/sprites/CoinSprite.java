@@ -1,7 +1,5 @@
 package lost.macpan.game.sprites;
 
-import lost.macpan.game.GameWindow;
-
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -31,7 +29,7 @@ public class CoinSprite extends Sprite{
         try {
             boostedCoin = ImageIO.read(getFileResourcesAsStream("images/Coin boost.png"));
             normalCoin = ImageIO.read(getFileResourcesAsStream("images/Coin normal.png"));
-            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
