@@ -40,6 +40,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton quitBtn = new JButton("Spiel Beenden");
+    private final JButton editBtn = new JButton("Edit Level");
     /*
         parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
      */
@@ -84,7 +85,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         loadBtn.setBounds(350, 360, 240, 50);
         highscoresBtn.setBounds(350, 420, 240, 50);
         optionsBtn.setBounds(350, 480, 240, 50);
-        quitBtn.setBounds(350, 540, 240, 50);
+        editBtn.setBounds(350, 540, 240, 50);
+        quitBtn.setBounds(350, 600, 240, 50);
 
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);
@@ -93,6 +95,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         add(highscoresBtn);
         add(optionsBtn);
         add(quitBtn);
+        add(editBtn);
         add(background);
         //Buttons werden dem Listener zugeordnet
         playBtn.addActionListener(this);
@@ -151,6 +154,12 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         } else if (e.getSource() == quitBtn) {
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
+            parentFrame.revalidate();
+        }
+
+        if(e.getSource() == editBtn) {
+            FileEditor fileEditor = new FileEditor(parentFrame);
+            parentFrame.setContentPane(fileEditor);
             parentFrame.revalidate();
         }
     }
