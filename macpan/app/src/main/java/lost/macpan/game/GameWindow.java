@@ -6,25 +6,13 @@
 package lost.macpan.game;
 
 import lost.macpan.App;
-import lost.macpan.game.sprites.CoinSprite;
-import lost.macpan.game.sprites.EnemySprite;
-import lost.macpan.game.sprites.ExitSprite;
-import lost.macpan.game.sprites.PlayerSprite;
-import lost.macpan.game.sprites.Sprite;
+import lost.macpan.game.sprites.*;
 import lost.macpan.panel.LooserMenu;
 import lost.macpan.panel.PauseMenu;
 import lost.macpan.panel.WinnerMenu;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
