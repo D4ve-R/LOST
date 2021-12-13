@@ -2,16 +2,16 @@ package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
 
-import java.awt.Container;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.Container;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Die Klasse OptionMenu stellt ein Menü dar, wo man das Tastenbelegungsfenster oder das Spielbeschreibungsfenster öffnen kann
@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler {
     private final JButton keyBtn = new JButton("Tastenbelegung");
     private final JButton descBtn = new JButton("Spielbeschreibung");
-    private final JButton backBtn = new JButton("Zurück");
+    private final JButton backBtn = new JButton("Zur\u00fcck");
     private JLabel label;
     private Image img;
     private JFrame parentFrame;
@@ -51,8 +51,8 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        keyBtn.setBounds(395, 300, 160, 50);
-        descBtn.setBounds(395, 360, 160, 50);
+        keyBtn.setBounds(315, 300, 310, 50);
+        descBtn.setBounds(315, 360, 310, 50);
         backBtn.setBounds(30, 550, 160, 50);
         add(backBtn);
         add(label);

@@ -26,7 +26,7 @@ import java.util.Comparator;
  * @author fatih
  */
 public class HighscoreMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton backBtn = new JButton("Zurück");
+    private final JButton backBtn = new JButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;

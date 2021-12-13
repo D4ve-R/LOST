@@ -8,6 +8,10 @@
 
 package lost.macpan.panel;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lost.macpan.game.Game;
+import lost.macpan.game.GameSerializer;
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.ResourceHandler;
 
@@ -20,11 +24,16 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
- * Die Klasse MainMenu stellt das Haputmenü des Spiels auf dem JPanel dar.
+ * Die Klasse MainMenu stellt das Hauptmenü des Spiels auf dem JPanel dar.
  */
 public class MainMenu extends JPanel implements ActionListener, ResourceHandler {
+
     // Erstellen der einzelnen Buttons
     private final JButton playBtn = new JButton("Spiel Starten");
     private final JButton loadBtn = new JButton("Spiel Laden");
@@ -71,11 +80,11 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         // Positionierung der Buttons und Labels
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        playBtn.setBounds(395, 300, 160, 50);
-        loadBtn.setBounds(395, 360, 160, 50);
-        highscoresBtn.setBounds(395, 420, 160, 50);
-        optionsBtn.setBounds(395, 480, 160, 50);
-        quitBtn.setBounds(395, 540, 160, 50);
+        playBtn.setBounds(350, 300, 240, 50);
+        loadBtn.setBounds(350, 360, 240, 50);
+        highscoresBtn.setBounds(350, 420, 240, 50);
+        optionsBtn.setBounds(350, 480, 240, 50);
+        quitBtn.setBounds(350, 540, 240, 50);
 
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);
@@ -101,6 +110,33 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.revalidate();
 
         } else if (e.getSource() == loadBtn) {
+            if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
+                GameWindow gameWindow = new GameWindow(parentFrame, this);
+
+                Gson gameJson = new GsonBuilder()
+                        .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
+                        .create();
+
+                String inFile = "";
+                try {
+                    inFile = new String(Files.readAllBytes(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json")));
+                } catch (IOException a) {
+                    a.printStackTrace();
+                }
+
+                if (!inFile.equals("")) {
+                    Game savedGame = gameJson.fromJson(inFile, Game.class);
+
+                    gameWindow.getGame().stopThread();
+                    savedGame.loadWindow(gameWindow);
+
+                    gameWindow.setGame(savedGame);
+
+                    gameWindow.getGame().startThread();
+                }
+                parentFrame.setContentPane(gameWindow);
+                parentFrame.revalidate();
+            }
 
         } else if (e.getSource() == highscoresBtn) {
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());

@@ -6,9 +6,13 @@
 package lost.macpan.utils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * ResourceHandler interface to handle file opening in production mode
@@ -27,6 +31,10 @@ public interface ResourceHandler {
         else{
             return in;
         }
+    }
+
+    default File getFileFromFS(String filename){
+        return new File(System.getProperty("user.home") + File.separator + "LOST" + File.separator + filename);
     }
 
     /**
@@ -51,5 +59,23 @@ public interface ResourceHandler {
      */
     default String convertStreamToString(InputStream is) throws IOException {
         return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * copies files from jar to filesystem
+     */
+    default void initStorage(){
+        Path path = Paths.get(System.getProperty("user.home") + File.separator + "LOST");
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectory(path);
+                Files.copy(getFileResourcesAsStream("levels/level_1.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "level_1.txt"));
+                Files.copy(getFileResourcesAsStream("levels/level_2.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "level_2.txt"));
+                Files.copy(getFileResourcesAsStream("levels/level_3.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "level_3.txt"));
+                Files.copy(getFileResourcesAsStream("highscores/Highscores.txt"), Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "Highscores.txt"));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

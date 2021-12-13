@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
  * @author fatih
  */
 public class KeysMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton backBtn = new JButton("Zurück");
+    private final JButton backBtn = new JButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel topLabel;
     private JLabel subLabel;
