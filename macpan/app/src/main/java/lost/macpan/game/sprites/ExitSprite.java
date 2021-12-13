@@ -1,7 +1,5 @@
 package lost.macpan.game.sprites;
 
-import lost.macpan.game.GameWindow;
-
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -36,14 +34,14 @@ public class ExitSprite extends Sprite{
     @Override
     public void fetchSprites() {
         try {
-            exit1 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-1.png.png"));
-            exit2 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-2.png.png"));
-            exit3 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-3.png.png"));
-            exit4 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-4.png.png"));
-            exit5 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-5.png.png"));
-            exit6 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-6.png.png"));
-            exit7 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-7.png.png"));
-            exit8 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-8.png.png"));
+            exit1 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-1.png"));
+            exit2 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-2.png"));
+            exit3 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-3.png"));
+            exit4 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-4.png"));
+            exit5 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-5.png"));
+            exit6 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-6.png"));
+            exit7 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-7.png"));
+            exit8 = ImageIO.read(getFileResourcesAsStream("images/exit/Exit-8.png"));
             wall = ImageIO.read(getFileResourcesAsStream("images/Wall.png"));
         } catch (IOException e) {
             e.printStackTrace();

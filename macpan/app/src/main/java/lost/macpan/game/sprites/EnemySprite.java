@@ -1,7 +1,5 @@
 package lost.macpan.game.sprites;
 
-import lost.macpan.game.GameWindow;
-
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -31,11 +29,11 @@ public class EnemySprite extends Sprite{
     @Override
     public void fetchSprites() {
         try {
-            enemy1 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-1.png.png"));
-            enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-2.png.png"));
-            enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-3.png.png"));
-            enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-4.png.png"));
-            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
+            enemy1 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-1.png"));
+            enemy2 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-2.png"));
+            enemy3 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-3.png"));
+            enemy4 = ImageIO.read(getFileResourcesAsStream("images/enemy/enemy-4.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

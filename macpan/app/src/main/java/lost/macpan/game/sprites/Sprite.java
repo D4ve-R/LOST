@@ -35,13 +35,13 @@ public class Sprite implements ResourceHandler {
      */
     public void fetchSprites() {
         try {
-            boostItem = ImageIO.read(getFileResourcesAsStream("images/Boost-1.png.png"));
+            boostItem = ImageIO.read(getFileResourcesAsStream("images/Boost.png"));
             freeze = ImageIO.read(getFileResourcesAsStream("images/Freeze.png"));
             key = ImageIO.read(getFileResourcesAsStream("images/Key.png"));
             pan = ImageIO.read(getFileResourcesAsStream("images/Pan.png"));
             shield = ImageIO.read(getFileResourcesAsStream("images/Shield.png"));
             speed = ImageIO.read(getFileResourcesAsStream("images/Speed.png"));
-            path = ImageIO.read(getFileResourcesAsStream("images/Path-1.png.png"));
+            path = ImageIO.read(getFileResourcesAsStream("images/Path.png"));
             wall = ImageIO.read(getFileResourcesAsStream("images/Wall.png"));
         } catch (IOException e) {
             e.printStackTrace();
