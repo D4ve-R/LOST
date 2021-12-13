@@ -59,7 +59,7 @@ public interface ResourceHandler {
     /**
      * @author Sebastian
      * @param pFilename name of file
-     * @return pFileContent the content of the file
+     * @return String the content of the file
      *
      */
     default String readStringFromFile(String pFilename) {
