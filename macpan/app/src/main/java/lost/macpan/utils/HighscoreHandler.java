@@ -1,53 +1,67 @@
 package lost.macpan.utils;
 
+import lost.macpan.panel.LooserMenu;
 import lost.macpan.utils.ResourceHandler;
 
-public interface HighscoreHandler {
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
-/*
-    default void saveHighscores() {
+public interface HighscoreHandler extends ResourceHandler {
+
+    class HighscoreEntry{
+        private int score;
+        private String name;
+
+        public HighscoreEntry(int pScore, String pName){
+            this.score = pScore;
+            this.name = pName;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String toString (){
+            return score + ";" + name;
+        }
+    }
+
+    default void saveNewScore(int pScore, String pName) {
+        List<HighscoreEntry> liste = new LinkedList<>();
+
+        String  AllHighScoresString = "";
 
         try {
-            highscores = readStringFromFile("Highscores.txt");
+            AllHighScoresString = readStringFromFile("Highscores.txt");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        scores = highscores.split("\n");
+        String[] scores = AllHighScoresString.split("\n");
 
-        if (getScoreVal(scores[9]) < score) {
-            highscores = "";
-            scores[9] = score+";"+nameInput.getText();
-            sortScore(scores);
-            for (int i = 0; i < 10; i++) {
-                highscores += scores[i]+"\n";
-            }
-            writeStringToFile("Highscores.txt","");
-            writeStringToFile("Highscores.txt",highscores);
+        for(String s: scores){
+            s = s.replaceAll("\r","");
+            s = s.replaceAll("\n","");
+            String[] temp = s.split(";");
+            liste.add(new HighscoreEntry(Integer.parseInt(temp[0]),temp[1]));
         }
-        parentFrame.setContentPane(before);
-        parentFrame.revalidate();
-    }
 
-    private int getScoreVal(String score) {
-        if (score.equals("") || score.equals("\n")) return 0;
-        String num = score.substring(0, score.indexOf(';'));
-        int numInt = Integer.parseInt(num);
-        return numInt;
-    }
+        liste.add(new HighscoreEntry(pScore, pName));
+        liste.sort(Comparator.comparing(HighscoreEntry::getScore).reversed());
 
-    private void sortScore(String[] scores) {
-        int n = 10;
-        for (int j = 1; j < n; j++) {
-            String temp = scores[j];
-            int i = j - 1;
-            while ((i > -1) && (getScoreVal(scores[i]) < getScoreVal(temp))) {
-                scores[i + 1] = scores[i];
-                i--;
-            }
-            scores[i + 1] = temp;
+        StringBuilder highscoresNew = new StringBuilder();
+        for (int i = 0; i < Math.min(liste.size(), 10); i++) {
+            highscoresNew.append(liste.get(i) + "\n");
         }
+
+        writeStringToFile("Highscores.txt",highscoresNew.toString());
+
     }
 
- */
+
 }
