@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.InputStream;
 
 
 /**
@@ -43,10 +42,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
     private int score;
     private JLabel scoreValue;
 
-
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
-
-        setKeyBindings();
         parentFrame = frame;
         before = beforeMenu;
         score = currentScore;
@@ -92,6 +88,8 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         add(scoreLabel);
         add(background);
         add(nameInput);
+
+        setKeyBindings();
     }
 
     /**
@@ -154,9 +152,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
     }
 
     public void saveHighscores(int pScore, String pName) {
-
         saveNewScore(pScore,pName);
-
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
     }
