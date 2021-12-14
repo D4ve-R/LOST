@@ -234,7 +234,6 @@ public class Game implements Runnable, ResourceHandler {
     public void spielPausieren() {
         gamePaused = true;
         gameWindow.showPauseMenu();
-        //System.out.println("Spiel pausiert");
     }
 
     /**
@@ -291,7 +290,6 @@ public class Game implements Runnable, ResourceHandler {
             }
 
         }
-        //System.out.println("Loop beendet");
     }
 
     /**
@@ -369,11 +367,9 @@ public class Game implements Runnable, ResourceHandler {
                 break;
             case "VK_W":
                 addKeyToList('w');
-                System.out.println("W pressed"); // TODO: Remove debugging Output
                 break;
             case "VK_W_released":
                 lastKeyList.remove((Character) 'w');
-                System.out.println("W released"); // TODO: Remove debugging Output
                 break;
             case "VK_A":
                 addKeyToList('a');
@@ -467,7 +463,7 @@ public class Game implements Runnable, ResourceHandler {
                 case extraLifeTile      -> flags[1] = true; // Zusatzleben
                 case deathTouchTile     -> flags[4] = true; // Todesberührung
             }
-        } else System.out.println("Wand im weg"); // TODO: remove debugging message
+        }
     }
 
     /**
