@@ -4,7 +4,7 @@ import lost.macpan.utils.ResourceHandler;
 
 public interface HighscoreHandler {
 
-
+/*
     default void saveHighscores() {
 
         try {
@@ -48,4 +48,6 @@ public interface HighscoreHandler {
             scores[i + 1] = temp;
         }
     }
+
+ */
 }

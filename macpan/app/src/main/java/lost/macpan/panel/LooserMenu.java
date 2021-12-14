@@ -171,6 +171,10 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         public String getName() {
             return name;
         }
+
+        public String toString (){
+            return score + ";" + name;
+        }
     }
 
     public void saveHighscores(int pScore, String pName) {
@@ -188,13 +192,22 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         String[] scores = AllHighScoresString.split("\n");
 
         for(String s: scores){
+            s = s.replaceAll("\r","");
+            s = s.replaceAll("\n","");
             String[] temp = s.split(";");
             liste.add(new HighscoreEntry(Integer.parseInt(temp[0]),temp[1]));
         }
+        liste.sort(Comparator.comparing(HighscoreEntry::getScore).reversed());
 
-        liste.sort(Comparator.comparing(HighscoreEntry::getScore));
 
-        if (getScoreVal(scores[9]) < pScore) {
+        /*
+        System.out.println(liste.get(liste.size()).getScore());
+        System.out.println(liste.get(liste.size() - 1).getScore());
+        System.out.println(liste);
+
+         */
+
+        if (liste.get(liste.size() - 1).getScore() < pScore) {
             AllHighScoresString = "";
             scores[9] = pScore+";"+pName;
             sortScore(scores);
@@ -216,6 +229,8 @@ public class LooserMenu extends JPanel implements ResourceHandler {
     }
 
     private void sortScore(String[] scores) {
+        //liste.sort(Comparator.comparing(HighscoreEntry::getScore).reversed());
+
         int n = 10;
         for (int j = 1; j < n; j++) {
             String temp = scores[j];
