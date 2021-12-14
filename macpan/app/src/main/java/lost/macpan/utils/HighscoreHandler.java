@@ -7,8 +7,18 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+
+/**
+ * @author Sebastian
+ * HighscoreHandler interface to handle Highscore saving/adding and loading from file
+ */
 public interface HighscoreHandler extends ResourceHandler {
 
+    /**
+     * Class that represents one highscore entry
+     * @author Sebastian
+     *
+     */
     class HighscoreEntry{
         private int score;
         private String name;
@@ -31,28 +41,41 @@ public interface HighscoreHandler extends ResourceHandler {
         }
     }
 
+    /**
+     * @author Sebastian
+     * takes a score and adds it to the Highscores file. Only the ten best Highscores are saved.
+     * @param pScore the score to be saved as int
+     * @param pName the name associated with the score
+     *
+     */
     default void saveNewScore(int pScore, String pName) {
-        List<HighscoreEntry> liste = new LinkedList<>();
+        List<HighscoreEntry> highscoreListe = new LinkedList<>();
 
         String[] allHighscores = getHighscoresAsArray();
 
         for(String s: allHighscores){
             String[] temp = s.split(";");
-            liste.add(new HighscoreEntry(Integer.parseInt(temp[0]),temp[1]));
+            highscoreListe.add(new HighscoreEntry(Integer.parseInt(temp[0]),temp[1]));
         }
 
-        liste.add(new HighscoreEntry(pScore, pName));
-        liste.sort(Comparator.comparing(HighscoreEntry::getScore).reversed());
+        highscoreListe.add(new HighscoreEntry(pScore, pName));
+        highscoreListe.sort(Comparator.comparing(HighscoreEntry::getScore).reversed());
 
         StringBuilder highscoresNew = new StringBuilder();
-        for (int i = 0; i < Math.min(liste.size(), 10); i++) {
-            highscoresNew.append(liste.get(i) + "\n");
+        for (int i = 0; i < Math.min(highscoreListe.size(), 10); i++) {
+            highscoresNew.append(highscoreListe.get(i) + "\n");
         }
 
         writeStringToFile("Highscores.txt",highscoresNew.toString());
 
     }
 
+    /**
+     * @author Sebastian
+     * Loads the Highscore File from Disk and returns it as a String[] split at every new line.
+     * @return an array of Highscore Strings
+     *
+     */
     default String[] getHighscoresAsArray(){
         String  AllHighScoresString = "";
 
@@ -72,6 +95,11 @@ public interface HighscoreHandler extends ResourceHandler {
 
     }
 
+    /**
+     * Class used for limiting the amount of characters that can be typed into the text field.
+     * @author Sebastian
+     *
+     */
     class LimitJTextField extends PlainDocument
     {
         private int max;

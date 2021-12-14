@@ -559,7 +559,7 @@ public class Game implements Runnable, ResourceHandler {
      *
      * @param pFileName name of the map to load (has to be in the levels folder)
      * @return charArray of the map at the filename
-     */
+     */ //TODO Import Map Array has to use new Directory
     private char[][] importMapArray(String pFileName){
         char[][] map = new char[maxMapColumns][maxMapRows];
         String mapString = "";

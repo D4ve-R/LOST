@@ -152,6 +152,11 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         }
     }
 
+    /**
+     * method for saving Highscores
+     * @author Sebastian
+     *
+     */
     public void saveHighscores(int pScore, String pName) {
         saveNewScore(pScore, pName);
         parentFrame.setContentPane(before);
