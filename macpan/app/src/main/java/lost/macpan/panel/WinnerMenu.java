@@ -40,6 +40,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
     private JLabel scoreLabel;
     private int score;
     private JLabel scoreValue;
+    private final int TextFieldCharacterLimit = 12;
 
     public WinnerMenu(JFrame frame, Container beforeMenu, int currentScore) {
         before = beforeMenu;
@@ -68,7 +69,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
             scoreLabel = new JLabel(new ImageIcon(scoreImage));
         }
 
-        nameInput = new JTextField(12);
+        nameInput = new JTextField(TextFieldCharacterLimit);
         scoreValue = new JLabel(""+score);
         scoreValue.setFont(new Font(Font.MONOSPACED,Font.BOLD,28));
         scoreValue.setForeground(Color.WHITE);
@@ -87,7 +88,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         add(scoreLabel);
         add(background);
         add(nameInput);
-        nameInput.setDocument(new LimitJTextField(12));
+        nameInput.setDocument(new LimitJTextField(TextFieldCharacterLimit));
 
         setKeyBindings();
     }
