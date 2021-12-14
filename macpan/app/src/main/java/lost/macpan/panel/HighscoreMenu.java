@@ -60,7 +60,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < parts.length; i++) {
             String[] temp = parts[i].split(";");
-            out.append(i + 1 + "           " + temp[0] + "          " + temp[1] + "\n");
+            out.append(i + 1 + "           " + temp[0] + "       " + temp[1] + "\n");
         }
 
         setLayout(null);
