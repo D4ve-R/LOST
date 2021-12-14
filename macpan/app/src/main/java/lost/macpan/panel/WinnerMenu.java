@@ -28,8 +28,8 @@ import java.awt.event.KeyEvent;
  */
 public class WinnerMenu extends JPanel implements HighscoreHandler {
     private JFrame parentFrame;
-    private JLabel label;
-    private Image img;
+    private JLabel winLabel;
+    private Image winLogo;
     private JLabel background;
     private Image backgroundImg;
     private Container before;
@@ -48,7 +48,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         score = currentScore;
 
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
+            winLogo = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
             backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
             nameImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/nameLabel.png"));
             scoreImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/scoreLabel.png"));
@@ -56,8 +56,8 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
             e.printStackTrace();
         }
 
-        if (img != null) {
-            label = new JLabel(new ImageIcon(img));
+        if (winLogo != null) {
+            winLabel = new JLabel(new ImageIcon(winLogo));
         }
         if (backgroundImg != null) {
             background = new JLabel(new ImageIcon(backgroundImg));
@@ -77,12 +77,12 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         setLayout(null);
 
         background.setBounds(0, 0, 950, 700);
-        label.setBounds(175, 50, 600, 200);
-        nameLabel.setBounds(290,250,101,26);
-        scoreLabel.setBounds(290,210,101,26);
-        nameInput.setBounds(400, 249,200,20);
-        scoreValue.setBounds(400,210,101,26);
-        add(label);
+        winLabel.setBounds(0, 50, 910, 200);
+        nameLabel.setBounds(240,250,101,26);
+        scoreLabel.setBounds(240,210,101,26);
+        nameInput.setBounds(350, 249,300,32);
+        scoreValue.setBounds(350,210,101,26);
+        add(winLabel);
         add(scoreValue);
         add(nameLabel);
         add(scoreLabel);
