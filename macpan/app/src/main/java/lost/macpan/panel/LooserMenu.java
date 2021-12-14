@@ -20,6 +20,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
+import java.util.*;
 
 
 /**
@@ -154,28 +155,54 @@ public class LooserMenu extends JPanel implements ResourceHandler {
         }
     }
 
+    private class HighscoreEntry{
+        private int score;
+        private String name;
+
+        public HighscoreEntry(int pScore, String pName){
+            this.score = pScore;
+            this.name = pName;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     public void saveHighscores(int pScore, String pName) {
 
-        String  highscores = "";
-        String[] scores;
+        List<HighscoreEntry> liste = new LinkedList<>();
+
+        String  AllHighScoresString = "";
 
         try {
-            highscores = readStringFromFile("Highscores.txt");
+            AllHighScoresString = readStringFromFile("Highscores.txt");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        scores = highscores.split("\n");
+        String[] scores = AllHighScoresString.split("\n");
+
+        for(String s: scores){
+            String[] temp = s.split(";");
+            liste.add(new HighscoreEntry(Integer.parseInt(temp[0]),temp[1]));
+        }
+
+        liste.sort(Comparator.comparing(HighscoreEntry::getScore));
 
         if (getScoreVal(scores[9]) < pScore) {
-            highscores = "";
+            AllHighScoresString = "";
             scores[9] = pScore+";"+pName;
             sortScore(scores);
             for (int i = 0; i < 10; i++) {
-                highscores += scores[i]+"\n";
+                AllHighScoresString += scores[i]+"\n";
             }
             writeStringToFile("Highscores.txt","");
-            writeStringToFile("Highscores.txt",highscores);
+            writeStringToFile("Highscores.txt",AllHighScoresString);
         }
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
