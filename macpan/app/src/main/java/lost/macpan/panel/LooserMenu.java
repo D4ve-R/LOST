@@ -43,8 +43,6 @@ public class LooserMenu extends JPanel implements ResourceHandler {
     private int score;
     private JLabel scoreValue;
     private InputStream inputStream;
-    private String highscores;
-    private String[] scores;
 
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
@@ -146,17 +144,20 @@ public class LooserMenu extends JPanel implements ResourceHandler {
     public void newKeyAction(String pKey) {
         switch (pKey) {
             case "VK_ENTER":
-                saveHighscores();
-                System.out.println("EnterPressed");
+                saveHighscores(score ,nameInput.getText());
+                System.out.println("EnterPressed");//TODO: Remove debugging Output
                 break;
             case "VK_SPACE":
-                saveHighscores();
-                System.out.println("Space Pressed");
+                saveHighscores(score, nameInput.getText());
+                System.out.println("Space Pressed"); //TODO: Remove debugging Output
                 break;
         }
     }
 
-    public void saveHighscores() {
+    public void saveHighscores(int pScore, String pName) {
+
+        String  highscores = "";
+        String[] scores;
 
         try {
             highscores = readStringFromFile("Highscores.txt");
@@ -166,9 +167,9 @@ public class LooserMenu extends JPanel implements ResourceHandler {
 
         scores = highscores.split("\n");
 
-        if (getScoreVal(scores[9]) < score) {
+        if (getScoreVal(scores[9]) < pScore) {
             highscores = "";
-            scores[9] = score+";"+nameInput.getText();
+            scores[9] = pScore+";"+pName;
             sortScore(scores);
             for (int i = 0; i < 10; i++) {
                 highscores += scores[i]+"\n";

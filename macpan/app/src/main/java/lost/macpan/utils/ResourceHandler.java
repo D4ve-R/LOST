@@ -64,7 +64,7 @@ public interface ResourceHandler {
      */
     default String readStringFromFile(String pFilename) throws IOException {
         try {
-            return Files.readString(Paths.get(pathToDataDirectory + File.separator + pFilename), StandardCharsets.UTF_8);
+            return Files.readString(Paths.get(pathToDataDirectory + File.separator + pFilename));
         }
         catch ( IOException e){
             throw e;
