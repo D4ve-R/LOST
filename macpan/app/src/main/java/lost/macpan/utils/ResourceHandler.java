@@ -62,13 +62,12 @@ public interface ResourceHandler {
      * @return String the content of the file
      *
      */
-    default String readStringFromFile(String pFilename) {
+    default String readStringFromFile(String pFilename) throws IOException {
         try {
             return Files.readString(Paths.get(pathToDataDirectory + File.separator + pFilename), StandardCharsets.UTF_8);
         }
-        catch ( Exception e){
-            e.printStackTrace();
-            return null;
+        catch ( IOException e){
+            throw e;
         }
     }
 

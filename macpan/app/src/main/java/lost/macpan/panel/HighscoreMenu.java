@@ -64,8 +64,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         }
 
         try {
-            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
-            highscores = convertStreamToString(inputStream);
+            highscores = readStringFromFile("Highscores.txt");
         } catch (Exception e) {
             e.printStackTrace();
         }
