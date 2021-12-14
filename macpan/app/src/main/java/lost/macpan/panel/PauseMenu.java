@@ -79,8 +79,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         playBtn.setBounds(345, 250, 300, 50);
         loadBtn.setBounds(345, 310, 300, 50);
         saveBtn.setBounds(345, 370, 300, 50);
-        highscoresBtn.setBounds(395, 430, 200, 50);
-        optionsBtn.setBounds(395, 490, 200, 50);
+        highscoresBtn.setBounds(345, 430, 300, 50);
+        optionsBtn.setBounds(345, 490, 300, 50);
         backBtn.setBounds(295, 550, 400, 50);
         // Hinzufügen der Buttons und Labels auf den Frame
         add(label);

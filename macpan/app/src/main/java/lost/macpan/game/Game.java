@@ -366,11 +366,9 @@ public class Game implements Runnable, ResourceHandler {
                 break;
             case "VK_W":
                 addKeyToList('w');
-                System.out.println("W pressed"); // TODO: Remove debugging Output
                 break;
             case "VK_W_released":
                 lastKeyList.remove((Character) 'w');
-                System.out.println("W released"); // TODO: Remove debugging Output
                 break;
             case "VK_A":
                 addKeyToList('a');
@@ -464,7 +462,7 @@ public class Game implements Runnable, ResourceHandler {
                 case extraLifeTile      -> flags[1] = true; // Zusatzleben
                 case deathTouchTile     -> flags[4] = true; // Todesberührung
             }
-        } else System.out.println("Wand im weg"); // TODO: remove debugging message
+        }
     }
 
     /**
@@ -491,7 +489,6 @@ public class Game implements Runnable, ResourceHandler {
                 if(map[i][j] == playerTile){
                     playerPos[0] = i;
                     playerPos[1] = j;
-                    System.out.println(i + "und" + j);
                     return;
                 }
             }

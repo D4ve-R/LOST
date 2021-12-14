@@ -102,6 +102,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         loadBtn.addActionListener(this);
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
+        editBtn.addActionListener(this);
         quitBtn.addActionListener(this);
     }
 
@@ -157,7 +158,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.revalidate();
         }
 
-        if(e.getSource() == editBtn) {
+        else if(e.getSource() == editBtn) {
             FileEditor fileEditor = new FileEditor(parentFrame);
             parentFrame.setContentPane(fileEditor);
             parentFrame.revalidate();

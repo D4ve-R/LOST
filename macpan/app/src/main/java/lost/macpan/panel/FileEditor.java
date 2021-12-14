@@ -41,7 +41,7 @@ public class FileEditor extends JPanel implements ActionListener, ResourceHandle
         saveBtn.addActionListener(this);
         openBtn.setFont(new Font("Arial", 0, 16));
         saveBtn.setFont(new Font("Arial", 0, 16));
-        textArea.setFont(new Font("Arial", 0, 14));
+        textArea.setFont(new Font(Font.MONOSPACED, 0, 14));
 
         add(btns, BorderLayout.NORTH);
         JScrollPane scrollPane = new JScrollPane(textArea);
