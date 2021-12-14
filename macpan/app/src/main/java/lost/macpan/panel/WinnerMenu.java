@@ -68,7 +68,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
             scoreLabel = new JLabel(new ImageIcon(scoreImage));
         }
 
-        nameInput = new JTextField();
+        nameInput = new JTextField(12);
         scoreValue = new JLabel(""+score);
         scoreValue.setFont(new Font(Font.MONOSPACED,Font.BOLD,28));
         scoreValue.setForeground(Color.WHITE);
@@ -87,6 +87,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         add(scoreLabel);
         add(background);
         add(nameInput);
+        nameInput.setDocument(new LimitJTextField(12));
 
         setKeyBindings();
     }
