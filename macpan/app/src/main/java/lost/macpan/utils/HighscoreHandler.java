@@ -1,8 +1,5 @@
 package lost.macpan.utils;
 
-import lost.macpan.panel.LooserMenu;
-import lost.macpan.utils.ResourceHandler;
-
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,19 +31,9 @@ public interface HighscoreHandler extends ResourceHandler {
     default void saveNewScore(int pScore, String pName) {
         List<HighscoreEntry> liste = new LinkedList<>();
 
-        String  AllHighScoresString = "";
+        String[] allHighscores = getHighscoresAsArray();
 
-        try {
-            AllHighScoresString = readStringFromFile("Highscores.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String[] scores = AllHighScoresString.split("\n");
-
-        for(String s: scores){
-            s = s.replaceAll("\r","");
-            s = s.replaceAll("\n","");
+        for(String s: allHighscores){
             String[] temp = s.split(";");
             liste.add(new HighscoreEntry(Integer.parseInt(temp[0]),temp[1]));
         }
@@ -60,6 +47,25 @@ public interface HighscoreHandler extends ResourceHandler {
         }
 
         writeStringToFile("Highscores.txt",highscoresNew.toString());
+
+    }
+
+    default String[] getHighscoresAsArray(){
+        String  AllHighScoresString = "";
+
+        try {
+            AllHighScoresString = readStringFromFile("Highscores.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String[] scores = AllHighScoresString.split("\n");
+
+        for(int i = 0; i < Math.min(scores.length, 10); i++){
+            scores[i] = scores[i].replaceAll("\r","");
+            scores[i] = scores[i].replaceAll("\n","");
+        }
+        return scores;
 
     }
 

@@ -1,7 +1,6 @@
 package lost.macpan.panel;
 
 import lost.macpan.utils.HighscoreHandler;
-import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -21,9 +20,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -46,7 +42,6 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
     private JLabel scoreLabel;
     private int score;
     private JLabel scoreValue;
-    private InputStream inputStream;
 
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {

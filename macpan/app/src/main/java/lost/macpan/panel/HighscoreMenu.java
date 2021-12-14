@@ -1,6 +1,6 @@
 package lost.macpan.panel;
 
-import lost.macpan.utils.ResourceHandler;
+import lost.macpan.utils.HighscoreHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -14,14 +14,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 
 /**
  * Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch an.
  *
  * @author fatih
  */
-public class HighscoreMenu extends JPanel implements ActionListener, ResourceHandler {
+public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHandler {
     private final JButton backBtn = new JButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel label;
@@ -29,8 +28,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
     private JLabel background;
     private Image backgroundImg;
     private Image HighscoresBackgroundImg;
-    private String highscores;
-    private InputStream inputStream;
     private JLabel highscoreBackground;
     private Container before;
 
@@ -59,18 +56,10 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
             highscoreBackground = new JLabel(new ImageIcon(HighscoresBackgroundImg));
         }
 
-        try {
-            highscores = readStringFromFile("Highscores.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String[] parts = highscores.split("\n");
-
-        String[] temp;
+        String[] parts = getHighscoresAsArray();
         StringBuilder out = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            temp = parts[i].split(";");
+        for (int i = 0; i < parts.length; i++) {
+            String[] temp = parts[i].split(";");
             out.append(i + 1 + "           " + temp[0] + "          " + temp[1] + "\n");
         }
 
@@ -155,7 +144,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, ResourceHan
         add(backBtn);
         add(background);
         backBtn.addActionListener(this);
-        System.out.println(highscores);
     }
 
     @Override
