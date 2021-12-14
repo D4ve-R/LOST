@@ -542,12 +542,10 @@ public class Game implements Runnable, ResourceHandler {
      * @author Simon Bonnie
      */
     public boolean enemyDetection() {
-        boolean rueckgabe = false;
         for (Enemy enemy : enemies) {
-            rueckgabe = enemyDetection(enemy);
-            if(rueckgabe) break;
+            if(enemyDetection(enemy)) return true;
         }
-        return rueckgabe;
+        return false;
     }
 
     /**
