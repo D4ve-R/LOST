@@ -23,7 +23,7 @@ public class FileEditor extends JPanel implements ActionListener, ResourceHandle
     private JFrame f;
     private final JButton openBtn = new JButton("Open File");
     private final JButton saveBtn = new JButton("Save");
-    private final JButton backBtn = new JButton("zurück");
+    private final JButton backBtn = new JButton("zur\u00fcck");
     private final JTextArea textArea = new JTextArea(20, 30);
     private File file;
     private Scanner sc;
