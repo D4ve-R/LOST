@@ -14,11 +14,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch an.
