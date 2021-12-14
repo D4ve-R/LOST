@@ -172,8 +172,7 @@ public class WinnerMenu extends JPanel implements ResourceHandler {
     public void saveHighscores() {
 
         try {
-            inputStream = getFileResourcesAsStream("highscores/Highscores.txt");
-            highscores = convertStreamToString(inputStream);
+            highscores = readStringFromFile("Highscores.txt");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -187,8 +186,8 @@ public class WinnerMenu extends JPanel implements ResourceHandler {
             for (int i = 0; i < 10; i++) {
                 highscores += scores[i]+"\n";
             }
-            writeStringToFile("highscores/Highscores.txt","");
-            writeStringToFile("highscores/Highscores.txt",highscores);
+            writeStringToFile("Highscores.txt","");
+            writeStringToFile("Highscores.txt",highscores);
         }
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
