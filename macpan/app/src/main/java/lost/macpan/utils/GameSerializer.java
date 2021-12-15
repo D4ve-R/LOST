@@ -1,6 +1,7 @@
-package lost.macpan.game;
+package lost.macpan.utils;
 
 import com.google.gson.*;
+import lost.macpan.game.Game;
 
 import java.lang.reflect.Type;
 

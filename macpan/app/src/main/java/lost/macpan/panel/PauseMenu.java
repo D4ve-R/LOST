@@ -2,7 +2,7 @@ package lost.macpan.panel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
-import lost.macpan.game.GameSerializer;
+import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
 
 import lost.macpan.utils.ResourceHandler;

@@ -67,29 +67,19 @@ public class ExitSprite extends Sprite{
         long animationTimer;
         if (isUnlocked && animationStart != 0) {
             animationTimer = System.currentTimeMillis() - animationStart;
-            if (animationTimer < 500) {
-                if (animationTimer < 250) {
-                    if (animationTimer < 125)
-                        return exit1;
-                    else
-                        return exit2;
-                } else if (animationTimer < 375)
-                    return exit3;
-                else
-                    return exit4;
-            } else if (animationTimer < 750) {
-                if (animationTimer < 625)
-                    return exit5;
-                else
-                    return exit6;
-            }else if (animationTimer < 875)
-                return exit7;
-            else
-                return exit8;
-
+            if (animationTimer < 125) return exit1;
+            if(animationTimer < 250) return exit2;
+            if(animationTimer < 375) return exit3;
+            if(animationTimer < 500) return exit4;
+            if(animationTimer < 625) return exit5;
+            if(animationTimer < 750) return exit6;
+            if(animationTimer < 875) return exit7;
+            else return exit8;
         }
-        else if (isUnlocked)
+
+        if(isUnlocked) {
             animationStart = System.currentTimeMillis();
+        } else animationStart = 0;
 
         return exit1;
     }

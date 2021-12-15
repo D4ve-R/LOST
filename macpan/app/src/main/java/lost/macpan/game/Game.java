@@ -309,9 +309,9 @@ public class Game implements Runnable, ResourceHandler {
 
         // Move Enemy objects unless freeze effect is active
         if(!flags[7] && tick % 2 == 0) {
-            for (Enemy enemy : enemies) {
+            for(Enemy enemy : enemies) {
                 enemy.move();
-                if (enemyDetection(enemy)) break;        // Detect whether the player collides with the enemy
+                if(enemyDetection(enemy)) break;
             }
         }
     }
@@ -390,7 +390,7 @@ public class Game implements Runnable, ResourceHandler {
     public void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
         if(onNewPos != wallTile) {
-            geh(x, y);
+            boolean step = true;
             switch (onNewPos) {
                 case coinTile -> {
                     if(flags[5]) score += 20;
@@ -401,7 +401,10 @@ public class Game implements Runnable, ResourceHandler {
                     flags[3] = true;
                     flags[6] = true;
                 } case exitTile -> {
-                    if(!flags[3]) return; // TODO: Wofür?
+                    if(!flags[3]) {
+                        step = false;
+                        break;
+                    }
                     else {
                         levelNr++;
                         flags[3] = false;
@@ -428,6 +431,7 @@ public class Game implements Runnable, ResourceHandler {
                 case extraLifeTile      -> flags[1] = true; // Zusatzleben
                 case deathTouchTile     -> flags[4] = true; // Todesberührung
             }
+            if(step) geh(x,y);
         }
     }
 
