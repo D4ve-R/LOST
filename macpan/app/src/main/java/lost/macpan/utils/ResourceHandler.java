@@ -49,7 +49,7 @@ public interface ResourceHandler {
      *
      */
     default void writeStringToFile(String pFilename, String pFileContent) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathToDataDirectory + File.separator + pFilename))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathToDataDirectory + File.separator + pFilename, StandardCharsets.UTF_8))) {
             writer.write(pFileContent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public interface ResourceHandler {
      */
     default String readStringFromFile(String pFilename) throws IOException {
         try {
-            return Files.readString(Paths.get(pathToDataDirectory + File.separator + pFilename));
+            return Files.readString(Paths.get(pathToDataDirectory + File.separator + pFilename), StandardCharsets.UTF_8);
         }
         catch ( IOException e){
             throw e;
