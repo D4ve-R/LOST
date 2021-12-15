@@ -60,7 +60,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
 
         for (int i = 0; i < highScores.length; i++) {
             String[] temp = highScores[i].split(";");
-            if(i == 9){
+            if((i + 1) == 10){
                 highScores[i] = (i + 1) +  "           " + temp[0] + "       " + temp[1];
             }
             else{
@@ -77,7 +77,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
             tempLabel.setForeground(Color.BLACK);
             add(tempLabel);
         }
-
 
         highscoreBackground.setBounds(220, 200, 514, 361);
         add(highscoreBackground);
