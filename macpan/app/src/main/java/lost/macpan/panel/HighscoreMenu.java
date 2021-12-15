@@ -60,13 +60,8 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
 
         for (int i = 0; i < highScores.length; i++) {
             String[] temp = highScores[i].split(";");
-            if((i + 1) == 10){
-                highScores[i] = (i + 1) +  "           " + temp[0] + "       " + temp[1];
-            }
-            else{
-                highScores[i] = " " + (i + 1) + "           " + temp[0] + "       " + temp[1];
-            }
-
+            //Fancy String Formatierung, % ArgumentNr $ ("-" for left align) width Type (s String)
+            highScores[i] = String.format("%1$2s" + "       " + "%2$5s" + "         " +"%3$-12s", (i + 1),temp[0] ,temp[1]);
         }
 
         setLayout(null);
