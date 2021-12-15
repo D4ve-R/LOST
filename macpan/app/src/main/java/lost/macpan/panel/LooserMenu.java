@@ -13,10 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -32,16 +29,12 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
     private Container before;
     private JLabel loselabel;
     private Image loseImg;
-    private JLabel background;
     private Image backgroundImg;
     private JTextField nameInput;
-    private JLabel nameLabel;
-    private Image nameImage;
-    private Image scoreImage;
-    private JLabel scoreLabel;
+    private final JLabel nameLabel = new JLabel("Name: ");
+    private final JLabel scoreLabel = new JLabel("Score: ");
     private int score;
     private JLabel scoreValue;
-    private final int TextFieldCharacterLimit = 12;
 
     public LooserMenu(JFrame frame, Container beforeMenu, int currentScore) {
         parentFrame = frame;
@@ -51,33 +44,23 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         try {
             loseImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/Loose.png"));
             backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
-            nameImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/nameLabel.png"));
-            scoreImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/scoreLabel.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (loseImg != null) {
-            loselabel = new JLabel(new ImageIcon(loseImg));
-        }
-        if (backgroundImg != null) {
-            background = new JLabel(new ImageIcon(backgroundImg));
-        }
-        if (nameImage != null) {
-            nameLabel = new JLabel(new ImageIcon(nameImage));
-        }
-        if (scoreImage != null) {
-            scoreLabel = new JLabel(new ImageIcon(scoreImage));
-        }
-
-        nameInput = new JTextField(TextFieldCharacterLimit);
+        loselabel = new JLabel(new ImageIcon(loseImg));
+        scoreLabel.setFont(new Font(null, Font.BOLD, 26));
+        scoreLabel.setForeground(Color.WHITE);
+        nameLabel.setFont(new Font(null, Font.BOLD, 26));
+        nameLabel.setForeground(Color.WHITE);
+        nameInput = new JTextField(20);
+        nameInput.setForeground(Color.BLACK);
+        nameInput.setBackground(Color.WHITE);
         scoreValue = new JLabel("" + score);
         scoreValue.setFont(new Font(Font.MONOSPACED, Font.BOLD, 28));
         scoreValue.setForeground(Color.WHITE);
 
-        setLayout(null);
 
-        background.setBounds(0, 0, 950, 700);
         loselabel.setBounds(20, 10, 870, 200);
         nameLabel.setBounds(240, 250, 101, 26);
         scoreLabel.setBounds(240, 210, 101, 26);
@@ -87,10 +70,8 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         add(scoreValue);
         add(nameLabel);
         add(scoreLabel);
-        add(background);
         add(nameInput);
-        nameInput.setDocument(new LimitJTextField(TextFieldCharacterLimit));
-
+        setLayout(null);
         setKeyBindings();
     }
 
@@ -114,7 +95,6 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
 
         actionMap.put(vkEnter, new KeyAction(vkEnter));
         actionMap.put(vkSpace, new KeyAction(vkSpace));
-
     }
 
     /**
@@ -160,6 +140,11 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         saveNewScore(pScore,pName);
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
+    }
+
+    @Override
+    public void paintComponent(Graphics g){
+        g.drawImage(backgroundImg, 0, 0, null);
     }
 
 }
