@@ -1,4 +1,4 @@
-840;Korkodil
+840;Krokodil
 600;Elefant
 460;Faultier
 390;Eichhörnchen
