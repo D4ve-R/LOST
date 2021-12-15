@@ -53,7 +53,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         scoreLabel.setForeground(Color.WHITE);
         nameLabel.setFont(new Font(null, Font.BOLD, 26));
         nameLabel.setForeground(Color.WHITE);
-        nameInput = new JTextField(20);
+        nameInput = new JTextField(12);
         nameInput.setForeground(Color.BLACK);
         nameInput.setBackground(Color.WHITE);
         scoreValue = new JLabel("" + score);
@@ -71,6 +71,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         add(nameLabel);
         add(scoreLabel);
         add(nameInput);
+        nameInput.setDocument(new LimitJTextField(12));
         setLayout(null);
         setKeyBindings();
     }

@@ -13,10 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -30,17 +27,13 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
     private JFrame parentFrame;
     private JLabel winLabel;
     private Image winLogo;
-    private JLabel background;
     private Image backgroundImg;
     private Container before;
     private JTextField nameInput;
-    private JLabel nameLabel;
-    private Image nameImage;
-    private Image scoreImage;
-    private JLabel scoreLabel;
+    private final JLabel nameLabel = new JLabel("Name: ");
+    private final JLabel scoreLabel = new JLabel("Score: ");
     private int score;
     private JLabel scoreValue;
-    private final int TextFieldCharacterLimit = 12;
 
     public WinnerMenu(JFrame frame, Container beforeMenu, int currentScore) {
         before = beforeMenu;
@@ -50,33 +43,23 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         try {
             winLogo = ImageIO.read(getFileResourcesAsStream("images/panelImages/Win.png"));
             backgroundImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/BackgroundImage.png"));
-            nameImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/nameLabel.png"));
-            scoreImage = ImageIO.read(getFileResourcesAsStream("images/panelImages/scoreLabel.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (winLogo != null) {
-            winLabel = new JLabel(new ImageIcon(winLogo));
-        }
-        if (backgroundImg != null) {
-            background = new JLabel(new ImageIcon(backgroundImg));
-        }
-        if (nameImage != null) {
-            nameLabel = new JLabel(new ImageIcon(nameImage));
-        }
-        if (scoreImage != null) {
-            scoreLabel = new JLabel(new ImageIcon(scoreImage));
-        }
+        winLabel = new JLabel(new ImageIcon(winLogo));
 
-        nameInput = new JTextField(TextFieldCharacterLimit);
+        scoreLabel.setFont(new Font(null, Font.BOLD, 26));
+        scoreLabel.setForeground(Color.WHITE);
+        nameLabel.setFont(new Font(null, Font.BOLD, 26));
+        nameLabel.setForeground(Color.WHITE);
+        nameInput = new JTextField(12);
         scoreValue = new JLabel(""+score);
         scoreValue.setFont(new Font(Font.MONOSPACED,Font.BOLD,28));
         scoreValue.setForeground(Color.WHITE);
 
         setLayout(null);
 
-        background.setBounds(0, 0, 950, 700);
         winLabel.setBounds(0, 50, 910, 200);
         nameLabel.setBounds(240,250,101,26);
         scoreLabel.setBounds(240,210,101,26);
@@ -86,9 +69,8 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         add(scoreValue);
         add(nameLabel);
         add(scoreLabel);
-        add(background);
         add(nameInput);
-        nameInput.setDocument(new LimitJTextField(TextFieldCharacterLimit));
+        nameInput.setDocument(new LimitJTextField(12));
 
         setKeyBindings();
     }
@@ -159,6 +141,11 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         saveNewScore(pScore, pName);
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
+    }
+
+    @Override
+    public void paintComponent(Graphics g){
+        g.drawImage(backgroundImg, 0, 0, null);
     }
 
 }
