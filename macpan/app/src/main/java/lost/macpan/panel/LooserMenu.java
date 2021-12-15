@@ -144,11 +144,9 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         switch (pKey) {
             case "VK_ENTER":
                 saveHighscores(score ,nameInput.getText());
-                System.out.println("EnterPressed");//TODO: Remove debugging Output
                 break;
             case "VK_SPACE":
                 saveHighscores(score, nameInput.getText());
-                System.out.println("Space Pressed"); //TODO: Remove debugging Output
                 break;
         }
     }
