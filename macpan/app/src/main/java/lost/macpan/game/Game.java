@@ -561,7 +561,7 @@ public class Game implements Runnable, ResourceHandler {
     private char[][] importMapArray(String fileName){
         char[][] newMap = new char[maxMapColumns][maxMapRows];
         try {
-            String content = Files.readString(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + fileName));
+            String content = Files.readString(Paths.get(pathToDataDirectory + File.separator + fileName));
             String[] rows = content.split("\n"); //Split String into String Array consisting of single Rows
             for(int i = 0; i < Math.min(rows.length, maxMapRows); i++ )              //For every row
                 for (int o = 0; o < Math.min(rows[i].length(), maxMapColumns); o++) //for every char in the row
