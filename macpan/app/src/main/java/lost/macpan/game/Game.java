@@ -3,7 +3,10 @@ package lost.macpan.game;
 
 import lost.macpan.utils.ResourceHandler;
 
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -231,7 +234,6 @@ public class Game implements Runnable, ResourceHandler {
     public void spielPausieren() {
         gamePaused = true;
         gameWindow.showPauseMenu();
-        //System.out.println("Spiel pausiert");
     }
 
     /**
@@ -288,7 +290,6 @@ public class Game implements Runnable, ResourceHandler {
             }
 
         }
-        //System.out.println("Loop beendet");
     }
 
     /**
@@ -366,11 +367,9 @@ public class Game implements Runnable, ResourceHandler {
                 break;
             case "VK_W":
                 addKeyToList('w');
-                System.out.println("W pressed"); // TODO: Remove debugging Output
                 break;
             case "VK_W_released":
                 lastKeyList.remove((Character) 'w');
-                System.out.println("W released"); // TODO: Remove debugging Output
                 break;
             case "VK_A":
                 addKeyToList('a');
@@ -464,7 +463,7 @@ public class Game implements Runnable, ResourceHandler {
                 case extraLifeTile      -> flags[1] = true; // Zusatzleben
                 case deathTouchTile     -> flags[4] = true; // Todesberührung
             }
-        } else System.out.println("Wand im weg"); // TODO: remove debugging message
+        }
     }
 
     /**
@@ -491,7 +490,6 @@ public class Game implements Runnable, ResourceHandler {
                 if(map[i][j] == playerTile){
                     playerPos[0] = i;
                     playerPos[1] = j;
-                    System.out.println(i + "und" + j);
                     return;
                 }
             }
@@ -555,24 +553,22 @@ public class Game implements Runnable, ResourceHandler {
 
     /**
      * method for importing a map as a char array
-     * @author Sebastian
+     * @author Sebastian & Dave
      *
-     * @param pFileName name of the map to load (has to be in the levels folder)
+     * @param fileName name of the map to load (has to be in the levels folder)
      * @return charArray of the map at the filename
      */
-    private char[][] importMapArray(String pFileName){
-        char[][] map = new char[maxMapColumns][maxMapRows];
-        String mapString = "";
+    private char[][] importMapArray(String fileName){
+        char[][] newMap = new char[maxMapColumns][maxMapRows];
         try {
-            InputStream inputStream = getFileResourcesAsStream("levels/"+pFileName);
-            mapString = convertStreamToString(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String[] rows = mapString.split("\n"); //Split String into String Array consisting of single Rows
-        for(int i = 0; i < Math.min(rows.length, maxMapRows); i++ )              //For every row
-            for (int o = 0; o < Math.min(rows[i].length(), maxMapColumns); o++) //for every char in the row
-                map[o][i] = rows[i].charAt(o);  //insert char into the map array
-        return map;
+            String content = Files.readString(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + fileName));
+            String[] rows = content.split("\n"); //Split String into String Array consisting of single Rows
+            for(int i = 0; i < Math.min(rows.length, maxMapRows); i++ )              //For every row
+                for (int o = 0; o < Math.min(rows[i].length(), maxMapColumns); o++) //for every char in the row
+                    newMap[o][i] = rows[i].charAt(o);  //insert char into the map array
+        } catch(Exception e){e.printStackTrace();}
+        return newMap;
     }
+
+
 }
