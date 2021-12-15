@@ -28,8 +28,8 @@ public class Game implements Runnable, ResourceHandler {
     private ArrayList<Character> lastKeyList = new ArrayList<Character>();
     private GameWindow gameWindow;
 
-    private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int framerate = 20;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
+    private int tickrate;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
@@ -102,7 +102,7 @@ public class Game implements Runnable, ResourceHandler {
         flags = new boolean[8];
         map = importMapArray("level_1.txt");
         levelNr = 1;
-
+        tickrate = 4;
     }
 
     /**
@@ -120,6 +120,16 @@ public class Game implements Runnable, ResourceHandler {
         this.TimerFreeze = newTimerFreeze;
         this.flags = newflags;
         this.levelNr = levelNr;
+        switch(levelNr){
+            case 2:
+                tickrate = 5;
+                break;
+            case 3:
+                tickrate = 6;
+                break;
+            default:
+                tickrate = 4;
+        }
     }
 
     /**
@@ -245,60 +255,34 @@ public class Game implements Runnable, ResourceHandler {
     public void run() {
         double frametime = 1000 / (double)framerate;                       //determines the time span any frame should be displayed
         double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
-        long timeOld = System.currentTimeMillis();
-        long contframeCounter = 0;
-        int frameCounter = 0;
-        int tickCounter = 0;
+        long frameCounter = 0;
 
         while(threadRunning) {
+            double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
+            if (remainingTime < 0)                  //determines how long the thread should sleep for
+                remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
+
+            nextDrawTime += frametime;              //determines when the next frame should finish
             try {
-                double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-                if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                }
-
                 thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                nextDrawTime += frametime;              //determines when the next frame should finish
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if(!gamePaused) {
-
-                if (contframeCounter % (framerate / tickrate) == 0) {
-                    gameLogic((int)contframeCounter / (framerate/tickrate)); //Game Logic is called with a iterating number, starts with 0
-                    tickCounter++;
+                if (frameCounter % (framerate / tickrate) == 0) {
+                    gameLogic((int)(frameCounter/(framerate / tickrate))); //Game Logic is called with a iterating number, starts with 0
                 }
-
                 gameWindow.repaint(); //draws the frame
-
-                if (contframeCounter % framerate == 0) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
-                    double AverageTimeForOneFrame = ((double) (System.currentTimeMillis() - timeOld) / frameCounter);
-                    double AverageTimeForOneTick = ((double) (System.currentTimeMillis() - timeOld) / tickCounter);
-                    double TPS = 1000 / AverageTimeForOneTick;
-                    double FPS = 1000 / AverageTimeForOneFrame;
-                    System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
-                    System.out.println("TPS: " + new DecimalFormat("#0.00").format(TPS));
-                    frameCounter = 0;
-                    tickCounter = 0;
-                    timeOld = System.currentTimeMillis();
-                }
-                contframeCounter++;
                 frameCounter++;
-            } else {
-                timeOld = System.currentTimeMillis();
             }
-
         }
     }
 
     /**
      * method for the Logic of the game, gets called every tickrate times per second
      * @author Sebastian
-     *
-     * @param pContLogicCounter should be called with a continuously rising number
      */
-    public void gameLogic(int pContLogicCounter){
+    public void gameLogic(int tick){
 
         //SpeedBoost
         if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
@@ -320,36 +304,15 @@ public class Game implements Runnable, ResourceHandler {
         if(flags[7] && TimerFreeze == 1) flags[7] = false;
         if(TimerFreeze > 0) TimerFreeze--;
 
-        /*  For Debugging the Game Loop and Items
-        System.out.println("Gameloop");
-        System.out.println("TimerSpeed: " +TimerSpeed);
-        System.out.println("TimerDeathTouch: " + TimerDeathTouch);
-        System.out.println("TimerCoinBoost: " +TimerCoinBoost);
-        System.out.println("TimerFreeze: " +TimerFreeze);
-         */
-
-        /*
-        if(flags[7]){   //Not yet implemented
-            gegnerEinfrieren();
-        }
-        */
-
-        if(flags[2]){
+        if(tick % 2 == 0 ||flags[2])
             move();
 
-        } else {
-            if(pContLogicCounter % 2 == 0){
-                move();
+        // Move Enemy objects unless freeze effect is active
+        if(!flags[7] && tick % 2 == 0) {
+            for (Enemy enemy : enemies) {
+                enemy.move();
+                if (enemyDetection(enemy)) break;        // Detect whether the player collides with the enemy
             }
-        }
-
-        if(pContLogicCounter % 2 == 0){                 //Stuff in here only gets called every second time the GameLogic gets called
-            for(Enemy enemy : enemies) {                // TODO: Enemy movement flexible
-                if(!flags[7]) enemy.move();             // Move Enemy objects unless freeze effect is active
-                if(enemyDetection(enemy)) break;        // Detect whether the player collides with the enemy
-            }
-
-            //Other Stuff that has the be called only every second tick
         }
     }
 
@@ -446,9 +409,11 @@ public class Game implements Runnable, ResourceHandler {
                         switch(levelNr){
                             case 2:
                                 map = importMapArray("level_2.txt");
+                                tickrate = 6;
                                 break;
                             case 3:
                                 map = importMapArray("level_3.txt");
+                                tickrate = 7;
                                 break;
                             default:
                                 gameWindow.showWinnerMenu();
