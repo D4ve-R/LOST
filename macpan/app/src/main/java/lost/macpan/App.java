@@ -12,6 +12,7 @@ import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
 import lost.macpan.utils.ResourceHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -51,6 +52,13 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
             }
         }
         fontWrite = fontRead.deriveFont(Font.PLAIN, 31);
+
+        try {
+            setIconImage(ImageIO.read(getFileResourcesAsStream("images/Pan.png")).getScaledInstance(32, 32, 0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         java.util.Enumeration keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
