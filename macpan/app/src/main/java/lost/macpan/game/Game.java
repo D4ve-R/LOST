@@ -481,13 +481,9 @@ public class Game implements Runnable, ResourceHandler {
      * @return whether a collision was detected or not
      * @author Simon Bonnie
      */
-    private boolean enemyDetection() {
-        boolean rueckgabe = false;
-        for (Enemy enemy : enemies) {
-            rueckgabe = enemyDetection(enemy);
-            if(rueckgabe) break;
-        }
-        return rueckgabe;
+    private void enemyDetection() {
+        for (Enemy enemy : enemies)
+            enemyDetection(enemy);
     }
 
     /**
