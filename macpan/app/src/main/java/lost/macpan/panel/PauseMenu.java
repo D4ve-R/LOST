@@ -51,7 +51,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
      * Der Konstruktor MainMenu platziert die Bilder und Buttons, welche zum Pausemenue gehören auf dem Frame
      * Update durch Janosch & William
      *
-     * @param frame
+     * @param frame parentframe
      */
     public PauseMenu(App frame, GameWindow gameWindows) {
         parentFrame = frame;
@@ -175,6 +175,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
         } else if (e.getSource() == backBtn) {
             MainMenu mainMenu = new MainMenu(parentFrame);
+            parentFrame.stopMusic();
+            parentFrame.playMusicLooped(0);
             parentFrame.setContentPane(mainMenu);
             parentFrame.revalidate();
         }
