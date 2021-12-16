@@ -320,55 +320,6 @@ public class Game implements Runnable, ResourceHandler {
     }
 
     /**
-     * method for key Actions, gets called every time a mapped Key is pressed
-     * To add new Keys they first have to be added to the keymap in the setKeyBindings() function in GameWindow
-     * @author Sebastian
-     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
-     *
-     */
-    protected void newKeyAction(String pKey) {
-        switch (pKey){
-            case "VK_ESCAPE":
-                spielPausieren();
-                break;
-            case "VK_W":
-                addKeyToList('w');
-                break;
-            case "VK_W_released":
-                lastKeyList.remove((Character) 'w');
-                break;
-            case "VK_A":
-                addKeyToList('a');
-                break;
-            case "VK_A_released":
-                lastKeyList.remove((Character) 'a');
-                break;
-            case "VK_S":
-                addKeyToList('s');
-                break;
-            case "VK_S_released":
-                lastKeyList.remove((Character) 's');
-                break;
-            case "VK_D":
-                addKeyToList('d');
-                break;
-            case "VK_D_released":
-                lastKeyList.remove((Character) 'd');
-                break;
-        }
-    }
-
-    /**
-     * Method that adds a character to the lastKeyInput List if it isnt already in the List.
-     * @author Benedikt
-     */
-    private void addKeyToList(char theKey){
-        if(!lastKeyList.contains((Character) theKey))
-        {
-            lastKeyList.add((Character) theKey);
-        }
-    }
-    /**
      * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
      * @author Benedikt
      */
@@ -392,34 +343,35 @@ public class Game implements Runnable, ResourceHandler {
      */
     private void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
-        if(onNewPos != wallTile) {
+        if(onNewPos == wallTile) {}
+        else {
             boolean step = true;
             switch (onNewPos) {
                 case coinTile -> {
                     if(flags[5]) score += 20;
                     else score +=10;
-                } case enemyTile -> {
-                    enemyDetection();
                 } case keyTile -> {
                     flags[3] = true;
                     flags[6] = true;
                 } case exitTile -> {
                     if(!flags[3]) {
                         step = false;
-                        break;
                     }
                     else {
                         levelNr++;
                         changeLevel(levelNr);
                     }
                 }
-                case speedEffectTile    -> flags[2] = true; // Geschwindigkeitsbuff
-                case freezeEffectTile   -> flags[7] = true; // Gegner einfrieren
-                case coinBoostTile      -> flags[5] = true; // Münzboost
-                case extraLifeTile      -> flags[1] = true; // Zusatzleben
-                case deathTouchTile     -> flags[4] = true; // Todesberührung
+                case speedEffectTile -> flags[2] = true; // Geschwindigkeitsbuff
+                case freezeEffectTile -> flags[7] = true; // Gegner einfrieren
+                case coinBoostTile -> flags[5] = true; // Münzboost
+                case extraLifeTile -> flags[1] = true; // Zusatzleben
+                case deathTouchTile -> flags[4] = true; // Todesberührung
             }
-            if(step) geh(x,y);
+            if(step) {
+                geh(x, y);
+                enemyDetection();
+            }
         }
     }
 
@@ -508,14 +460,14 @@ public class Game implements Runnable, ResourceHandler {
             } else {
                 if (flags[1]) { // If player has got an extra life
                     flags[1] = false; // Reset extra life
-                    map[playerPos[0]][playerPos[1]] = pathTile; // Reset the player
+                    map[playerPos[0]][playerPos[1]] = enemyTile; // Reset the player
                     playerPos[0] = initPlayerPos[0];            // position to the
                     playerPos[1] = initPlayerPos[1];            // starting position
                     map[initPlayerPos[0]][initPlayerPos[1]] = playerTile;
                 } else {
                     flags[0] = false; // Kill player
-                    stopThread();
                     gameWindow.showDeathWindow();
+                    stopThread();
                 }
             }
             return true;
@@ -536,6 +488,56 @@ public class Game implements Runnable, ResourceHandler {
             if(rueckgabe) break;
         }
         return rueckgabe;
+    }
+
+    /**
+     * method for key Actions, gets called every time a mapped Key is pressed
+     * To add new Keys they first have to be added to the keymap in the setKeyBindings() function in GameWindow
+     * @author Sebastian
+     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
+     *
+     */
+    protected void newKeyAction(String pKey) {
+        switch (pKey){
+            case "VK_ESCAPE":
+                spielPausieren();
+                break;
+            case "VK_W":
+                addKeyToList('w');
+                break;
+            case "VK_W_released":
+                lastKeyList.remove((Character) 'w');
+                break;
+            case "VK_A":
+                addKeyToList('a');
+                break;
+            case "VK_A_released":
+                lastKeyList.remove((Character) 'a');
+                break;
+            case "VK_S":
+                addKeyToList('s');
+                break;
+            case "VK_S_released":
+                lastKeyList.remove((Character) 's');
+                break;
+            case "VK_D":
+                addKeyToList('d');
+                break;
+            case "VK_D_released":
+                lastKeyList.remove((Character) 'd');
+                break;
+        }
+    }
+
+    /**
+     * Method that adds a character to the lastKeyInput List if it isnt already in the List.
+     * @author Benedikt
+     */
+    private void addKeyToList(char theKey){
+        if(!lastKeyList.contains(theKey))
+        {
+            lastKeyList.add(theKey);
+        }
     }
 
     /**
