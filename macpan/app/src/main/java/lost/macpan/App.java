@@ -8,6 +8,7 @@ package lost.macpan;
 
 import lost.macpan.panel.Intro;
 import lost.macpan.panel.MainMenu;
+import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -36,7 +37,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 5000;
+        int delay = 4000;
         Font fontRead = null;
         {
             try {
