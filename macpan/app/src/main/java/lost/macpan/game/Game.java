@@ -205,9 +205,7 @@ public class Game implements Runnable, ResourceHandler {
         thread = new Thread(this);
         thread.start();
 
-        getPlayerPos();
-        initPlayerPos[0] = playerPos[0];
-        initPlayerPos[1] = playerPos[1];
+        initPlayerPos = getPlayerPos();
         initiateEnemies();
     }
 
@@ -352,7 +350,6 @@ public class Game implements Runnable, ResourceHandler {
                     else score +=10;
                 } case keyTile -> {
                     flags[3] = true;
-                    flags[6] = true;
                 } case exitTile -> {
                     if(!flags[3]) {
                         step = false;
@@ -360,6 +357,7 @@ public class Game implements Runnable, ResourceHandler {
                     else {
                         levelNr++;
                         changeLevel(levelNr);
+                        step = false;
                     }
                 }
                 case speedEffectTile -> flags[2] = true; // Geschwindigkeitsbuff
@@ -369,7 +367,10 @@ public class Game implements Runnable, ResourceHandler {
                 case deathTouchTile -> flags[4] = true; // Todesberührung
             }
             if(step) {
-                geh(x, y);
+                map[playerPos[0]][playerPos[1]] = pathTile;
+                playerPos[0] += x;
+                playerPos[1] += y;
+                map[playerPos[0]][playerPos[1]] = playerTile;
                 enemyDetection();
             }
         }
@@ -393,46 +394,36 @@ public class Game implements Runnable, ResourceHandler {
             case 2:
                 map = importMapArray("level_2.txt");
                 tickRate = 6;
+                initPlayerPos = getPlayerPos();
+                initiateEnemies();
                 break;
             case 3:
                 map = importMapArray("level_3.txt");
                 tickRate = 7;
+                initPlayerPos = getPlayerPos();
+                initiateEnemies();
                 break;
             default:
                 gameWindow.showWinnerMenu();
                 stopThread();
         }
-        initiateEnemies();
-    }
-
-    /**
-     * Moves the Player to a relative coordinate in the grid
-     * @param x coordinate on the X axes
-     * @param y coordinate on the Y axes
-     * @author Benedikt
-     */
-    private void geh(int x, int y){
-        map[playerPos[0]][playerPos[1]] = pathTile;
-        playerPos[0] += x;
-        playerPos[1] += y;
-        map[playerPos[0]][playerPos[1]] = playerTile;
     }
 
     /**
      * Gets the Players coordinates in the grid and stores them in 'int[2] playerPos'
      * @author Benedikt
      */
-    protected void getPlayerPos(){
-        playerPos = new int [2];
+    protected int[] getPlayerPos(){
         for (int i = 0; i < maxMapColumns; i++){
             for (int j = 0; j < maxMapRows; j++) {
                 if(map[i][j] == playerTile){
                     playerPos[0] = i;
                     playerPos[1] = j;
-                    return;
                 }
             }
         }
+        int[] result = {playerPos[0], playerPos[1]};
+        return result;
     }
 
     /**
@@ -443,7 +434,7 @@ public class Game implements Runnable, ResourceHandler {
         enemies.clear(); // Remove Enemy objects from last session
         for(int i = 0; i < maxMapColumns; i++)
             for (int j = 0; j < maxMapRows; j++)
-                if(this.getMap()[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
+                if(map[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
     }
 
     /**
@@ -455,17 +446,17 @@ public class Game implements Runnable, ResourceHandler {
     private boolean enemyDetection(Enemy enemy) {
         if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
             if(flags[4]) { // If death touch is active
-                this.getMap()[enemy.getPosX()][enemy.getPosY()] = playerTile;
+                map[enemy.getPosX()][enemy.getPosY()] = playerTile;
                 enemies.remove(enemy);
             } else {
-                if (flags[1]) { // If player has got an extra life
+                // If player has got an extra life
+                if (flags[1]) {
                     flags[1] = false; // Reset extra life
-                    map[playerPos[0]][playerPos[1]] = enemyTile; // Reset the player
-                    playerPos[0] = initPlayerPos[0];            // position to the
-                    playerPos[1] = initPlayerPos[1];            // starting position
-                    map[initPlayerPos[0]][initPlayerPos[1]] = playerTile;
+                    map[playerPos[0]][playerPos[1]] = enemyTile;
+                    playerPos = initPlayerPos;
                 } else {
                     flags[0] = false; // Kill player
+                    gameWindow.repaint();
                     gameWindow.showDeathWindow();
                     stopThread();
                 }
@@ -483,7 +474,7 @@ public class Game implements Runnable, ResourceHandler {
      */
     private void enemyDetection() {
         for (Enemy enemy : enemies)
-            enemyDetection(enemy);
+            if(enemyDetection(enemy)) break;
     }
 
     /**
