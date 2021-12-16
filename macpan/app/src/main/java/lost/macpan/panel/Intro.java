@@ -16,7 +16,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 
 /**
@@ -33,7 +32,7 @@ public class Intro extends JPanel implements ResourceHandler {
     public Intro() {
         setLayout(new GridBagLayout());
         try {
-            img = ImageIO.read(getFileResourcesAsStream("images/LoST_Gruen.png"));
+            img = ImageIO.read(getFileResourcesAsStream("images/LoST_splashscreen.png"));
             img = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();

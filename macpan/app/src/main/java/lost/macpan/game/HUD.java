@@ -41,17 +41,17 @@ public class HUD implements ResourceHandler {
      */
     public void fetchSprites() {
         try {
-            fieldOpener = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD field opener-1.png.png"));
-            fieldCloser = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD field closer-1.png.png"));
-            fieldSpacer = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD field spacer-1.png.png"));
-            effectField = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD effect field-1.png.png"));
-            filler = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD filler-1.png.png"));
+            fieldOpener = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD field opener.png"));
+            fieldCloser = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD field closer.png"));
+            fieldSpacer = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD field spacer.png"));
+            effectField = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD effect field.png"));
+            filler = ImageIO.read(getFileResourcesAsStream("images/hud sprites/HUD filler.png"));
             key = ImageIO.read(getFileResourcesAsStream("images/Key.png"));
-            lifeEffect = ImageIO.read(getFileResourcesAsStream("images/life effect-1.png.png"));
-            speedEffect = ImageIO.read(getFileResourcesAsStream("images/speed effect-1.png.png"));
-            attack = ImageIO.read(getFileResourcesAsStream("images/Sword-1.png.png"));
-            boostEffect = ImageIO.read(getFileResourcesAsStream("images/boost effect-1.png.png"));
-            freezeEffect = ImageIO.read(getFileResourcesAsStream("images/freeze effect-1.png.png"));
+            lifeEffect = ImageIO.read(getFileResourcesAsStream("images/life effect.png"));
+            speedEffect = ImageIO.read(getFileResourcesAsStream("images/speed effect.png"));
+            attack = ImageIO.read(getFileResourcesAsStream("images/Sword.png"));
+            boostEffect = ImageIO.read(getFileResourcesAsStream("images/boost effect.png"));
+            freezeEffect = ImageIO.read(getFileResourcesAsStream("images/freeze effect.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
