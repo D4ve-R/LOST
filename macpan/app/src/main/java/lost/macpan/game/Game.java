@@ -3,6 +3,9 @@ package lost.macpan.game;
 
 import lost.macpan.utils.ResourceHandler;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -43,20 +46,12 @@ public class Game implements Runnable, ResourceHandler {
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
     /**
-     * Cooldown for Boosts in seconds
-     */
-    private final double SpeedCooldown = 5;
-    private final double DeathTouchCooldown = 5;
-    private final double CoinBoostCooldown = 5;
-    private final double FreezeCooldown = 5;
-
-    /**
      * Internal Timers for reseting the Flags
      */
-    private int TimerSpeed = 0;
-    private int TimerDeathTouch = 0;
-    private int TimerCoinBoost = 0;
-    private int TimerFreeze = 0;
+    private int timerSpeed = 0;
+    private int timerDeathTouch = 0;
+    private int timerCoinBoost = 0;
+    private int timerFreeze = 0;
 
     /**
      * Tiles
@@ -114,10 +109,10 @@ public class Game implements Runnable, ResourceHandler {
                 boolean[] newflags){
         this.map = newmap;
         this.score = newscore;
-        this.TimerSpeed = newTimerSpeed;
-        this.TimerDeathTouch = newTimerDeathTouch;
-        this.TimerCoinBoost = newTimerCoinBoost;
-        this.TimerFreeze = newTimerFreeze;
+        this.timerSpeed = newTimerSpeed;
+        this.timerDeathTouch = newTimerDeathTouch;
+        this.timerCoinBoost = newTimerCoinBoost;
+        this.timerFreeze = newTimerFreeze;
         this.flags = newflags;
         this.levelNr = levelNr;
         switch(levelNr){
@@ -201,10 +196,10 @@ public class Game implements Runnable, ResourceHandler {
      * Return  the Timers
      * @author Hung
      */
-    public int getTimerSpeed() { return TimerSpeed;}
-    public int getTimerDeathTouch() { return TimerDeathTouch;}
-    public int getTimerCoinBoost() {return TimerCoinBoost;}
-    public int getTimerFreeze() {return TimerFreeze;}
+    public int getTimerSpeed() { return timerSpeed;}
+    public int getTimerDeathTouch() { return timerDeathTouch;}
+    public int getTimerCoinBoost() {return timerCoinBoost;}
+    public int getTimerFreeze() {return timerFreeze;}
 
     /**
      * Starts the new thread
@@ -274,6 +269,8 @@ public class Game implements Runnable, ResourceHandler {
                 }
                 gameWindow.repaint(); //draws the frame
                 frameCounter++;
+                if(frameCounter == 60)
+                    frameCounter = 0;
             }
         }
     }
@@ -283,28 +280,34 @@ public class Game implements Runnable, ResourceHandler {
      * @author Sebastian
      */
     public void gameLogic(int tick){
+        int boostRate;
+        if(levelNr < 3)
+            boostRate = tickrate;
+        else
+            boostRate = tickrate + levelNr;
 
         //SpeedBoost
-        if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
-        if(flags[2] && TimerSpeed == 1) flags[2] = false;
-        if(TimerSpeed > 0) TimerSpeed--;
+        if(flags[2] && timerSpeed == 0) timerSpeed = 5 * boostRate;
+        if(flags[2] && timerSpeed == 1) flags[2] = false;
+        if(timerSpeed > 0) timerSpeed--;
 
         //Death Touch
-        if(flags[4] && TimerDeathTouch == 0) TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
-        if(flags[4] && TimerDeathTouch == 1) flags[4] = false;
-        if(TimerDeathTouch > 0) TimerDeathTouch--;
+        if(flags[4] && timerDeathTouch == 0) timerDeathTouch = 5 * boostRate;
+        if(flags[4] && timerDeathTouch == 1) flags[4] = false;
+        if(timerDeathTouch > 0) timerDeathTouch--;
 
         //CoinBoost
-        if(flags[5] && TimerCoinBoost == 0) TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
-        if(flags[5] && TimerCoinBoost == 1) flags[5] = false;
-        if(TimerCoinBoost > 0) TimerCoinBoost--;
+        if(flags[5] && timerCoinBoost == 0) timerCoinBoost = 5 * boostRate;
+        if(flags[5] && timerCoinBoost == 1) flags[5] = false;
+        if(timerCoinBoost > 0) timerCoinBoost--;
 
         //Freeze
-        if(flags[7] && TimerFreeze == 0) TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
-        if(flags[7] && TimerFreeze == 1) flags[7] = false;
-        if(TimerFreeze > 0) TimerFreeze--;
+        if(flags[7] && timerFreeze == 0) timerFreeze = 5 * boostRate;
+        if(flags[7] && timerFreeze == 1) flags[7] = false;
+        if(timerFreeze > 0) timerFreeze--;
 
-        if(tick % 2 == 0 ||flags[2])
+
+        if(tick % 2 == 0 || flags[2])
             move();
 
         // Move Enemy objects unless freeze effect is active
