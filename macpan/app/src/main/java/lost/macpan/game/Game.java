@@ -264,7 +264,13 @@ public class Game implements Runnable, ResourceHandler {
                 e.printStackTrace();
             }
             if(!gamePaused) {
+                checkBooster();
                 if (frameCounter % (framerate / tickrate) == 0) {
+                    // e.g. 20fps 4 ticks = 50ms per frame,
+                    // but only every (20/4) 5th frame gamelogic is called,
+                    // so gamelogic has 4 fps
+                    // gamelogic() updates movement only every 2th frame
+                    // so movement happens at 2fps
                     gameLogic((int)(frameCounter/(framerate / tickrate))); //Game Logic is called with a iterating number, starts with 0
                 }
                 gameWindow.repaint(); //draws the frame
@@ -279,34 +285,7 @@ public class Game implements Runnable, ResourceHandler {
      * method for the Logic of the game, gets called every tickrate times per second
      * @author Sebastian
      */
-    public void gameLogic(int tick){
-        int boostRate;
-        if(levelNr < 3)
-            boostRate = tickrate;
-        else
-            boostRate = tickrate + levelNr;
-
-        //SpeedBoost
-        if(flags[2] && timerSpeed == 0) timerSpeed = 5 * boostRate;
-        if(flags[2] && timerSpeed == 1) flags[2] = false;
-        if(timerSpeed > 0) timerSpeed--;
-
-        //Death Touch
-        if(flags[4] && timerDeathTouch == 0) timerDeathTouch = 5 * boostRate;
-        if(flags[4] && timerDeathTouch == 1) flags[4] = false;
-        if(timerDeathTouch > 0) timerDeathTouch--;
-
-        //CoinBoost
-        if(flags[5] && timerCoinBoost == 0) timerCoinBoost = 5 * boostRate;
-        if(flags[5] && timerCoinBoost == 1) flags[5] = false;
-        if(timerCoinBoost > 0) timerCoinBoost--;
-
-        //Freeze
-        if(flags[7] && timerFreeze == 0) timerFreeze = 5 * boostRate;
-        if(flags[7] && timerFreeze == 1) flags[7] = false;
-        if(timerFreeze > 0) timerFreeze--;
-
-
+    private void gameLogic(int tick){
         if(tick % 2 == 0 || flags[2])
             move();
 
@@ -320,13 +299,39 @@ public class Game implements Runnable, ResourceHandler {
     }
 
     /**
+     * Handles Boost timer, checks flags
+     * @author Dave & Sebastian
+     */
+    private void checkBooster(){
+        //SpeedBoost
+        if(flags[2] && timerSpeed == 0) timerSpeed = 5 * framerate;
+        if(flags[2] && timerSpeed == 1) flags[2] = false;
+        if(timerSpeed > 0) timerSpeed--;
+
+        //Death Touch
+        if(flags[4] && timerDeathTouch == 0) timerDeathTouch = 5 * framerate;
+        if(flags[4] && timerDeathTouch == 1) flags[4] = false;
+        if(timerDeathTouch > 0) timerDeathTouch--;
+
+        //CoinBoost
+        if(flags[5] && timerCoinBoost == 0) timerCoinBoost = 5 * framerate;
+        if(flags[5] && timerCoinBoost == 1) flags[5] = false;
+        if(timerCoinBoost > 0) timerCoinBoost--;
+
+        //Freeze
+        if(flags[7] && timerFreeze == 0) timerFreeze = 5 * framerate;
+        if(flags[7] && timerFreeze == 1) flags[7] = false;
+        if(timerFreeze > 0) timerFreeze--;
+    }
+
+    /**
      * method for key Actions, gets called every time a mapped Key is pressed
      * To add new Keys they first have to be added to the keymap in the setKeyBindings() function in GameWindow
      * @author Sebastian
      * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
      *
      */
-    public void newKeyAction(String pKey) {
+    protected void newKeyAction(String pKey) {
         switch (pKey){
             case "VK_ESCAPE":
                 spielPausieren();
@@ -362,7 +367,7 @@ public class Game implements Runnable, ResourceHandler {
      * Method that adds a character to the lastKeyInput List if it isnt already in the List.
      * @author Benedikt
      */
-    public void addKeyToList(char theKey){
+    private void addKeyToList(char theKey){
         if(!lastKeyList.contains((Character) theKey))
         {
             lastKeyList.add((Character) theKey);
@@ -372,7 +377,7 @@ public class Game implements Runnable, ResourceHandler {
      * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
      * @author Benedikt
      */
-    public void move(){
+    private void move(){
         if(!lastKeyList.isEmpty())
         {
             switch (lastKeyList.get(lastKeyList.size() -1)) {
@@ -390,7 +395,7 @@ public class Game implements Runnable, ResourceHandler {
      * Finally calls the 'geh(int x, int y)' method to actually move the player.
      * @author Benedikt // Abgeändert zu switch cases von Simon
      */
-    public void moveToNew(int x, int y) {
+    private void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
         if(onNewPos != wallTile) {
             boolean step = true;
@@ -410,22 +415,7 @@ public class Game implements Runnable, ResourceHandler {
                     }
                     else {
                         levelNr++;
-                        flags[3] = false;
-                        flags[6] = false;
-                        switch(levelNr){
-                            case 2:
-                                map = importMapArray("level_2.txt");
-                                tickrate = 6;
-                                break;
-                            case 3:
-                                map = importMapArray("level_3.txt");
-                                tickrate = 7;
-                                break;
-                            default:
-                                gameWindow.showWinnerMenu();
-                                stopThread();
-                        }
-                        initiateEnemies();
+                        changeLevel(levelNr);
                     }
                 }
                 case speedEffectTile    -> flags[2] = true; // Geschwindigkeitsbuff
@@ -439,12 +429,42 @@ public class Game implements Runnable, ResourceHandler {
     }
 
     /**
+     * Handles level changing
+     * @param level levelNr to change to
+     * @author Dave
+     */
+    private void changeLevel(int level){
+        for(int i = 1; i < 8; ++i)
+            flags[i] = false;
+
+        timerSpeed = 0;
+        timerFreeze = 0;
+        timerCoinBoost = 0;
+        timerDeathTouch = 0;
+
+        switch(levelNr){
+            case 2:
+                map = importMapArray("level_2.txt");
+                tickrate = 6;
+                break;
+            case 3:
+                map = importMapArray("level_3.txt");
+                tickrate = 7;
+                break;
+            default:
+                gameWindow.showWinnerMenu();
+                stopThread();
+        }
+        initiateEnemies();
+    }
+
+    /**
      * Moves the Player to a relative coordinate in the grid
      * @param x coordinate on the X axes
      * @param y coordinate on the Y axes
      * @author Benedikt
      */
-    public void geh(int x, int y){
+    private void geh(int x, int y){
         map[playerPos[0]][playerPos[1]] = pathTile;
         playerPos[0] += x;
         playerPos[1] += y;
@@ -455,7 +475,7 @@ public class Game implements Runnable, ResourceHandler {
      * Gets the Players coordinates in the grid and stores them in 'int[2] playerPos'
      * @author Benedikt
      */
-    public void getPlayerPos(){
+    protected void getPlayerPos(){
         playerPos = new int [2];
         for (int i = 0; i < maxMapColumns; i++){
             for (int j = 0; j < maxMapRows; j++) {
@@ -472,7 +492,7 @@ public class Game implements Runnable, ResourceHandler {
      * Method to overwrite the enemies ArrayList with the enemies position given by the 'g's in the map grid
      * @author Simon Bonnie
      */
-    public void initiateEnemies() {
+    private void initiateEnemies() {
         enemies.clear(); // Remove Enemy objects from last session
         for(int i = 0; i < maxMapColumns; i++)
             for (int j = 0; j < maxMapRows; j++)
@@ -485,7 +505,7 @@ public class Game implements Runnable, ResourceHandler {
      * @return whether a collision between enemy and player was detected or not
      * @author Simon Bonnie
      */
-    public boolean enemyDetection(Enemy enemy) {
+    private boolean enemyDetection(Enemy enemy) {
         if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
             if(flags[4]) { // If death touch is active
                 this.getMap()[enemy.getPosX()][enemy.getPosY()] = enemy.getAbove();
@@ -514,7 +534,7 @@ public class Game implements Runnable, ResourceHandler {
      * @return whether a collision was detected or not
      * @author Simon Bonnie
      */
-    public boolean enemyDetection() {
+    private boolean enemyDetection() {
         boolean rueckgabe = false;
         for (Enemy enemy : enemies) {
             rueckgabe = enemyDetection(enemy);
