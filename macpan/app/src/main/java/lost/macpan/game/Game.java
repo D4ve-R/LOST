@@ -455,7 +455,7 @@ public class Game implements Runnable, ResourceHandler {
     private boolean enemyDetection(Enemy enemy) {
         if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
             if(flags[4]) { // If death touch is active
-                this.getMap()[enemy.getPosX()][enemy.getPosY()] = enemy.getAbove();
+                this.getMap()[enemy.getPosX()][enemy.getPosY()] = playerTile;
                 enemies.remove(enemy);
             } else {
                 if (flags[1]) { // If player has got an extra life
