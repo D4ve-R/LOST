@@ -3,14 +3,9 @@ package lost.macpan.game;
 
 import lost.macpan.utils.ResourceHandler;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +26,8 @@ public class Game implements Runnable, ResourceHandler {
     private ArrayList<Character> lastKeyList = new ArrayList<Character>();
     private GameWindow gameWindow;
 
-    private final int framerate = 20;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private int tickrate;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int frameRate = 20;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
+    private int tickRate;                                   //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
@@ -97,7 +92,7 @@ public class Game implements Runnable, ResourceHandler {
         flags = new boolean[8];
         map = importMapArray("level_1.txt");
         levelNr = 1;
-        tickrate = 4;
+        tickRate = 4;
     }
 
     /**
@@ -117,13 +112,13 @@ public class Game implements Runnable, ResourceHandler {
         this.levelNr = levelNr;
         switch(levelNr){
             case 2:
-                tickrate = 5;
+                tickRate = 5;
                 break;
             case 3:
-                tickrate = 6;
+                tickRate = 6;
                 break;
             default:
-                tickrate = 4;
+                tickRate = 4;
         }
     }
 
@@ -248,8 +243,8 @@ public class Game implements Runnable, ResourceHandler {
      */
     @Override
     public void run() {
-        double frametime = 1000 / (double)framerate;                       //determines the time span any frame should be displayed
-        double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
+        double frameTime = 1000 / (double) frameRate;                       //determines the time span any frame should be displayed
+        double nextDrawTime = System.currentTimeMillis() + frameTime;    //determines at which point in time the next frame should start to be drawn
         long frameCounter = 0;
 
         while(threadRunning) {
@@ -257,7 +252,7 @@ public class Game implements Runnable, ResourceHandler {
             if (remainingTime < 0)                  //determines how long the thread should sleep for
                 remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
 
-            nextDrawTime += frametime;              //determines when the next frame should finish
+            nextDrawTime += frameTime;              //determines when the next frame should finish
             try {
                 thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
             } catch (InterruptedException e) {
@@ -265,17 +260,17 @@ public class Game implements Runnable, ResourceHandler {
             }
             if(!gamePaused) {
                 checkBooster();
-                if (frameCounter % (framerate / tickrate) == 0) {
+                if (frameCounter % (frameRate / tickRate) == 0) {
                     // e.g. 20fps 4 ticks = 50ms per frame,
                     // but only every (20/4) 5th frame gamelogic is called,
                     // so gamelogic has 4 fps
                     // gamelogic() updates movement only every 2th frame
                     // so movement happens at 2fps
-                    gameLogic((int)(frameCounter/(framerate / tickrate))); //Game Logic is called with a iterating number, starts with 0
+                    gameLogic((int)(frameCounter/(frameRate / tickRate))); //Game Logic is called with a iterating number, starts with 0
                 }
                 gameWindow.repaint(); //draws the frame
                 frameCounter++;
-                if(frameCounter == 60)
+                if(frameCounter == frameRate * 2)
                     frameCounter = 0;
             }
         }
@@ -304,22 +299,22 @@ public class Game implements Runnable, ResourceHandler {
      */
     private void checkBooster(){
         //SpeedBoost
-        if(flags[2] && timerSpeed == 0) timerSpeed = 5 * framerate;
+        if(flags[2] && timerSpeed == 0) timerSpeed = 5 * frameRate;
         if(flags[2] && timerSpeed == 1) flags[2] = false;
         if(timerSpeed > 0) timerSpeed--;
 
         //Death Touch
-        if(flags[4] && timerDeathTouch == 0) timerDeathTouch = 5 * framerate;
+        if(flags[4] && timerDeathTouch == 0) timerDeathTouch = 5 * frameRate;
         if(flags[4] && timerDeathTouch == 1) flags[4] = false;
         if(timerDeathTouch > 0) timerDeathTouch--;
 
         //CoinBoost
-        if(flags[5] && timerCoinBoost == 0) timerCoinBoost = 5 * framerate;
+        if(flags[5] && timerCoinBoost == 0) timerCoinBoost = 5 * frameRate;
         if(flags[5] && timerCoinBoost == 1) flags[5] = false;
         if(timerCoinBoost > 0) timerCoinBoost--;
 
         //Freeze
-        if(flags[7] && timerFreeze == 0) timerFreeze = 5 * framerate;
+        if(flags[7] && timerFreeze == 0) timerFreeze = 5 * frameRate;
         if(flags[7] && timerFreeze == 1) flags[7] = false;
         if(timerFreeze > 0) timerFreeze--;
     }
@@ -445,11 +440,11 @@ public class Game implements Runnable, ResourceHandler {
         switch(levelNr){
             case 2:
                 map = importMapArray("level_2.txt");
-                tickrate = 6;
+                tickRate = 6;
                 break;
             case 3:
                 map = importMapArray("level_3.txt");
-                tickrate = 7;
+                tickRate = 7;
                 break;
             default:
                 gameWindow.showWinnerMenu();
