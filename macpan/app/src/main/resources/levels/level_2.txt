@@ -1,7 +1,7 @@
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-h.*d*.*.*.*.*.*.*.*.*.*.*.*.ph
-h*h.hh*hh.hh*h.hhh*hh.h.h*hh.h
-h*hhh.*hh.hh*hhh..*hhhh.h*..*h
+h.*d*.*.*.*.*.*.*.*.*.*.*.*.*h
+h*hhhh*hh.hh*h.hhh*hh.h.h*hh.h
+h*phh.*hh.hh*hhh..*hhhh.h*..*h
 h*hhhhchh...*..*.h*hhh..hghhah
 hg.hhh*hh.hh*h*hhh*hh..hh*.*.h
 h*hhh.*.h.hh*h.hh.*h..hhh*hh*h
