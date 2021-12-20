@@ -26,7 +26,7 @@ public class Game implements Runnable, ResourceHandler {
     private ArrayList<Character> lastKeyList = new ArrayList<Character>();
     private GameWindow gameWindow;
 
-    private final int frameRate = 20;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
+    private final int frameRate = 24;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
     private int tickRate;                                   //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
@@ -92,7 +92,7 @@ public class Game implements Runnable, ResourceHandler {
         flags = new boolean[8];
         map = importMapArray("level_1.txt");
         levelNr = 1;
-        tickRate = 5;
+        tickRate = 4;
     }
 
     /**
@@ -115,10 +115,10 @@ public class Game implements Runnable, ResourceHandler {
                 tickRate = 6;
                 break;
             case 3:
-                tickRate = 7;
+                tickRate = 8;
                 break;
             default:
-                tickRate = 5;
+                tickRate = 4;
         }
     }
 
@@ -241,18 +241,19 @@ public class Game implements Runnable, ResourceHandler {
      */
     @Override
     public void run() {
-        double frameTime = 1000 / (double) frameRate;                       //determines the time span any frame should be displayed
-        double nextDrawTime = System.currentTimeMillis() + frameTime;    //determines at which point in time the next frame should start to be drawn
-        long frameCounter = 0;
+        int frameTime = 1000 / frameRate;                       //determines the time span any frame should be displayed
+        long nextDrawTime = System.currentTimeMillis() + frameTime;    //determines at which point in time the next frame should start to be drawn
+        int frameCounter = 0;
+        int i = 0;
 
         while(threadRunning) {
-            double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
+            long remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
             if (remainingTime < 0)                  //determines how long the thread should sleep for
                 remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
 
             nextDrawTime += frameTime;              //determines when the next frame should finish
             try {
-                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
+                thread.sleep(remainingTime);     //puts thread to sleep for the allotted time
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -260,15 +261,16 @@ public class Game implements Runnable, ResourceHandler {
                 checkBooster();
                 if (frameCounter % (frameRate / tickRate) == 0) {
                     // e.g. 20fps 4 ticks = 50ms per frame,
-                    // but only every (20/4) 5th frame gamelogic is called,
+                    // but only every (20/5) 4th frame gamelogic is called,
                     // so gamelogic has 4 fps
                     // gamelogic() updates movement only every 2th frame
                     // so movement happens at 2fps
-                    gameLogic((int)(frameCounter/(frameRate / tickRate))); //Game Logic is called with a iterating number, starts with 0
+                    gameLogic(frameCounter/(frameRate / tickRate));
                 }
-                gameWindow.repaint(); //draws the frame
+                gameWindow.repaint();
                 frameCounter++;
-                if(frameCounter == frameRate * levelNr)
+
+                if(frameCounter == frameRate - 1)
                     frameCounter = 0;
             }
         }
