@@ -268,7 +268,7 @@ public class Game implements Runnable, ResourceHandler {
                 }
                 gameWindow.repaint(); //draws the frame
                 frameCounter++;
-                if(frameCounter == frameRate * 2)
+                if(frameCounter == frameRate * levelNr)
                     frameCounter = 0;
             }
         }
@@ -453,7 +453,8 @@ public class Game implements Runnable, ResourceHandler {
                 if (flags[1]) {
                     flags[1] = false; // Reset extra life
                     map[playerPos[0]][playerPos[1]] = enemyTile;
-                    playerPos = initPlayerPos;
+                    playerPos = new int[]{initPlayerPos[0], initPlayerPos[1]};
+                    map[playerPos[0]][playerPos[1]] = playerTile;
                 } else {
                     flags[0] = false; // Kill player
                     gameWindow.repaint();
