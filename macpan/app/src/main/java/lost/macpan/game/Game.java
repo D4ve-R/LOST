@@ -341,47 +341,45 @@ public class Game implements Runnable, ResourceHandler {
      */
     private void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
-        if(onNewPos == wallTile) {}
-        else {
-            boolean step = true;
-            switch (onNewPos) {
-                case coinTile -> {
-                    if(flags[5]) score += 20;
-                    else score +=10;
-                } case keyTile -> {
-                    flags[3] = true;
-                } case exitTile -> {
-                    if(!flags[3]) {
-                        step = false;
-                    }
-                    else {
-                        levelNr++;
-                        changeLevel(levelNr);
-                        step = false;
-                    }
+        boolean step = true;
+        switch (onNewPos) {
+            case wallTile -> step = false;
+            case coinTile -> {
+                if(flags[5]) score += 20;
+                else score +=10;
+            }
+            case keyTile -> flags[3] = true;
+            case exitTile -> {
+                if(!flags[3]) {
+                    step = false;
                 }
-                case speedEffectTile -> flags[2] = true; // Geschwindigkeitsbuff
-                case freezeEffectTile -> flags[7] = true; // Gegner einfrieren
-                case coinBoostTile -> flags[5] = true; // Münzboost
-                case extraLifeTile -> flags[1] = true; // Zusatzleben
-                case deathTouchTile -> flags[4] = true; // Todesberührung
+                else {
+                    changeLevel();
+                    step = false;
+                }
             }
-            if(step) {
-                map[playerPos[0]][playerPos[1]] = pathTile;
-                playerPos[0] += x;
-                playerPos[1] += y;
-                map[playerPos[0]][playerPos[1]] = playerTile;
-                enemyDetection();
-            }
+            case speedEffectTile -> flags[2] = true;
+            case freezeEffectTile -> flags[7] = true;
+            case coinBoostTile -> flags[5] = true;
+            case extraLifeTile -> flags[1] = true;
+            case deathTouchTile -> flags[4] = true;
+        }
+
+        if(step) {
+            map[playerPos[0]][playerPos[1]] = pathTile;
+            playerPos[0] += x;
+            playerPos[1] += y;
+            map[playerPos[0]][playerPos[1]] = playerTile;
+            enemyDetection();
         }
     }
 
     /**
      * Handles level changing
-     * @param level levelNr to change to
      * @author Dave
      */
-    private void changeLevel(int level){
+    private void changeLevel(){
+        levelNr++;
         for(int i = 1; i < 8; ++i)
             flags[i] = false;
 
