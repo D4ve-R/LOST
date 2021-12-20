@@ -92,7 +92,7 @@ public class Game implements Runnable, ResourceHandler {
         flags = new boolean[8];
         map = importMapArray("level_1.txt");
         levelNr = 1;
-        tickRate = 4;
+        tickRate = 5;
     }
 
     /**
@@ -112,13 +112,13 @@ public class Game implements Runnable, ResourceHandler {
         this.levelNr = levelNr;
         switch(levelNr){
             case 2:
-                tickRate = 5;
-                break;
-            case 3:
                 tickRate = 6;
                 break;
+            case 3:
+                tickRate = 7;
+                break;
             default:
-                tickRate = 4;
+                tickRate = 5;
         }
     }
 
