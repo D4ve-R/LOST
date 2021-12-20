@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
@@ -20,7 +25,6 @@ import java.awt.event.WindowEvent;
  * @author Fatih
  */
 public class QuitMenu extends JPanel implements ActionListener, ResourceHandler {
-    // Erstellen der Buttons Ja und Nein für die Eingabe
     private final JButton yesBtn = new JButton("Ja");
     private final JButton noBtn = new JButton("Nein");
 
@@ -34,7 +38,6 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
     public QuitMenu(JFrame frame, Container beforeMenu) {
         parentFrame = frame;
         before = beforeMenu;
-        // Laden der Bilder, falls diese vorhanden sind
         try {
             img_1 = ImageIO.read(getFileResourcesAsStream("images/panelImages/Quit.png"));
         } catch (Exception e) {
@@ -53,7 +56,6 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         if (backgroundImg != null) {
             background = new JLabel(new ImageIcon(backgroundImg));
         }
-        // Bilder als ImageIcon
         if (img_1 != null) {
             topLabel = new JLabel(new ImageIcon(img_1));
         }
@@ -61,7 +63,6 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
             subLabel = new JLabel(new ImageIcon(img_2));
         }
         setLayout(null);
-        // Positionierung der Labels und Buttons
         background.setBounds(0, 0, 950, 700);
         topLabel.setBounds(-20, 10, 950, 200);
         subLabel.setBounds(175, 250, 600, 200);
@@ -76,15 +77,12 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         noBtn.addActionListener(this);
     }
 
-    // Funktionalität der Buttons festlegen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == yesBtn) {
-            // Fenster wird geschlossen und das Spiel ist beendet
             parentFrame.dispatchEvent(new WindowEvent(parentFrame, WindowEvent.WINDOW_CLOSING));
             parentFrame.dispose();
         } else if (e.getSource() == noBtn) {
-            //Hauptmenü wird geladen
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
         }

@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.panel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,16 +34,12 @@ import java.nio.file.Paths;
  * @author Fatih
  */
 public class PauseMenu extends JPanel implements ActionListener, ResourceHandler {
-    // Erstellen der einzelnen Buttons
     private final JButton playBtn = new JButton("Spiel Fortsetzen");
     private final JButton loadBtn = new JButton("Spiel Laden");
     private final JButton saveBtn = new JButton("Spiel Speichern");
     private final JButton highscoresBtn = new JButton("Highscores");
     private final JButton optionsBtn = new JButton("Optionen");
     private final JButton backBtn = new JButton("Zur\u00fcck zum Hauptmen\u00fc");
-    /*
-        parentFrame = Frame auf dem alles abgebildet wird; mithilfe von label wird ein Bild über den Buttons gezeigt
-     */
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
@@ -73,7 +74,6 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
             background = new JLabel(new ImageIcon(backgroundImg));
         }
         setLayout(null);
-        // Positionierung der Buttons und Labels
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
         playBtn.setBounds(345, 250, 300, 50);
@@ -82,7 +82,6 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         highscoresBtn.setBounds(345, 430, 300, 50);
         optionsBtn.setBounds(345, 490, 300, 50);
         backBtn.setBounds(295, 550, 400, 50);
-        // Hinzufügen der Buttons und Labels auf den Frame
         add(label);
         add(playBtn);
         add(loadBtn);
@@ -91,7 +90,6 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         add(optionsBtn);
         add(backBtn);
         add(background);
-        //Buttons werden dem Listener zugeordnet
         playBtn.addActionListener(this);
         loadBtn.addActionListener(this);
         saveBtn.addActionListener(this);

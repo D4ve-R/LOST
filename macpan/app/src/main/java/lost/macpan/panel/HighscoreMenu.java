@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.panel;
 
 import lost.macpan.utils.HighscoreHandler;
@@ -17,7 +22,6 @@ import java.awt.event.ActionListener;
 
 /**
  * Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch an.
- *
  * @author fatih
  */
 public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHandler {
@@ -33,7 +37,6 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
 
     /**
      * Der Konstruktor stellt den Button sowie die Labels auf dem Frame dar.
-     *
      * @param frame der Frame, auf dem alles abgebildet wird
      */
     public HighscoreMenu(JFrame frame, Container beforeMenu) {

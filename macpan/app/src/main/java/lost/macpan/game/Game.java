@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game;
 
 
@@ -11,8 +16,7 @@ import java.util.List;
 
 /**
  * Main Game class, handels all the actions and logic
- *
- * @author Sebastian
+ * @author Sebastian & dave
  */
 public class Game implements Runnable, ResourceHandler {
 
@@ -236,33 +240,31 @@ public class Game implements Runnable, ResourceHandler {
 
     /**
      * Game Loop
-     * @author Leon
-     * @author Sebastian
+     * @author Leon & Sebastian & Dave
      */
     @Override
     public void run() {
-        int frameTime = 1000 / frameRate;                       //determines the time span any frame should be displayed
-        long nextDrawTime = System.currentTimeMillis() + frameTime;    //determines at which point in time the next frame should start to be drawn
+        int frameTime = 1000 / frameRate;
+        long nextDrawTime = System.currentTimeMillis() + frameTime;
         int frameCounter = 0;
         int i = 0;
 
         while(threadRunning) {
-            long remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-            if (remainingTime < 0)                  //determines how long the thread should sleep for
-                remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
+            long remainingTime = nextDrawTime - System.currentTimeMillis();
+            if (remainingTime < 0)
+                remainingTime = 0;
 
-            nextDrawTime += frameTime;              //determines when the next frame should finish
+            nextDrawTime += frameTime;
             try {
-                thread.sleep(remainingTime);     //puts thread to sleep for the allotted time
+                thread.sleep(remainingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if(!gamePaused) {
                 checkBooster();
                 if (frameCounter % (frameRate / tickRate) == 0) {
-                    // e.g. 20fps 4 ticks = 50ms per frame,
-                    // but only every (20/5) 4th frame gamelogic is called,
-                    // so gamelogic has 4 fps
+                    // e.g. 24fps 4 ticks = 50ms per frame,
+                    // but only every (24/4) 6th frame gamelogic is called,
                     // gamelogic() updates movement only every 2th frame
                     // so movement happens at 2fps
                     gameLogic(frameCounter/(frameRate / tickRate));
@@ -278,13 +280,12 @@ public class Game implements Runnable, ResourceHandler {
 
     /**
      * method for the Logic of the game, gets called every tickrate times per second
-     * @author Sebastian
+     * @author Sebastian & Dave
      */
     private void gameLogic(int tick){
         if(tick % 2 == 0 || flags[2])
             move();
 
-        // Move Enemy objects unless freeze effect is active
         if(!flags[7] && tick % 2 == 0) {
             for(Enemy enemy : enemies) {
                 enemy.move();
@@ -339,7 +340,7 @@ public class Game implements Runnable, ResourceHandler {
      * Trys to move the player to a new position relatively.
      * Detects what will be at given position and acts accordingly.
      * Finally calls the 'geh(int x, int y)' method to actually move the player.
-     * @author Benedikt // Abgeändert zu switch cases von Simon
+     * @author Benedikt & Dave & Simon
      */
     private void moveToNew(int x, int y) {
         char onNewPos = map[playerPos[0]+x][playerPos[1]+y];

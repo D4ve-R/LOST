@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game.sprites;
 
 import javax.imageio.ImageIO;
@@ -11,7 +16,6 @@ import java.io.IOException;
  * @version 1.0
  */
 public class ExitSprite extends Sprite{
-    //attributes
     private BufferedImage exit1;
     private BufferedImage exit2;
     private BufferedImage exit3;
@@ -21,9 +25,8 @@ public class ExitSprite extends Sprite{
     private BufferedImage exit7;
     private BufferedImage exit8;
     private BufferedImage wall;
-    private static long animationStart = 0; //used for keeping track of exit animation progression
+    private static long animationStart = 0;
 
-    //constructor
     public ExitSprite(int pTileSize) {
         super(pTileSize);
     }
@@ -74,7 +77,7 @@ public class ExitSprite extends Sprite{
             if(animationTimer < 500) return exit4;
             if(animationTimer < 625) return exit5;
             if(animationTimer < 750) return exit6;
-            if(animationTimer < 875) return exit7;
+            else return exit7;
         }
 
         if(isUnlocked) {

@@ -1,6 +1,7 @@
 /*
  * MacPan version 0.1
  * SWE WS 21/22
+ * @author dave
  */
 
 package lost.macpan.utils;

@@ -1,3 +1,9 @@
+/*
+ * MacPan version 0.1
+ * SWE WS 21/22
+ * @author Hung
+ */
+
 package lost.macpan.utils;
 
 import com.google.gson.*;

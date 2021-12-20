@@ -1,9 +1,7 @@
-/*
+/**
  * MacPan version 0.1
  * SWE WS 21/22
- * Authors:
- * Janosch Lentz
- * David Rechkemmer
+ * @authors dave & janosch
  */
 
 package lost.macpan.panel;

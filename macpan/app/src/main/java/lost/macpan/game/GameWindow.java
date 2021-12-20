@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game;
 
 import lost.macpan.game.sprites.CoinSprite;
@@ -68,7 +73,6 @@ public class GameWindow extends JPanel {
 
     /**
      * Constructor
-     *
      * @param frame the parent Jframe
      * @param beforeMenu the container of the previous menu
      */
@@ -77,15 +81,15 @@ public class GameWindow extends JPanel {
         parentFrame = frame;
         before = beforeMenu;
 
-        setKeyBindings();               //Set all Key bindings
+        setKeyBindings();
 
         setPreferredSize(new Dimension(windowWidth, windowHeight));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
 
-        Dimension panelSize = parentFrame.getContentPane().getSize();                                       //gets screen size
-        windowScale = (double) panelSize.height / windowHeight;                                             //sets scaling factor
-        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (windowWidthInTiles / 2)));    //sets offset
+        Dimension panelSize = parentFrame.getContentPane().getSize();
+        windowScale = (double) panelSize.height / windowHeight;
+        windowOffset = (int) (panelSize.width / 2 -(tileSize * windowScale * (windowWidthInTiles / 2)));
 
         game.startThread();
     }
@@ -179,7 +183,7 @@ public class GameWindow extends JPanel {
      * @param g not to be edited
      */
     public void paintComponent(Graphics g){
-        allesAktualisieren();                       //Updates all the infromation
+        allesAktualisieren();
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         if (parentFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)
@@ -207,7 +211,6 @@ public class GameWindow extends JPanel {
     /**
      * sets all the key bindings
      * @author Sebastian
-     *
      */
     private void setKeyBindings() {
         ActionMap actionMap = getActionMap();
@@ -252,7 +255,6 @@ public class GameWindow extends JPanel {
     /**
      * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
      * @author Sebastian
-     *
      */
     private class KeyAction extends AbstractAction {
         public KeyAction(String actionCommand) {
