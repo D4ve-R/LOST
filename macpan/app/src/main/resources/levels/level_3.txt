@@ -7,14 +7,14 @@ hh.hhdh*h.h.h*h*h*h.h.h*h..h.h
 h*..hh*h*h.h.h*h.heh.h*h*h...h
 hhh.h..g.....k.......g...hh.hh
 h...hh.h*h.h.h.h.h*h.h.h.h...h
-h.hhh..gb...g.g....g.....h*h*h
+h.hhh..gb...*.g....*.....h*h*h
 h..*h.h.h.h.h.h.h.h.h.h.hh...h
 hh.hh......*.......*.....hh.hh
 h...hhgh.h.h.h.h.h.h.hgh.h...h
 h.h.hhhhhhhhhhahhhhhhhhhhh*h*h
 h.h........h*h.h...***.hg...hh
 h.hhhh.hhh*h*.c**h.h*h.*.h.h.h
-h.hg...h.hhhhh.hhh.*h..hh.g..h
+h.hg...h.hhhhh.hhh.*h..hh.*..h
 h.hh*hhh..***h*h...hh.h***h.hh
 h*.......h*h..g..h..h...h*h.*h
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh

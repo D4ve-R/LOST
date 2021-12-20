@@ -1,12 +1,12 @@
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-h.*d*.*.*.*.*.*.*.*.*.*.*.*.*h
+h.*d*.*.*.*.*.*.*g*.*.*.*.*.*h
 h*hhhh*hh.hh*h.hhh*hh.h.h*hh.h
-h*phh.*hh.hh*hhh..*hhhh.h*..*h
+h.phh.*hh.hh*hhh..*hhhh.h*..*h
 h*hhhhchh...*..*.h*hhh..hghhah
-hg.hhh*hh.hh*h*hhh*hh..hh*.*.h
-h*hhh.*.h.hh*h.hh.*h..hhh*hh*h
+h.*hhh*hh.hh*h*hhh*hh..hh*.*.h
+h.hhh.*.h.hh*h.hh.*h..hhh*hh*h
 h*h.hh*hh.hh*.*hhh*hh.hhh.hh.h
-h.*.*.*.*.*.*h.*.*.*.*.*.*h.*h
+h.g.*.*.*.*.*h.*.*.*.*.*.*h.*h
 hh.hhhhh.hhhhh.hhh*hhhhhh.hh.h
 h.*.*.*.*.*.*.*.*.*.*.*.*.*.*h
 h*hhhh.hhhh.h.hh.hhh.h.h.hhh.h
