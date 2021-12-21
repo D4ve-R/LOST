@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
@@ -49,7 +54,7 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
             background = new JLabel(new ImageIcon(backgroundImg));
         }
         try {
-            descriptionImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/HighscoreBackground.png"));
+            descriptionImg = ImageIO.read(getFileResourcesAsStream("images/panelImages/Spielbeschreibung.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game;
 
 import lost.macpan.utils.ResourceHandler;
@@ -30,8 +35,6 @@ public class HUD implements ResourceHandler {
     BufferedImage boostEffect;
     BufferedImage freezeEffect;
 
-
-    //constructor
     public HUD (){
         fetchSprites();
     }
@@ -57,11 +60,10 @@ public class HUD implements ResourceHandler {
         }
     }
 
-    //importing custom font
-    Font fontRead; //"fonts/alagard.ttf"
+    Font fontRead;
     {
         try {
-            InputStream stream = getFileResourcesAsStream("fonts/alagard.ttf");
+            InputStream stream = getFileResourcesAsStream("fonts/alagard_bearbeitet.ttf");
             fontRead = Font.createFont(Font.TRUETYPE_FONT, stream);
         } catch (FontFormatException e) {
             e.printStackTrace();

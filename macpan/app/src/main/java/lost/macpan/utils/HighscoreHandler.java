@@ -1,3 +1,9 @@
+/*
+ * MacPan version 0.1
+ * SWE WS 21/22
+ * @author Sebastian
+ */
+
 package lost.macpan.utils;
 
 import javax.swing.text.AttributeSet;
@@ -9,15 +15,12 @@ import java.util.List;
 
 
 /**
- * @author Sebastian
  * HighscoreHandler interface to handle Highscore saving/adding and loading from file
  */
 public interface HighscoreHandler extends ResourceHandler {
 
     /**
      * Class that represents one highscore entry
-     * @author Sebastian
-     *
      */
     class HighscoreEntry{
         private int score;
@@ -42,11 +45,9 @@ public interface HighscoreHandler extends ResourceHandler {
     }
 
     /**
-     * @author Sebastian
      * takes a score and adds it to the Highscores file. Only the ten best Highscores are saved.
      * @param pScore the score to be saved as int
      * @param pName the name associated with the score
-     *
      */
     default void saveNewScore(int pScore, String pName) {
         List<HighscoreEntry> highscoreListe = new LinkedList<>();
@@ -71,10 +72,8 @@ public interface HighscoreHandler extends ResourceHandler {
     }
 
     /**
-     * @author Sebastian
      * Loads the Highscore File from Disk and returns it as a String[] split at every new line.
      * @return an array of Highscore Strings
-     *
      */
     default String[] getHighscoresAsArray(){
         String  AllHighScoresString = "";
@@ -97,8 +96,6 @@ public interface HighscoreHandler extends ResourceHandler {
 
     /**
      * Class used for limiting the amount of characters that can be typed into the text field.
-     * @author Sebastian
-     *
      */
     class LimitJTextField extends PlainDocument
     {

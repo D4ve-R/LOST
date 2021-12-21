@@ -1,9 +1,7 @@
-/*
+/**
  * MacPan version 0.1
  * SWE WS 21/22
- * Authors:
- * Janosch Lentz
- * David Rechkemmer
+ * @author Janosch Lentz & David Rechkemmer
  */
 
 package lost.macpan;
@@ -38,9 +36,8 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
      * sets the JFrame attributes
      */
     public App(){
-        int delay = 5000; //müssen testen um auf 4 Sekunden zu kommen jz ca. 2 Sek
-//importing custom font
-        Font fontRead = null; //"fonts/alagard.ttf"
+        int delay = 5000;
+        Font fontRead = null;
         {
             try {
                 InputStream stream = getFileResourcesAsStream("fonts/alagard_bearbeitet.ttf");

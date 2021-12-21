@@ -10,7 +10,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'maven-publish'
-    id "com.github.gradle-lean" version "0.1.2"
+    id 'edu.sc.seis.launch4j' version '2.5.1'
 }
 
 repositories {
@@ -56,4 +56,9 @@ publishing {
             from(components.java)
         }
     }
+}
+
+launch4j {
+    mainClassName = 'lost.macpan.Main'
+    icon = ''
 }

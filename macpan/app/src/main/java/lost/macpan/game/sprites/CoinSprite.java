@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game.sprites;
 
 import javax.imageio.ImageIO;
@@ -11,12 +16,10 @@ import java.io.IOException;
  * @version 1.0
  */
 public class CoinSprite extends Sprite{
-    //attributes
     private BufferedImage boostedCoin;
     private BufferedImage normalCoin;
     private BufferedImage path;
 
-    //constructor
     public CoinSprite(int pTileSize) {
         super(pTileSize);
     }

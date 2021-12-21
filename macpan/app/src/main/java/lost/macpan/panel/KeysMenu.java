@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
@@ -15,7 +20,6 @@ import java.awt.event.ActionListener;
 
 /**
  * Die Klasse KeysMenu liefert dem Spieler ein Menü, wo man die Tastaturbelegung einsehen kann
- *
  * @author fatih
  */
 public class KeysMenu extends JPanel implements ActionListener, ResourceHandler {

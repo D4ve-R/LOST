@@ -1,20 +1,22 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game;
 
 
 import lost.macpan.utils.ResourceHandler;
 
 import java.io.File;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Main Game class, handels all the actions and logic
- *
- * @author Sebastian
+ * @author Sebastian & dave
  */
 public class Game implements Runnable, ResourceHandler {
 
@@ -28,8 +30,8 @@ public class Game implements Runnable, ResourceHandler {
     private ArrayList<Character> lastKeyList = new ArrayList<Character>();
     private GameWindow gameWindow;
 
-    private final int framerate = 60;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
-    private final int tickrate = 4;                         //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
+    private final int frameRate = 24;                       //rate of which a new frame is drawn in times per second ("framerate = 60" means 60 times per second)
+    private int tickRate;                                   //rate of which the logic is called in times per second ("tickrate = 2" means 2 times per second)
 
     private Thread thread;
     private boolean gamePaused = false;
@@ -43,20 +45,12 @@ public class Game implements Runnable, ResourceHandler {
     private List<Enemy> enemies = new ArrayList<>(); // An ArrayList containing the Enemy objects
 
     /**
-     * Cooldown for Boosts in seconds
-     */
-    private final double SpeedCooldown = 5;
-    private final double DeathTouchCooldown = 5;
-    private final double CoinBoostCooldown = 5;
-    private final double FreezeCooldown = 5;
-
-    /**
      * Internal Timers for reseting the Flags
      */
-    private int TimerSpeed = 0;
-    private int TimerDeathTouch = 0;
-    private int TimerCoinBoost = 0;
-    private int TimerFreeze = 0;
+    private int timerSpeed = 0;
+    private int timerDeathTouch = 0;
+    private int timerCoinBoost = 0;
+    private int timerFreeze = 0;
 
     /**
      * Tiles
@@ -102,7 +96,7 @@ public class Game implements Runnable, ResourceHandler {
         flags = new boolean[8];
         map = importMapArray("level_1.txt");
         levelNr = 1;
-
+        tickRate = 4;
     }
 
     /**
@@ -114,12 +108,22 @@ public class Game implements Runnable, ResourceHandler {
                 boolean[] newflags){
         this.map = newmap;
         this.score = newscore;
-        this.TimerSpeed = newTimerSpeed;
-        this.TimerDeathTouch = newTimerDeathTouch;
-        this.TimerCoinBoost = newTimerCoinBoost;
-        this.TimerFreeze = newTimerFreeze;
+        this.timerSpeed = newTimerSpeed;
+        this.timerDeathTouch = newTimerDeathTouch;
+        this.timerCoinBoost = newTimerCoinBoost;
+        this.timerFreeze = newTimerFreeze;
         this.flags = newflags;
         this.levelNr = levelNr;
+        switch(levelNr){
+            case 2:
+                tickRate = 6;
+                break;
+            case 3:
+                tickRate = 8;
+                break;
+            default:
+                tickRate = 4;
+        }
     }
 
     /**
@@ -191,10 +195,10 @@ public class Game implements Runnable, ResourceHandler {
      * Return  the Timers
      * @author Hung
      */
-    public int getTimerSpeed() { return TimerSpeed;}
-    public int getTimerDeathTouch() { return TimerDeathTouch;}
-    public int getTimerCoinBoost() {return TimerCoinBoost;}
-    public int getTimerFreeze() {return TimerFreeze;}
+    public int getTimerSpeed() { return timerSpeed;}
+    public int getTimerDeathTouch() { return timerDeathTouch;}
+    public int getTimerCoinBoost() {return timerCoinBoost;}
+    public int getTimerFreeze() {return timerFreeze;}
 
     /**
      * Starts the new thread
@@ -205,9 +209,7 @@ public class Game implements Runnable, ResourceHandler {
         thread = new Thread(this);
         thread.start();
 
-        getPlayerPos();
-        initPlayerPos[0] = playerPos[0];
-        initPlayerPos[1] = playerPos[1];
+        initPlayerPos = getPlayerPos();
         initiateEnemies();
     }
 
@@ -238,119 +240,243 @@ public class Game implements Runnable, ResourceHandler {
 
     /**
      * Game Loop
-     * @author Leon
-     * @author Sebastian
+     * @author Leon & Sebastian & Dave
      */
     @Override
     public void run() {
-        double frametime = 1000 / (double)framerate;                       //determines the time span any frame should be displayed
-        double nextDrawTime = System.currentTimeMillis() + frametime;    //determines at which point in time the next frame should start to be drawn
-        long timeOld = System.currentTimeMillis();
-        long contframeCounter = 0;
+        int frameTime = 1000 / frameRate;
+        long nextDrawTime = System.currentTimeMillis() + frameTime;
         int frameCounter = 0;
-        int tickCounter = 0;
+        int i = 0;
 
         while(threadRunning) {
+            long remainingTime = nextDrawTime - System.currentTimeMillis();
+            if (remainingTime < 0)
+                remainingTime = 0;
+
+            nextDrawTime += frameTime;
             try {
-                double remainingTime = nextDrawTime - System.currentTimeMillis();    //determines for how long the current frame should continue to be displayed
-                if (remainingTime < 0) {                  //determines how long the thread should sleep for
-                    remainingTime = 0;                  //with negative or 0 remaining time the thread should sleep for 0ns
-                }
-
-                thread.sleep((long) remainingTime);     //puts thread to sleep for the allotted time
-                nextDrawTime += frametime;              //determines when the next frame should finish
-
+                thread.sleep(remainingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if(!gamePaused) {
-
-                if (contframeCounter % (framerate / tickrate) == 0) {
-                    gameLogic((int)contframeCounter / (framerate/tickrate)); //Game Logic is called with a iterating number, starts with 0
-                    tickCounter++;
+                checkBooster();
+                if (frameCounter % (frameRate / tickRate) == 0) {
+                    // e.g. 24fps 4 ticks = 50ms per frame,
+                    // but only every (24/4) 6th frame gamelogic is called,
+                    // gamelogic() updates movement only every 2th frame
+                    // so movement happens at 2fps
+                    gameLogic(frameCounter/(frameRate / tickRate));
                 }
-
-                gameWindow.repaint(); //draws the frame
-
-                if (contframeCounter % framerate == 0) { //every framerate Frames the average FPS and TPS is calculated over the last framerate Frames
-                    double AverageTimeForOneFrame = ((double) (System.currentTimeMillis() - timeOld) / frameCounter);
-                    double AverageTimeForOneTick = ((double) (System.currentTimeMillis() - timeOld) / tickCounter);
-                    double TPS = 1000 / AverageTimeForOneTick;
-                    double FPS = 1000 / AverageTimeForOneFrame;
-                    System.out.println("FPS: " + new DecimalFormat("#0.00").format(FPS));
-                    System.out.println("TPS: " + new DecimalFormat("#0.00").format(TPS));
-                    frameCounter = 0;
-                    tickCounter = 0;
-                    timeOld = System.currentTimeMillis();
-                }
-                contframeCounter++;
+                gameWindow.repaint();
                 frameCounter++;
-            } else {
-                timeOld = System.currentTimeMillis();
-            }
 
+                if(frameCounter == frameRate - 1)
+                    frameCounter = 0;
+            }
         }
     }
 
     /**
      * method for the Logic of the game, gets called every tickrate times per second
-     * @author Sebastian
-     *
-     * @param pContLogicCounter should be called with a continuously rising number
+     * @author Sebastian & Dave
      */
-    public void gameLogic(int pContLogicCounter){
-
-        //SpeedBoost
-        if(flags[2] && TimerSpeed == 0) TimerSpeed = (int)(SpeedCooldown * tickrate) + 1;
-        if(flags[2] && TimerSpeed == 1) flags[2] = false;
-        if(TimerSpeed > 0) TimerSpeed--;
-
-        //Death Touch
-        if(flags[4] && TimerDeathTouch == 0) TimerDeathTouch = (int)(DeathTouchCooldown * tickrate) + 1;
-        if(flags[4] && TimerDeathTouch == 1) flags[4] = false;
-        if(TimerDeathTouch > 0) TimerDeathTouch--;
-
-        //CoinBoost
-        if(flags[5] && TimerCoinBoost == 0) TimerCoinBoost = (int)(CoinBoostCooldown * tickrate) + 1;
-        if(flags[5] && TimerCoinBoost == 1) flags[5] = false;
-        if(TimerCoinBoost > 0) TimerCoinBoost--;
-
-        //Freeze
-        if(flags[7] && TimerFreeze == 0) TimerFreeze = (int)(FreezeCooldown * tickrate) +1;
-        if(flags[7] && TimerFreeze == 1) flags[7] = false;
-        if(TimerFreeze > 0) TimerFreeze--;
-
-        /*  For Debugging the Game Loop and Items
-        System.out.println("Gameloop");
-        System.out.println("TimerSpeed: " +TimerSpeed);
-        System.out.println("TimerDeathTouch: " + TimerDeathTouch);
-        System.out.println("TimerCoinBoost: " +TimerCoinBoost);
-        System.out.println("TimerFreeze: " +TimerFreeze);
-         */
-
-        /*
-        if(flags[7]){   //Not yet implemented
-            gegnerEinfrieren();
-        }
-        */
-
-        if(flags[2]){
+    private void gameLogic(int tick){
+        if(tick % 2 == 0 || flags[2])
             move();
 
-        } else {
-            if(pContLogicCounter % 2 == 0){
-                move();
+        if(!flags[7] && tick % 2 == 0) {
+            for(Enemy enemy : enemies) {
+                enemy.move();
+                if(enemyDetection(enemy)) break;
             }
         }
+    }
 
-        if(pContLogicCounter % 2 == 0){                 //Stuff in here only gets called every second time the GameLogic gets called
-            for(Enemy enemy : enemies) {                // TODO: Enemy movement flexible
-                if(!flags[7]) enemy.move();             // Move Enemy objects unless freeze effect is active
-                if(enemyDetection(enemy)) break;        // Detect whether the player collides with the enemy
+    /**
+     * Handles Boost timer, checks flags
+     * @author Dave & Sebastian
+     */
+    private void checkBooster(){
+        //SpeedBoost
+        if(flags[2] && timerSpeed == 0) timerSpeed = 5 * frameRate;
+        if(flags[2] && timerSpeed == 1) flags[2] = false;
+        if(timerSpeed > 0) timerSpeed--;
+
+        //Death Touch
+        if(flags[4] && timerDeathTouch == 0) timerDeathTouch = 5 * frameRate;
+        if(flags[4] && timerDeathTouch == 1) flags[4] = false;
+        if(timerDeathTouch > 0) timerDeathTouch--;
+
+        //CoinBoost
+        if(flags[5] && timerCoinBoost == 0) timerCoinBoost = 5 * frameRate;
+        if(flags[5] && timerCoinBoost == 1) flags[5] = false;
+        if(timerCoinBoost > 0) timerCoinBoost--;
+
+        //Freeze
+        if(flags[7] && timerFreeze == 0) timerFreeze = 5 * frameRate;
+        if(flags[7] && timerFreeze == 1) flags[7] = false;
+        if(timerFreeze > 0) timerFreeze--;
+    }
+
+    /**
+     * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
+     * @author Benedikt
+     */
+    private void move(){
+        if(!lastKeyList.isEmpty())
+        {
+            switch (lastKeyList.get(lastKeyList.size() -1)) {
+                case 'w' -> moveToNew(0,-1);
+                case 's' -> moveToNew(0,1);
+                case 'a' -> moveToNew(-1,0);
+                case 'd' -> moveToNew(1 ,0);
             }
-
-            //Other Stuff that has the be called only every second tick
         }
+    }
+
+    /**
+     * Trys to move the player to a new position relatively.
+     * Detects what will be at given position and acts accordingly.
+     * Finally calls the 'geh(int x, int y)' method to actually move the player.
+     * @author Benedikt & Dave & Simon
+     */
+    private void moveToNew(int x, int y) {
+        char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
+        boolean step = true;
+        switch (onNewPos) {
+            case wallTile -> step = false;
+            case coinTile -> {
+                if(flags[5]) score += 20;
+                else score +=10;
+            }
+            case keyTile -> flags[3] = true;
+            case exitTile -> {
+                if(!flags[3]) {
+                    step = false;
+                }
+                else {
+                    changeLevel();
+                    step = false;
+                }
+            }
+            case speedEffectTile -> flags[2] = true;
+            case freezeEffectTile -> flags[7] = true;
+            case coinBoostTile -> flags[5] = true;
+            case extraLifeTile -> flags[1] = true;
+            case deathTouchTile -> flags[4] = true;
+        }
+
+        if(step) {
+            map[playerPos[0]][playerPos[1]] = pathTile;
+            playerPos[0] += x;
+            playerPos[1] += y;
+            map[playerPos[0]][playerPos[1]] = playerTile;
+            enemyDetection();
+        }
+    }
+
+    /**
+     * Handles level changing
+     * @author Dave
+     */
+    private void changeLevel(){
+        levelNr++;
+        for(int i = 1; i < 8; ++i)
+            flags[i] = false;
+
+        timerSpeed = 0;
+        timerFreeze = 0;
+        timerCoinBoost = 0;
+        timerDeathTouch = 0;
+
+        switch(levelNr){
+            case 2:
+                map = importMapArray("level_2.txt");
+                tickRate = 6;
+                initPlayerPos = getPlayerPos();
+                initiateEnemies();
+                break;
+            case 3:
+                map = importMapArray("level_3.txt");
+                tickRate = 7;
+                initPlayerPos = getPlayerPos();
+                initiateEnemies();
+                break;
+            default:
+                gameWindow.showWinnerMenu();
+                stopThread();
+        }
+    }
+
+    /**
+     * Gets the Players coordinates in the grid and stores them in 'int[2] playerPos'
+     * @author Benedikt
+     */
+    protected int[] getPlayerPos(){
+        for (int i = 0; i < maxMapColumns; i++){
+            for (int j = 0; j < maxMapRows; j++) {
+                if(map[i][j] == playerTile){
+                    playerPos[0] = i;
+                    playerPos[1] = j;
+                }
+            }
+        }
+        int[] result = {playerPos[0], playerPos[1]};
+        return result;
+    }
+
+    /**
+     * Method to overwrite the enemies ArrayList with the enemies position given by the 'g's in the map grid
+     * @author Simon Bonnie
+     */
+    private void initiateEnemies() {
+        enemies.clear(); // Remove Enemy objects from last session
+        for(int i = 0; i < maxMapColumns; i++)
+            for (int j = 0; j < maxMapRows; j++)
+                if(map[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
+    }
+
+    /**
+     * Method to detect if a player collides with an Enemy object and act accordingly
+     * @param enemy the Enemy object to be checked for collision
+     * @return whether a collision between enemy and player was detected or not
+     * @author Simon Bonnie
+     */
+    private boolean enemyDetection(Enemy enemy) {
+        if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
+            if(flags[4]) { // If death touch is active
+                map[enemy.getPosX()][enemy.getPosY()] = playerTile;
+                enemies.remove(enemy);
+            } else {
+                // If player has got an extra life
+                if (flags[1]) {
+                    flags[1] = false; // Reset extra life
+                    map[playerPos[0]][playerPos[1]] = enemyTile;
+                    playerPos = new int[]{initPlayerPos[0], initPlayerPos[1]};
+                    map[playerPos[0]][playerPos[1]] = playerTile;
+                } else {
+                    flags[0] = false; // Kill player
+                    gameWindow.repaint();
+                    gameWindow.showDeathWindow();
+                    stopThread();
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Extension to method 'enemyDetection(Enemy)'
+     * Instead of checking for one specific enemy, it looks through the whole list
+     * @return whether a collision was detected or not
+     * @author Simon Bonnie
+     */
+    private void enemyDetection() {
+        for (Enemy enemy : enemies)
+            if(enemyDetection(enemy)) break;
     }
 
     /**
@@ -360,7 +486,7 @@ public class Game implements Runnable, ResourceHandler {
      * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
      *
      */
-    public void newKeyAction(String pKey) {
+    protected void newKeyAction(String pKey) {
         switch (pKey){
             case "VK_ESCAPE":
                 spielPausieren();
@@ -396,159 +522,11 @@ public class Game implements Runnable, ResourceHandler {
      * Method that adds a character to the lastKeyInput List if it isnt already in the List.
      * @author Benedikt
      */
-    public void addKeyToList(char theKey){
-        if(!lastKeyList.contains((Character) theKey))
+    private void addKeyToList(char theKey){
+        if(!lastKeyList.contains(theKey))
         {
-            lastKeyList.add((Character) theKey);
+            lastKeyList.add(theKey);
         }
-    }
-    /**
-     * Method that calls the 'moveToNew(int x, int y)' method depending on the users input
-     * @author Benedikt
-     */
-    public void move(){
-        if(!lastKeyList.isEmpty())
-        {
-            switch (lastKeyList.get(lastKeyList.size() -1)) {
-                case 'w' -> moveToNew(0,-1);
-                case 's' -> moveToNew(0,1);
-                case 'a' -> moveToNew(-1,0);
-                case 'd' -> moveToNew(1 ,0);
-            }
-        }
-    }
-
-    /**
-     * Trys to move the player to a new position relatively.
-     * Detects what will be at given position and acts accordingly.
-     * Finally calls the 'geh(int x, int y)' method to actually move the player.
-     * @author Benedikt // Abgeändert zu switch cases von Simon
-     */
-    public void moveToNew(int x, int y) {
-        char onNewPos = map[playerPos[0]+x][playerPos[1]+y];
-        if(onNewPos != wallTile) {
-            geh(x, y);
-            switch (onNewPos) {
-                case coinTile -> {
-                    if(flags[5]) score += 20;
-                    else score +=10;
-                } case enemyTile -> {
-                    enemyDetection();
-                } case keyTile -> {
-                    flags[3] = true;
-                    flags[6] = true;
-                } case exitTile -> {
-                    if(!flags[3]) return; // TODO: Wofür?
-                    else {
-                        levelNr++;
-                        flags[3] = false;
-                        flags[6] = false;
-                        switch(levelNr){
-                            case 2:
-                                map = importMapArray("level_2.txt");
-                                break;
-                            case 3:
-                                map = importMapArray("level_3.txt");
-                                break;
-                            default:
-                                gameWindow.showWinnerMenu();
-                                stopThread();
-                        }
-                        initiateEnemies();
-                    }
-                }
-                case speedEffectTile    -> flags[2] = true; // Geschwindigkeitsbuff
-                case freezeEffectTile   -> flags[7] = true; // Gegner einfrieren
-                case coinBoostTile      -> flags[5] = true; // Münzboost
-                case extraLifeTile      -> flags[1] = true; // Zusatzleben
-                case deathTouchTile     -> flags[4] = true; // Todesberührung
-            }
-        }
-    }
-
-    /**
-     * Moves the Player to a relative coordinate in the grid
-     * @param x coordinate on the X axes
-     * @param y coordinate on the Y axes
-     * @author Benedikt
-     */
-    public void geh(int x, int y){
-        map[playerPos[0]][playerPos[1]] = pathTile;
-        playerPos[0] += x;
-        playerPos[1] += y;
-        map[playerPos[0]][playerPos[1]] = playerTile;
-    }
-
-    /**
-     * Gets the Players coordinates in the grid and stores them in 'int[2] playerPos'
-     * @author Benedikt
-     */
-    public void getPlayerPos(){
-        playerPos = new int [2];
-        for (int i = 0; i < maxMapColumns; i++){
-            for (int j = 0; j < maxMapRows; j++) {
-                if(map[i][j] == playerTile){
-                    playerPos[0] = i;
-                    playerPos[1] = j;
-                    return;
-                }
-            }
-        }
-    }
-
-    /**
-     * Method to overwrite the enemies ArrayList with the enemies position given by the 'g's in the map grid
-     * @author Simon Bonnie
-     */
-    public void initiateEnemies() {
-        enemies.clear(); // Remove Enemy objects from last session
-        for(int i = 0; i < maxMapColumns; i++)
-            for (int j = 0; j < maxMapRows; j++)
-                if(this.getMap()[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
-    }
-
-    /**
-     * Method to detect if a player collides with an Enemy object and act accordingly
-     * @param enemy the Enemy object to be checked for collision
-     * @return whether a collision between enemy and player was detected or not
-     * @author Simon Bonnie
-     */
-    public boolean enemyDetection(Enemy enemy) {
-        if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
-            if(flags[4]) { // If death touch is active
-                this.getMap()[enemy.getPosX()][enemy.getPosY()] = enemy.getAbove();
-                enemies.remove(enemy);
-            } else {
-                if (flags[1]) { // If player has got an extra life
-                    flags[1] = false; // Reset extra life
-                    map[playerPos[0]][playerPos[1]] = pathTile; // Reset the player
-                    playerPos[0] = initPlayerPos[0];            // position to the
-                    playerPos[1] = initPlayerPos[1];            // starting position
-                    map[initPlayerPos[0]][initPlayerPos[1]] = playerTile;
-                } else {
-                    flags[0] = false; // Kill player
-                    stopThread();
-                    gameWindow.showDeathWindow();
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Extension to method 'enemyDetection(Enemy)'
-     * Instead of checking for one specific enemy, it looks through the whole list
-     * @return whether a collision was detected or not
-     * @author Simon Bonnie
-     */
-    public boolean enemyDetection() {
-        boolean rueckgabe = false;
-        for (Enemy enemy : enemies) {
-            rueckgabe = enemyDetection(enemy);
-            if(rueckgabe) break;
-        }
-        return rueckgabe;
     }
 
     /**

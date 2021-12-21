@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game.sprites;
 
 import lost.macpan.utils.ResourceHandler;
@@ -13,7 +18,6 @@ import java.io.IOException;
  * @version 1.0
  */
 public class Sprite implements ResourceHandler {
-    //attributes
     private int tileSize;
     private BufferedImage boostItem;
     private BufferedImage freeze;
@@ -24,7 +28,6 @@ public class Sprite implements ResourceHandler {
     private BufferedImage wall;
     private BufferedImage path;
 
-    //constructor
     public Sprite(int pTileSize){
         tileSize = pTileSize;
         fetchSprites();
@@ -57,33 +60,33 @@ public class Sprite implements ResourceHandler {
      */
     public void draw(Graphics2D g, int x, int y, char c){
         if (c == 'h' || c == '\0' || c == '\r')
-            g.drawImage(wall, tileSize * x, tileSize * y, tileSize, tileSize, null);    //draws wall sprite
+            g.drawImage(wall, tileSize * x, tileSize * y, tileSize, tileSize, null);
         else if (c == 'k') {
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
-            g.drawImage(key, tileSize * x, tileSize * y, tileSize, tileSize, null);     //draws key sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
+            g.drawImage(key, tileSize * x, tileSize * y, tileSize, tileSize, null);
         }
         else if (c == 'a'){
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
-            g.drawImage(speed, tileSize * x, tileSize * y, tileSize, tileSize, null);   //draws speed boost sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
+            g.drawImage(speed, tileSize * x, tileSize * y, tileSize, tileSize, null);
         }
         else if (c == 'b') {
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
-            g.drawImage(freeze, tileSize * x, tileSize * y, tileSize, tileSize, null);  //draws freeze sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
+            g.drawImage(freeze, tileSize * x, tileSize * y, tileSize, tileSize, null);
         }
         else if (c == 'c') {
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
-            g.drawImage(boostItem, tileSize * x, tileSize * y, tileSize, tileSize, null);//draws coin boost sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
+            g.drawImage(boostItem, tileSize * x, tileSize * y, tileSize, tileSize, null);
         }
         else if (c == 'd') {
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
-            g.drawImage(shield, tileSize * x, tileSize * y, tileSize, tileSize, null);  //draws shield sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
+            g.drawImage(shield, tileSize * x, tileSize * y, tileSize, tileSize, null);
         }
         else if (c == 'e') {
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //underlays path sprite
-            g.drawImage(pan, tileSize * x, tileSize * y, tileSize, tileSize, null);     //draws pan sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
+            g.drawImage(pan, tileSize * x, tileSize * y, tileSize, tileSize, null);
         }
         else if (c == '.')
-            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);    //draws path sprite
+            g.drawImage(path, tileSize * x, tileSize * y, tileSize, tileSize, null);
     }
 
     /**

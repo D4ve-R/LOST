@@ -1,9 +1,13 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game;
 
 /**
  * Class that manages the enemy movement logic
  * @author Simon Bonnie
- * @version 1.2
  */
 public class Enemy {
     /**

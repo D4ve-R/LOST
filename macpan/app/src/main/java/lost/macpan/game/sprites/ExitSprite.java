@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game.sprites;
 
 import javax.imageio.ImageIO;
@@ -11,7 +16,6 @@ import java.io.IOException;
  * @version 1.0
  */
 public class ExitSprite extends Sprite{
-    //attributes
     private BufferedImage exit1;
     private BufferedImage exit2;
     private BufferedImage exit3;
@@ -21,9 +25,8 @@ public class ExitSprite extends Sprite{
     private BufferedImage exit7;
     private BufferedImage exit8;
     private BufferedImage wall;
-    private static long animationStart = 0; //used for keeping track of exit animation progression
+    private static long animationStart = 0;
 
-    //constructor
     public ExitSprite(int pTileSize) {
         super(pTileSize);
     }
@@ -56,7 +59,7 @@ public class ExitSprite extends Sprite{
      */
     public void draw(Graphics2D g, int x, int y, boolean[] pFlags) {
         super.draw(g, x, y, wall);                             //underlays wall sprite
-        super.draw(g, x, y, exitSpriteSelect(pFlags[6]));     //draws exit sprite
+        super.draw(g, x, y, exitSpriteSelect(pFlags[3]));     //draws exit sprite
     }
 
     /**
@@ -67,29 +70,19 @@ public class ExitSprite extends Sprite{
         long animationTimer;
         if (isUnlocked && animationStart != 0) {
             animationTimer = System.currentTimeMillis() - animationStart;
-            if (animationTimer < 500) {
-                if (animationTimer < 250) {
-                    if (animationTimer < 125)
-                        return exit1;
-                    else
-                        return exit2;
-                } else if (animationTimer < 375)
-                    return exit3;
-                else
-                    return exit4;
-            } else if (animationTimer < 750) {
-                if (animationTimer < 625)
-                    return exit5;
-                else
-                    return exit6;
-            }else if (animationTimer < 875)
-                return exit7;
-            else
-                return exit8;
-
+            if (animationTimer < 125) return exit1;
+            if(animationTimer >= 875) return exit8;
+            if(animationTimer < 250) return exit2;
+            if(animationTimer < 375) return exit3;
+            if(animationTimer < 500) return exit4;
+            if(animationTimer < 625) return exit5;
+            if(animationTimer < 750) return exit6;
+            else return exit7;
         }
-        else if (isUnlocked)
+
+        if(isUnlocked) {
             animationStart = System.currentTimeMillis();
+        } else animationStart = 0;
 
         return exit1;
     }

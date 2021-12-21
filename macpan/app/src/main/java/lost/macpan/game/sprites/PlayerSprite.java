@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.game.sprites;
 
 import javax.imageio.ImageIO;
@@ -11,14 +16,12 @@ import java.io.IOException;
  * @version 1.0
  */
 public class PlayerSprite extends Sprite {
-    //attributes
     private BufferedImage player1;
     private BufferedImage player2;
     private BufferedImage player3;
     private BufferedImage player4;
     private BufferedImage path;
 
-    //constructor
     public PlayerSprite(int pTilesize){
         super(pTilesize);
     }
@@ -46,8 +49,8 @@ public class PlayerSprite extends Sprite {
      * @param y y-coordinate measured in tiles
      */
     public void draw(Graphics2D g, int x, int y){
-        super.draw(g, x, y, path);                 //underlays path sprite
-        super.draw(g, x, y, playerSpriteSelect());      //draws player sprite
+        super.draw(g, x, y, path);
+        super.draw(g, x, y, playerSpriteSelect());
     }
 
     /**

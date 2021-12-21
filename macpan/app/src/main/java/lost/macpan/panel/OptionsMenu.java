@@ -1,3 +1,8 @@
+/**
+ * MacPan version 0.1
+ * SWE WS 21/22
+ */
+
 package lost.macpan.panel;
 
 import lost.macpan.utils.ResourceHandler;
@@ -71,10 +76,8 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
                 parentFrame.setContentPane(before);
                 parentFrame.revalidate();
             } else if (before instanceof PauseMenu) {
-                //ergänzung Janosch & William
                 parentFrame.setContentPane(before);
                 parentFrame.revalidate();
-                //Spiel weiter Spielen
             }
         } else if (e.getSource() == keyBtn) {
             KeysMenu keysMenu = new KeysMenu(parentFrame, this.parentFrame.getContentPane());
