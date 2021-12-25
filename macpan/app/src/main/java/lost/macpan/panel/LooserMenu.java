@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;

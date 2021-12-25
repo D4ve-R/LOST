@@ -7,7 +7,6 @@ package lost.macpan.panel;
 
 import lost.macpan.utils.CustomButton;
 import lost.macpan.App;
-import lost.macpan.utils.ResourceHandler;
 import lost.macpan.utils.HighscoreHandler;
 import lost.macpan.utils.MenuNavigationHandler;
 
