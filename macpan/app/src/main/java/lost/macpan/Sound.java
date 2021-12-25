@@ -16,13 +16,13 @@ public class Sound {
     Clip clip;                      //class for buffered audio handling
     URL soundURL[] = new URL[10];   //utilized audio files, only 16-bit .wav files supported
     int current;                    //currently playing / suspended track
-    long pausedAt;                  //progress into suspended track
+    int pausedAt;                  //progress into suspended track
 
     public Sound() {    //constructor loads audio files !CURRENTLY FILLED WITH TEST TRACKS ONLY, TO BE REPLACED!
         soundURL[0] = getClass().getResource("/music/main menu music.wav");
         soundURL[1] = getClass().getResource("/music/victory music.wav");
         soundURL[2] = getClass().getResource("/music/in-game music.wav");
-        soundURL[3] = getClass().getResource("/music/Windows XP Shutdown.wav");
+        soundURL[3] = getClass().getResource("/music/looser music.wav");
         soundURL[4] = getClass().getResource("/sound effects/coin.wav");
         soundURL[5] = getClass().getResource("/sound effects/exit opening.wav");
         soundURL[6] = getClass().getResource("/sound effects/item pickup.wav");
@@ -41,11 +41,7 @@ public class Sound {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundURL[track]);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
         if (!interruptingOther)
@@ -62,7 +58,8 @@ public class Sound {
     /**
      * loops current track !NOT TO BE DIRECTLY USED!
      */
-    public void loop() {
+    public void loop(int track) {
+        clip.setLoopPoints(getLoopOffset(track), -1);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
@@ -77,8 +74,11 @@ public class Sound {
      * pauses playback !NOT TO BE DIRECTLY USED!
      */
     public void pause() {
-        pausedAt = clip.getMicrosecondPosition();
+        pausedAt = clip.getFramePosition();
         clip.stop();
+        if (pausedAt > clip.getFrameLength()){
+            pausedAt = (pausedAt - clip.getFrameLength()) % (clip.getFrameLength() - getLoopOffset(current)) + getLoopOffset(current);
+        }
     }
 
     /**
@@ -87,17 +87,25 @@ public class Sound {
     public void resume() {
         setFile(current, true);
         clip.start();
-        clip.setMicrosecondPosition(pausedAt);
+        clip.setFramePosition(pausedAt);
+        System.out.println("resumed at " + pausedAt);
+        loop(current);
     }
 
+    /**
+     * used specifically for playing the pause menu music
+     */
     public void playPauseMenu() {
         setFile(9, true);
         clip.start();
-        clip.setMicrosecondPosition(pausedAt);
+        clip.setFramePosition(pausedAt);
     }
 
+    /**
+     * used specifically for stopping the pause menu music
+     */
     public void stopPauseMenu() {
-        pausedAt = clip.getMicrosecondPosition();
+        pausedAt = clip.getFramePosition();
         clip.stop();
     }
 
@@ -115,5 +123,19 @@ public class Sound {
         setFile(effect, false);
         clip.start();
         clip.loop(0);
+    }
+
+    /**
+     * internal method used for setting the loop bounds for music
+     * @param track the to-be-looped track
+     * @return the starting point of the loop measured in audio sample frames
+     */
+    private int getLoopOffset(int track){
+        return switch (track) {
+            case 0 -> 70560;
+            case 1 -> 211680;
+            case 2, 9 -> 182854;
+            default -> 0;
+        };
     }
 }
