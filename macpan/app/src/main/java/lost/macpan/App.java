@@ -104,7 +104,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
     public void playMusicLooped(int track) {
         music.setFile(track, false);
         music.play();
-        music.loop();
+        music.loop(track);
     }
 
     /**
@@ -119,7 +119,6 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
      */
     public void resumeMusic(){
         music.resume();
-        music.loop();
     }
 
     /**
@@ -146,7 +145,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
 
     public void playPauseMusic(){
         music.playPauseMenu();
-        music.loop();
+        music.loop(9);
     }
 
     public void stopPauseMusic(){

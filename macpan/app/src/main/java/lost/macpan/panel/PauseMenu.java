@@ -132,6 +132,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
 
                     gameWindow.getGame().startThread();
                 }
+                parentFrame.stopPauseMusic();
+                parentFrame.resumeMusic();
                 parentFrame.setContentPane(gameWindow);
                 parentFrame.revalidate();
 
