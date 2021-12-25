@@ -6,7 +6,6 @@
 package lost.macpan.panel;
 
 import lost.macpan.App;
-import lost.macpan.utils.ResourceHandler;
 import lost.macpan.utils.HighscoreHandler;
 
 import javax.imageio.ImageIO;
