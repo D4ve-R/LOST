@@ -1,34 +1,35 @@
 package lost.macpan;
 
+import lost.macpan.utils.ResourceHandler;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Class for handling audio
  * @author Leon Wigro
  */
-public class Sound {
+public class Sound implements ResourceHandler {
     Clip clip;                      //class for buffered audio handling
-    URL soundURL[] = new URL[10];   //utilized audio files, only 16-bit .wav files supported
+    String[] soundPaths = new String[10];   //utilized audio files, only 16-bit .wav files supported
     int current;                    //currently playing / suspended track
     int pausedAt;                  //progress into suspended track
 
     public Sound() {    //constructor loads audio files !CURRENTLY FILLED WITH TEST TRACKS ONLY, TO BE REPLACED!
-        soundURL[0] = getClass().getResource("/music/main menu music.wav");
-        soundURL[1] = getClass().getResource("/music/victory music.wav");
-        soundURL[2] = getClass().getResource("/music/in-game music.wav");
-        soundURL[3] = getClass().getResource("/music/looser music.wav");
-        soundURL[4] = getClass().getResource("/sound effects/coin.wav");
-        soundURL[5] = getClass().getResource("/sound effects/exit opening.wav");
-        soundURL[6] = getClass().getResource("/sound effects/item pickup.wav");
-        soundURL[7] = getClass().getResource("/sound effects/kill enemy.wav");
-        soundURL[8] = getClass().getResource("/sound effects/take damage.wav");
-        soundURL[9] = getClass().getResource("/music/pause menu music.wav");
+        soundPaths[0] = "music/main menu music.wav";
+        soundPaths[1] = "music/victory music.wav";
+        soundPaths[2] = "music/in-game music.wav";
+        soundPaths[3] = "music/looser music.wav";
+        soundPaths[4] = "sound effects/coin.wav";
+        soundPaths[5] = "sound effects/exit opening.wav";
+        soundPaths[6] = "sound effects/item pickup.wav";
+        soundPaths[7] = "sound effects/kill enemy.wav";
+        soundPaths[8] = "sound effects/take damage.wav";
+        soundPaths[9] = "music/pause menu music.wav";
     }
 
     /**
@@ -38,7 +39,7 @@ public class Sound {
      */
     public void setFile(int track, boolean interruptingOther) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundURL[track]);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getFileResourcesAsStream(soundPaths[track]));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -88,7 +89,6 @@ public class Sound {
         setFile(current, true);
         clip.start();
         clip.setFramePosition(pausedAt);
-        System.out.println("resumed at " + pausedAt);
         loop(current);
     }
 
