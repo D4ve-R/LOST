@@ -93,6 +93,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
             this.revalidate();
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocus();
         }
     }
 }
