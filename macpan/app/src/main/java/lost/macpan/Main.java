@@ -18,8 +18,13 @@ public class Main {
 
        try {
            // Set System L&F
-           UIManager.setLookAndFeel(
-                   UIManager.getSystemLookAndFeelClassName());
+           //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+           //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+           //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+           //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+           //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+           UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+
        }
        catch (Exception e) {
             e.printStackTrace();

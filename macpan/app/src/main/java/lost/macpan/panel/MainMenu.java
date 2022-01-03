@@ -9,6 +9,7 @@ package lost.macpan.panel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
+import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
 import lost.macpan.utils.MenuNavigationHandler;
@@ -16,7 +17,6 @@ import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,11 +34,11 @@ import java.nio.file.Paths;
  */
 public class MainMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
 
-    private final JButton playBtn = new JButton("Spiel Starten");
-    private final JButton loadBtn = new JButton("Spiel Laden");
-    private final JButton highscoresBtn = new JButton("Highscores");
-    private final JButton optionsBtn = new JButton("Optionen");
-    private final JButton quitBtn = new JButton("Spiel Beenden");
+    private final CustomButton playBtn = new CustomButton("Spiel Starten");
+    private final CustomButton loadBtn = new CustomButton("Spiel Laden");
+    private final CustomButton highscoresBtn = new CustomButton("Highscores");
+    private final CustomButton optionsBtn = new CustomButton("Optionen");
+    private final CustomButton quitBtn = new CustomButton("Spiel Beenden");
     private JFrame parentFrame;
     private Image img;
     private JLabel label;
@@ -80,6 +80,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
         highscoresBtn.setBounds(350, 420, 240, 50);
         optionsBtn.setBounds(350, 480, 240, 50);
         quitBtn.setBounds(350, 540, 240, 50);
+
+        //playBtn.setFocusPainted(false);?
 
         add(label);
         add(playBtn);
