@@ -86,6 +86,7 @@ public class App extends JFrame implements ActionListener, ResourceHandler {
     public void actionPerformed ( ActionEvent evt) {
         MainMenu mM = new MainMenu(this);
         setContentPane(mM);
+        mM.requestFocusInWindow();
         revalidate();
         timer.stop();
     }

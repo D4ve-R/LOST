@@ -76,6 +76,7 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         if (e.getSource() == backBtn) {
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }

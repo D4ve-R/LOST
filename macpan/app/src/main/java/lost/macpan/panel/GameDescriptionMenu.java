@@ -78,6 +78,7 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         if (e.getSource() == backBtn) {
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }

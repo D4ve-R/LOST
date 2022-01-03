@@ -165,16 +165,19 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(highscoreMenu);
             parentFrame.revalidate();
+            highscoreMenu.requestFocusInWindow();
 
         } else if (e.getSource() == optionsBtn) {
             OptionsMenu optionsMenu = new OptionsMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
+            optionsMenu.requestFocusInWindow();
 
         } else if (e.getSource() == backBtn) {
             MainMenu mainMenu = new MainMenu(parentFrame);
             parentFrame.setContentPane(mainMenu);
             parentFrame.revalidate();
+            mainMenu.requestFocusInWindow();
         }
     }
 }

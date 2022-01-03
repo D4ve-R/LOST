@@ -108,6 +108,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             GameWindow gameWindow = new GameWindow(parentFrame, this);
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
+            gameWindow.requestFocusInWindow();
 
         } else if (e.getSource() == loadBtn) {
             if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
@@ -136,22 +137,26 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
                 }
                 parentFrame.setContentPane(gameWindow);
                 parentFrame.revalidate();
+                gameWindow.requestFocusInWindow();
             }
 
         } else if (e.getSource() == highscoresBtn) {
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(highscoreMenu);
             parentFrame.revalidate();
+            highscoreMenu.requestFocusInWindow();
 
         } else if (e.getSource() == optionsBtn) {
             OptionsMenu optionsMenu = new OptionsMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
+            optionsMenu.requestFocusInWindow();
 
         } else if (e.getSource() == quitBtn) {
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
+            quitMenu.requestFocusInWindow();
         }
     }
 

@@ -85,6 +85,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         } else if (e.getSource() == noBtn) {
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }

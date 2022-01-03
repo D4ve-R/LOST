@@ -146,6 +146,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         saveNewScore(pScore,pName);
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
+        before.requestFocusInWindow();
     }
 
     @Override
