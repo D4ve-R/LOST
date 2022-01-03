@@ -11,24 +11,19 @@ import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
 import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import java.awt.Image;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,7 +32,7 @@ import java.nio.file.Paths;
 /**
  * Die Klasse MainMenu stellt das Hauptmenü des Spiels auf dem JPanel dar.
  */
-public class MainMenu extends JPanel implements ActionListener, ResourceHandler {
+public class MainMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
 
     private final JButton playBtn = new JButton("Spiel Starten");
     private final JButton loadBtn = new JButton("Spiel Laden");
@@ -98,7 +93,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
-        setKeyBindings();
+
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
 
@@ -157,61 +153,6 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
             quitMenu.requestFocusInWindow();
-        }
-    }
-
-    /**
-     * sets all the key bindings
-     *
-     * @author Sebastian
-     */
-    private void setKeyBindings() {
-        ActionMap actionMap = getActionMap();
-        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
-        InputMap inputMap = getInputMap(condition);
-
-        String vkW = "VK_W";
-        String vkS = "VK_S";
-
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkW);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkS);
-
-        actionMap.put(vkW, new KeyAction(vkW));
-        actionMap.put(vkS, new KeyAction(vkS));
-    }
-
-    /**
-     * Class for handling the Key actions and calling the newKeyAction method of the game object to pass the action allong
-     *
-     * @author Sebastian
-     */
-    private class KeyAction extends AbstractAction {
-        public KeyAction(String actionCommand) {
-            putValue(ACTION_COMMAND_KEY, actionCommand);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvt) {
-            newKeyAction(actionEvt.getActionCommand());
-        }
-    }
-
-    /**
-     * method for key Actions, gets called every time a mapped Key is pressed
-     * To add new Keys they first have to be added to the keymap in the setKeyBindings() function
-     *
-     * @param pKey String with the name of the key event constant (for a pKey would be "VK_A")
-     * @author Sebastian
-     */
-    public void newKeyAction(String pKey) {
-        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        switch (pKey) {
-            case "VK_W":
-                manager.focusPreviousComponent();
-                break;
-            case "VK_S":
-                manager.focusNextComponent();
-                break;
         }
     }
 
