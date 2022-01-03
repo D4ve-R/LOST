@@ -5,11 +5,13 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +25,7 @@ import java.awt.event.ActionListener;
  *
  * @author fatih
  */
-public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler {
+public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
     private final JButton keyBtn = new JButton("Tastenbelegung");
     private final JButton descBtn = new JButton("Spielbeschreibung");
     private final JButton backBtn = new JButton("Zur\u00fcck");
@@ -67,6 +69,8 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         keyBtn.addActionListener(this);
         descBtn.addActionListener(this);
         backBtn.addActionListener(this);
+
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
     @Override

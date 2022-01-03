@@ -10,11 +10,13 @@ import lost.macpan.game.Game;
 import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
 
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,7 +35,7 @@ import java.nio.file.Paths;
  *
  * @author Fatih
  */
-public class PauseMenu extends JPanel implements ActionListener, ResourceHandler {
+public class PauseMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
     private final JButton playBtn = new JButton("Spiel Fortsetzen");
     private final JButton loadBtn = new JButton("Spiel Laden");
     private final JButton saveBtn = new JButton("Spiel Speichern");
@@ -96,6 +98,8 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         backBtn.addActionListener(this);
+
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
     @Override

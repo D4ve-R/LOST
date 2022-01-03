@@ -5,11 +5,13 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,7 +24,7 @@ import java.awt.event.ActionListener;
  * Die Klasse KeysMenu liefert dem Spieler ein Menü, wo man die Tastaturbelegung einsehen kann
  * @author fatih
  */
-public class KeysMenu extends JPanel implements ActionListener, ResourceHandler {
+public class KeysMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
     private final JButton backBtn = new JButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel topLabel;
@@ -70,6 +72,7 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler 
         add(subLabel);
         add(background);
         backBtn.addActionListener(this);
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
     public void actionPerformed(ActionEvent e) {
