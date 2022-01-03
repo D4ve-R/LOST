@@ -19,12 +19,18 @@ public interface MenuNavigationHandler{
 
         String vkW = "VK_W";
         String vkS = "VK_S";
+        String vkA = "VK_A";
+        String vkD = "VK_D";
 
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkW);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkS);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), vkA);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), vkD);
 
         actionMap.put(vkW, new KeyAction(vkW));
         actionMap.put(vkS, new KeyAction(vkS));
+        actionMap.put(vkA, new KeyAction(vkA));
+        actionMap.put(vkD, new KeyAction(vkD));
     }
 
     /**
@@ -57,6 +63,12 @@ public interface MenuNavigationHandler{
                 manager.focusPreviousComponent();
                 break;
             case "VK_S":
+                manager.focusNextComponent();
+                break;
+            case "VK_A":
+                manager.focusPreviousComponent();
+                break;
+            case "VK_D":
                 manager.focusNextComponent();
                 break;
         }
