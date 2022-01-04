@@ -50,6 +50,10 @@ public interface HighscoreHandler extends ResourceHandler {
      * @param pName the name associated with the score
      */
     default void saveNewScore(int pScore, String pName) {
+        if(pName.isEmpty()){
+            return;
+        }
+
         List<HighscoreEntry> highscoreListe = new LinkedList<>();
 
         String[] allHighscores = getHighscoresAsArray();
