@@ -86,6 +86,15 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
     }
 
     /**
+     * sets the focus on the nameInput Field
+     * @author Sebastian
+     *
+     */
+    public void setFocusOnInput(){
+        nameInput.requestFocusInWindow();
+    }
+
+    /**
      * sets all the key bindings
      *
      * @author Sebastian
