@@ -5,12 +5,12 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
  * @author fatih
  */
 public class KeysMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
-    private final JButton backBtn = new JButton("Zur\u00fcck");
+    private final CustomButton backBtn = new CustomButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel topLabel;
     private JLabel subLabel;
@@ -66,7 +66,7 @@ public class KeysMenu extends JPanel implements ActionListener, ResourceHandler,
         background.setBounds(0, 0, 950, 700);
         topLabel.setBounds(-20, 10, 950, 200);
         subLabel.setBounds(175, 150, 600, 400);
-        backBtn.setBounds(30, 550, 160, 50);
+        backBtn.setBounds(30, 550, 180, 50);
         add(topLabel);
         add(backBtn);
         add(subLabel);

@@ -5,12 +5,12 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,9 +26,9 @@ import java.awt.event.ActionListener;
  * @author fatih
  */
 public class OptionsMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
-    private final JButton keyBtn = new JButton("Tastenbelegung");
-    private final JButton descBtn = new JButton("Spielbeschreibung");
-    private final JButton backBtn = new JButton("Zur\u00fcck");
+    private final CustomButton keyBtn = new CustomButton("Tastenbelegung");
+    private final CustomButton descBtn = new CustomButton("Spielbeschreibung");
+    private final CustomButton backBtn = new CustomButton("Zur\u00fcck");
     private JLabel label;
     private Image img;
     private JFrame parentFrame;
@@ -57,10 +57,10 @@ public class OptionsMenu extends JPanel implements ActionListener, ResourceHandl
         }
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
-        label.setBounds(175, 50, 600, 200);
-        keyBtn.setBounds(315, 300, 310, 50);
-        descBtn.setBounds(315, 360, 310, 50);
-        backBtn.setBounds(30, 550, 160, 50);
+        label.setBounds(155, 50, 600, 200);
+        keyBtn.setBounds(300, 300, 340, 50);
+        descBtn.setBounds(300, 360, 340, 50);
+        backBtn.setBounds(30, 550, 180, 50);
         add(backBtn);
         add(label);
         add(keyBtn);

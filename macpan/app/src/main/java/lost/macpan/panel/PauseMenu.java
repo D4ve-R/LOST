@@ -7,6 +7,7 @@ package lost.macpan.panel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
+import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
 
@@ -15,7 +16,6 @@ import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,12 +36,12 @@ import java.nio.file.Paths;
  * @author Fatih
  */
 public class PauseMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
-    private final JButton playBtn = new JButton("Spiel Fortsetzen");
-    private final JButton loadBtn = new JButton("Spiel Laden");
-    private final JButton saveBtn = new JButton("Spiel Speichern");
-    private final JButton highscoresBtn = new JButton("Highscores");
-    private final JButton optionsBtn = new JButton("Optionen");
-    private final JButton backBtn = new JButton("Zur\u00fcck zum Hauptmen\u00fc");
+    private final CustomButton playBtn = new CustomButton("Spiel Fortsetzen");
+    private final CustomButton loadBtn = new CustomButton("Spiel Laden");
+    private final CustomButton saveBtn = new CustomButton("Spiel Speichern");
+    private final CustomButton highscoresBtn = new CustomButton("Highscores");
+    private final CustomButton optionsBtn = new CustomButton("Optionen");
+    private final CustomButton backBtn = new CustomButton("Zur\u00fcck zum Hauptmen\u00fc");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;

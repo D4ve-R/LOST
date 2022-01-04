@@ -75,11 +75,11 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
 
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        playBtn.setBounds(350, 300, 240, 50);
-        loadBtn.setBounds(350, 360, 240, 50);
-        highscoresBtn.setBounds(350, 420, 240, 50);
-        optionsBtn.setBounds(350, 480, 240, 50);
-        quitBtn.setBounds(350, 540, 240, 50);
+        playBtn.setBounds(335, 300, 270, 50);
+        loadBtn.setBounds(335, 360, 270, 50);
+        highscoresBtn.setBounds(335, 420, 270, 50);
+        optionsBtn.setBounds(335, 480, 270, 50);
+        quitBtn.setBounds(335, 540, 270, 50);
 
         //playBtn.setFocusPainted(false);?
 

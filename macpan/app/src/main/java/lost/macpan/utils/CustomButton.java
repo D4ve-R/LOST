@@ -13,7 +13,7 @@ public class CustomButton extends JButton implements FocusListener,ResourceHandl
     private ImageIcon imgPlacaholder;
 
     public CustomButton(String text){
-        super(text);
+        super(text + "  ");
 
         try {
             Image img = ImageIO.read(getFileResourcesAsStream("images/Cursor.png"));
@@ -24,6 +24,7 @@ public class CustomButton extends JButton implements FocusListener,ResourceHandl
             e.printStackTrace();
         }
         this.setIcon(imgPlacaholder);
+        this.setIconTextGap(5);
         this.addFocusListener(this);
     }
 
