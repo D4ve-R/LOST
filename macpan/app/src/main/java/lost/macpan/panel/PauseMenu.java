@@ -41,7 +41,7 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
     private final CustomButton saveBtn = new CustomButton("Spiel Speichern");
     private final CustomButton highscoresBtn = new CustomButton("Highscores");
     private final CustomButton optionsBtn = new CustomButton("Optionen");
-    private final CustomButton backBtn = new CustomButton("Zur\u00fcck zum Hauptmen\u00fc");
+    private final CustomButton backBtn = new CustomButton("Zum Hauptmen\u00fc");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
@@ -78,12 +78,12 @@ public class PauseMenu extends JPanel implements ActionListener, ResourceHandler
         setLayout(null);
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        playBtn.setBounds(345, 250, 300, 50);
-        loadBtn.setBounds(345, 310, 300, 50);
-        saveBtn.setBounds(345, 370, 300, 50);
-        highscoresBtn.setBounds(345, 430, 300, 50);
-        optionsBtn.setBounds(345, 490, 300, 50);
-        backBtn.setBounds(295, 550, 400, 50);
+        playBtn.setBounds(335, 250, 320, 50);
+        loadBtn.setBounds(335, 310, 320, 50);
+        saveBtn.setBounds(335, 370, 320, 50);
+        highscoresBtn.setBounds(335, 430, 320, 50);
+        optionsBtn.setBounds(335, 490, 320, 50);
+        backBtn.setBounds(335, 550, 320, 50);
         add(label);
         add(playBtn);
         add(loadBtn);
