@@ -111,10 +111,10 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
             gameWindow.requestFocusInWindow();
 
         } else if (e.getSource() == loadBtn) {
-            parentFrame.stopMusic();
-            parentFrame.playMusicLooped(2);
             if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
                 GameWindow gameWindow = new GameWindow(parentFrame, this);
+                parentFrame.stopMusic();
+                parentFrame.playMusicLooped(2);
 
                 Gson gameJson = new GsonBuilder()
                         .registerTypeAdapter(gameWindow.getGame().getClass(), new GameSerializer())
