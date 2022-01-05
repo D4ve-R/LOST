@@ -72,7 +72,7 @@ public class WinnerMenu extends JPanel implements HighscoreHandler {
         winLabel.setBounds(0, 50, 910, 200);
         nameLabel.setBounds(240,250,101,26);
         scoreLabel.setBounds(240,210,101,26);
-        nameInput.setBounds(350, 249,300,32);
+        nameInput.setBounds(350, 249,300,40);
         scoreValue.setBounds(350,210,101,26);
         add(winLabel);
         add(scoreValue);

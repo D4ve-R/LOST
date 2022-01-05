@@ -9,8 +9,8 @@ import java.awt.event.FocusListener;
 
 public class CustomButton extends JButton implements FocusListener,ResourceHandler {
 
-    private ImageIcon imageForOne;
-    private ImageIcon imgPlacaholder;
+    private ImageIcon imgIndicator;
+    private ImageIcon imgPlaceholder;
 
     public CustomButton(String text){
         super(text + "  ");
@@ -18,22 +18,22 @@ public class CustomButton extends JButton implements FocusListener,ResourceHandl
         try {
             Image img = ImageIO.read(getFileResourcesAsStream("images/Cursor.png"));
             Image imgSpacer = ImageIO.read(getFileResourcesAsStream("images/CursorPlatzhalter.png"));
-            imageForOne = new ImageIcon(img);
-            imgPlacaholder = new ImageIcon(imgSpacer);
+            imgIndicator = new ImageIcon(img);
+            imgPlaceholder = new ImageIcon(imgSpacer);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.setIcon(imgPlacaholder);
+        this.setIcon(imgPlaceholder);
         this.setIconTextGap(5);
         this.addFocusListener(this);
     }
 
     public void focusGained(FocusEvent e) {
-        this.setIcon(imageForOne);
+        this.setIcon(imgIndicator);
     }
 
     public void focusLost(FocusEvent e) {
-        this.setIcon(imgPlacaholder);
+        this.setIcon(imgPlaceholder);
     }
 
 }
