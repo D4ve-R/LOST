@@ -5,11 +5,13 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.CustomButton;
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,8 +24,8 @@ import java.awt.event.ActionListener;
  * Die Klasse GameDescriptionMenu liefert dem Spieler eine Spielbeschreibung !!Spielbeschreibung muss noch hinzugefügt werden!!
  * @author fatih
  */
-public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton backBtn = new JButton("Zur\u00fcck");
+public class GameDescriptionMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
+    private final CustomButton backBtn = new CustomButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
@@ -65,12 +67,14 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         descriptionLabel.setBounds(220, 200, 514, 361);
         background.setBounds(0, 0, 950, 700);
         label.setBounds(-20, 10, 950, 200);
-        backBtn.setBounds(30, 550, 160, 50);
+        backBtn.setBounds(30, 550, 180, 50);
         add(descriptionLabel);
         add(label);
         add(backBtn);
         add(background);
         backBtn.addActionListener(this);
+
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
     @Override
@@ -78,6 +82,7 @@ public class GameDescriptionMenu extends JPanel implements ActionListener, Resou
         if (e.getSource() == backBtn) {
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }

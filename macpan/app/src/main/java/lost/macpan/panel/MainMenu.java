@@ -9,13 +9,15 @@ package lost.macpan.panel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lost.macpan.game.Game;
+import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.GameSerializer;
 import lost.macpan.game.GameWindow;
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,13 +32,13 @@ import java.nio.file.Paths;
 /**
  * Die Klasse MainMenu stellt das Hauptmenü des Spiels auf dem JPanel dar.
  */
-public class MainMenu extends JPanel implements ActionListener, ResourceHandler {
+public class MainMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
 
-    private final JButton playBtn = new JButton("Spiel Starten");
-    private final JButton loadBtn = new JButton("Spiel Laden");
-    private final JButton highscoresBtn = new JButton("Highscores");
-    private final JButton optionsBtn = new JButton("Optionen");
-    private final JButton quitBtn = new JButton("Spiel Beenden");
+    private final CustomButton playBtn = new CustomButton("Spiel Starten");
+    private final CustomButton loadBtn = new CustomButton("Spiel Laden");
+    private final CustomButton highscoresBtn = new CustomButton("Highscores");
+    private final CustomButton optionsBtn = new CustomButton("Optionen");
+    private final CustomButton quitBtn = new CustomButton("Spiel Beenden");
     private JFrame parentFrame;
     private Image img;
     private JLabel label;
@@ -73,11 +75,13 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
 
         background.setBounds(0, 0, 950, 700);
         label.setBounds(175, 50, 600, 200);
-        playBtn.setBounds(350, 300, 240, 50);
-        loadBtn.setBounds(350, 360, 240, 50);
-        highscoresBtn.setBounds(350, 420, 240, 50);
-        optionsBtn.setBounds(350, 480, 240, 50);
-        quitBtn.setBounds(350, 540, 240, 50);
+        playBtn.setBounds(335, 300, 270, 50);
+        loadBtn.setBounds(335, 360, 270, 50);
+        highscoresBtn.setBounds(335, 420, 270, 50);
+        optionsBtn.setBounds(335, 480, 270, 50);
+        quitBtn.setBounds(335, 540, 270, 50);
+
+        //playBtn.setFocusPainted(false);?
 
         add(label);
         add(playBtn);
@@ -91,7 +95,10 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
+
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -99,6 +106,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             GameWindow gameWindow = new GameWindow(parentFrame, this);
             parentFrame.setContentPane(gameWindow);
             parentFrame.revalidate();
+            gameWindow.requestFocusInWindow();
 
         } else if (e.getSource() == loadBtn) {
             if(Files.exists(Paths.get(System.getProperty("user.home") + File.separator + "LOST" + File.separator + "MacPan.json"))) {
@@ -127,6 +135,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
                 }
                 parentFrame.setContentPane(gameWindow);
                 parentFrame.revalidate();
+                gameWindow.requestFocusInWindow();
             } else {
                 GameWindow gameWindow = new GameWindow(parentFrame, this);
                 parentFrame.setContentPane(gameWindow);
@@ -137,16 +146,20 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler 
             HighscoreMenu highscoreMenu = new HighscoreMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(highscoreMenu);
             parentFrame.revalidate();
+            highscoreMenu.requestFocusInWindow();
 
         } else if (e.getSource() == optionsBtn) {
             OptionsMenu optionsMenu = new OptionsMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(optionsMenu);
             parentFrame.revalidate();
+            optionsMenu.requestFocusInWindow();
 
         } else if (e.getSource() == quitBtn) {
             QuitMenu quitMenu = new QuitMenu(parentFrame, this.parentFrame.getContentPane());
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
+            quitMenu.requestFocusInWindow();
         }
     }
+
 }

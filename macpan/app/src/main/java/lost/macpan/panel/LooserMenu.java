@@ -18,7 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -69,7 +73,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         loselabel.setBounds(20, 10, 870, 200);
         nameLabel.setBounds(240, 250, 101, 26);
         scoreLabel.setBounds(240, 210, 101, 26);
-        nameInput.setBounds(350, 249, 300, 32);
+        nameInput.setBounds(350, 249, 300, 40);
         scoreValue.setBounds(350, 210, 101, 26);
         add(loselabel);
         add(scoreValue);
@@ -79,6 +83,15 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         nameInput.setDocument(new LimitJTextField(12));
         setLayout(null);
         setKeyBindings();
+    }
+
+    /**
+     * sets the focus on the nameInput Field
+     * @author Sebastian
+     *
+     */
+    public void setFocusOnInput(){
+        nameInput.requestFocusInWindow();
     }
 
     /**
@@ -146,6 +159,7 @@ public class LooserMenu extends JPanel implements HighscoreHandler {
         saveNewScore(pScore,pName);
         parentFrame.setContentPane(before);
         parentFrame.revalidate();
+        before.requestFocusInWindow();
     }
 
     @Override

@@ -5,11 +5,13 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.CustomButton;
+import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,9 +26,9 @@ import java.awt.event.WindowEvent;
  * Die Klasse QuitMenu erstellt das Bestätigungsfenster, wenn der Benutzer das Spiel beenden möchte
  * @author Fatih
  */
-public class QuitMenu extends JPanel implements ActionListener, ResourceHandler {
-    private final JButton yesBtn = new JButton("Ja");
-    private final JButton noBtn = new JButton("Nein");
+public class QuitMenu extends JPanel implements ActionListener, ResourceHandler, MenuNavigationHandler {
+    private final CustomButton yesBtn = new CustomButton("Ja");
+    private final CustomButton noBtn = new CustomButton("Nein");
 
     private JFrame parentFrame;
     private JLabel topLabel, subLabel;
@@ -75,6 +77,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         add(background);
         yesBtn.addActionListener(this);
         noBtn.addActionListener(this);
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
     @Override
@@ -85,6 +88,7 @@ public class QuitMenu extends JPanel implements ActionListener, ResourceHandler 
         } else if (e.getSource() == noBtn) {
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }

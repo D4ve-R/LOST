@@ -132,6 +132,7 @@ public class GameWindow extends JPanel {
         LooserMenu looserMenu = new LooserMenu(parentFrame, before,currentScore);
         parentFrame.setContentPane(looserMenu);
         parentFrame.revalidate();
+        looserMenu.setFocusOnInput();
     }
 
     /**
@@ -143,6 +144,7 @@ public class GameWindow extends JPanel {
         WinnerMenu winnerMenu = new WinnerMenu(parentFrame, before,currentScore);
         parentFrame.setContentPane(winnerMenu);
         parentFrame.revalidate();
+        winnerMenu.setFocusOnInput();
     }
 
     /**
@@ -154,6 +156,7 @@ public class GameWindow extends JPanel {
         PauseMenu pauseMenu = new PauseMenu(parentFrame, this);
         parentFrame.setContentPane(pauseMenu);
         parentFrame.revalidate();
+        pauseMenu.requestFocusInWindow();
     }
 
     /**

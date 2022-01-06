@@ -5,11 +5,13 @@
 
 package lost.macpan.panel;
 
+import lost.macpan.utils.CustomButton;
 import lost.macpan.utils.HighscoreHandler;
+import lost.macpan.utils.MenuNavigationHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,8 +26,8 @@ import java.awt.event.ActionListener;
  * Die Klasse HighscoreMenu zeigt die 10 besten Spieldurchläufe tabellarisch an.
  * @author fatih
  */
-public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHandler {
-    private final JButton backBtn = new JButton("Zur\u00fcck");
+public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHandler, MenuNavigationHandler {
+    private final CustomButton backBtn = new CustomButton("Zur\u00fcck");
     private JFrame parentFrame;
     private JLabel label;
     private Image img;
@@ -80,11 +82,13 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
         add(highscoreBackground);
         background.setBounds(0, 0, 950, 700);
         label.setBounds(-20, 10, 950, 200);
-        backBtn.setBounds(30, 550, 160, 50);
+        backBtn.setBounds(30, 550, 180, 50);
         add(label);
         add(backBtn);
         add(background);
         backBtn.addActionListener(this);
+
+        setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
 
     @Override
@@ -93,6 +97,7 @@ public class HighscoreMenu extends JPanel implements ActionListener, HighscoreHa
             this.revalidate();
             parentFrame.setContentPane(before);
             parentFrame.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }
