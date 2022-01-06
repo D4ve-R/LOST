@@ -435,7 +435,9 @@ public class Game implements Runnable, ResourceHandler {
         enemies.clear(); // Remove Enemy objects from last session
         for(int i = 0; i < maxMapColumns; i++)
             for (int j = 0; j < maxMapRows; j++)
-                if(map[i][j] == enemyTile) enemies.add(new Enemy(i, j, this));
+                if(map[i][j] == enemyTile) {
+                    enemies.add(new Enemy(i, j, this));
+                }
     }
 
     /**
@@ -445,7 +447,7 @@ public class Game implements Runnable, ResourceHandler {
      * @author Simon Bonnie
      */
     private boolean enemyDetection(Enemy enemy) {
-        if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) { // If players coordinates match with an enemies one ...
+        if(playerPos[0] == enemy.getPosX() && playerPos[1] == enemy.getPosY()) {
             if(flags[4]) { // If death touch is active
                 map[enemy.getPosX()][enemy.getPosY()] = playerTile;
                 enemies.remove(enemy);
@@ -456,6 +458,8 @@ public class Game implements Runnable, ResourceHandler {
                     map[playerPos[0]][playerPos[1]] = enemyTile;
                     playerPos = new int[]{initPlayerPos[0], initPlayerPos[1]};
                     map[playerPos[0]][playerPos[1]] = playerTile;
+                    enemy.frozen = true;
+                    enemy.timer = tickRate;
                 } else {
                     flags[0] = false; // Kill player
                     gameWindow.repaint();

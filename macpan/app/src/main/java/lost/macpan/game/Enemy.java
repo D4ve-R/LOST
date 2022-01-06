@@ -23,7 +23,9 @@ public class Enemy {
      */
     private char above = '.'; // pathTile below Enemy
 
-    /* CONSTRUCTOR */
+    protected boolean frozen;
+    int timer;
+
     /**
      * Constructor method for Enemy. Initiates an enemy object at a given location
      * @param xCoordinate the x coordinate of the enemy object
@@ -118,10 +120,16 @@ public class Enemy {
         return game.pathTile;
     }
 
+
     /**
      * Method that makes the enemy move considering the surrounding terrain. (Random turns at forks or crossroads)
      */
     public void move() {
+        if(timer == 0) frozen = false;
+        if(frozen) {
+            timer--;
+            return;
+        }
         // Turn towards new direction in case the enemy hits a wall
         if(!isPassable(detect("front"))) { // Wall in front of enemy
             if (isPassable(detect("right")) && isPassable(detect("left"))) {
@@ -259,6 +267,7 @@ public class Enemy {
                 "\tcoordinate (X/Y):\t[" + getPosX() + "|" + getPosY() + "]\n" +
                 "\tfacing direction:\t'" + getFacingDirection() + "'\n" +
                 "\tabove tile:\t\t\t'" + getAbove() + "'\n" +
+                "\tfrozen:\t\t\t'" + frozen + "'\n" +
                 '}';
     }
 }
