@@ -136,6 +136,10 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
                 parentFrame.setContentPane(gameWindow);
                 parentFrame.revalidate();
                 gameWindow.requestFocusInWindow();
+            } else {
+                GameWindow gameWindow = new GameWindow(parentFrame, this);
+                parentFrame.setContentPane(gameWindow);
+                parentFrame.revalidate();
             }
 
         } else if (e.getSource() == highscoresBtn) {
