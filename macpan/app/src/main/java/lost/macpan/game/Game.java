@@ -432,12 +432,11 @@ public class Game implements Runnable, ResourceHandler {
      * @author Simon Bonnie
      */
     private void initiateEnemies() {
-        int enemyCnt = 0;
         enemies.clear(); // Remove Enemy objects from last session
         for(int i = 0; i < maxMapColumns; i++)
             for (int j = 0; j < maxMapRows; j++)
                 if(map[i][j] == enemyTile) {
-                    enemies.add(new Enemy(i, j, this, enemyCnt++));
+                    enemies.add(new Enemy(i, j, this));
                 }
     }
 

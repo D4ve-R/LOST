@@ -23,7 +23,6 @@ public class Enemy {
      */
     private char above = '.'; // pathTile below Enemy
 
-    protected int index;
     protected boolean frozen;
     int timer;
 
@@ -33,13 +32,12 @@ public class Enemy {
      * @param yCoordinate the y coordinate of the enemy object
      * @param pGame the GameWindow allowing to manipulate the GameWindow.getMap()
      */
-    public Enemy(int xCoordinate, int yCoordinate, Game pGame, int index) {
+    public Enemy(int xCoordinate, int yCoordinate, Game pGame) {
         posX = xCoordinate;
         posY = yCoordinate;
         this.game = pGame;
         facing = (int)(Math.random()*3);
         above = game.pathTile;
-        this.index = index;
     }
 
     /* GETTER & SETTER */
@@ -269,7 +267,6 @@ public class Enemy {
                 "\tcoordinate (X/Y):\t[" + getPosX() + "|" + getPosY() + "]\n" +
                 "\tfacing direction:\t'" + getFacingDirection() + "'\n" +
                 "\tabove tile:\t\t\t'" + getAbove() + "'\n" +
-                "\tindex:\t\t\t'" + index + "'\n" +
                 "\tfrozen:\t\t\t'" + frozen + "'\n" +
                 '}';
     }
