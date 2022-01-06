@@ -6,6 +6,7 @@
 package lost.macpan.game;
 
 
+import lost.macpan.Sound;
 import lost.macpan.utils.ResourceHandler;
 
 import java.io.File;
