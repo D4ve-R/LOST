@@ -9,6 +9,7 @@ package lost.macpan.utils;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,8 +90,9 @@ public interface HighscoreHandler extends ResourceHandler {
         }
 
         String[] scores = AllHighScoresString.split("\n");
+        scores = Arrays.copyOfRange(scores, 0, Math.min(scores.length, 10));
 
-        for(int i = 0; i < Math.min(scores.length, 10); i++){
+        for(int i = 0; i < scores.length; i++){
             scores[i] = scores[i].replaceAll("\r","");
             scores[i] = scores[i].replaceAll("\n","");
         }
