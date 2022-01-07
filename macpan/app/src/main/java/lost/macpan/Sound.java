@@ -7,7 +7,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Class for handling audio
@@ -39,7 +41,9 @@ public class Sound implements ResourceHandler {
      */
     public void setFile(int track, boolean interruptingOther) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getFileResourcesAsStream(soundPaths[track]));
+            InputStream source = getFileResourcesAsStream(soundPaths[track]);
+            InputStream buffer = new BufferedInputStream(source);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(buffer);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
