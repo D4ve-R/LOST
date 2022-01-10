@@ -17,10 +17,7 @@ import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +36,7 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
     private final CustomButton highscoresBtn = new CustomButton("Highscores");
     private final CustomButton optionsBtn = new CustomButton("Optionen");
     private final CustomButton quitBtn = new CustomButton("Spiel Beenden");
+    private final CustomButton editBtn = new CustomButton("Edit Level");
     private App parentFrame;
     private Image img;
     private JLabel label;
@@ -79,7 +77,8 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
         loadBtn.setBounds(335, 360, 270, 50);
         highscoresBtn.setBounds(335, 420, 270, 50);
         optionsBtn.setBounds(335, 480, 270, 50);
-        quitBtn.setBounds(335, 540, 270, 50);
+        editBtn.setBounds(335, 540, 270, 50);
+        quitBtn.setBounds(335, 600, 270, 50);
 
         //playBtn.setFocusPainted(false);?
 
@@ -89,12 +88,14 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
         add(highscoresBtn);
         add(optionsBtn);
         add(quitBtn);
+        add(editBtn);
         add(background);
         playBtn.addActionListener(this);
         loadBtn.addActionListener(this);
         highscoresBtn.addActionListener(this);
         optionsBtn.addActionListener(this);
         quitBtn.addActionListener(this);
+        editBtn.addActionListener(this);
 
         setKeyBindings(getActionMap(),getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
     }
@@ -164,6 +165,11 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
             parentFrame.setContentPane(quitMenu);
             parentFrame.revalidate();
             quitMenu.requestFocusInWindow();
+
+        } else if(e.getSource() == editBtn) {
+            FileEditor fileEditor = new FileEditor(parentFrame);
+            parentFrame.setContentPane(fileEditor);
+            parentFrame.revalidate();
         }
     }
 
