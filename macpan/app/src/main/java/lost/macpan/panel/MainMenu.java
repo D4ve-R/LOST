@@ -17,7 +17,10 @@ import lost.macpan.utils.MenuNavigationHandler;
 import lost.macpan.utils.ResourceHandler;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,14 +74,14 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
         }
         setLayout(null);
 
-        background.setBounds(0, 0, 950, 700);
-        label.setBounds(175, 50, 600, 200);
-        playBtn.setBounds(335, 300, 270, 50);
-        loadBtn.setBounds(335, 360, 270, 50);
-        highscoresBtn.setBounds(335, 420, 270, 50);
-        optionsBtn.setBounds(335, 480, 270, 50);
-        editBtn.setBounds(335, 540, 270, 50);
-        quitBtn.setBounds(335, 600, 270, 50);
+        background.setBounds    (0, 0, 950, 700);
+        label.setBounds         (175, 50, 600, 200);
+        playBtn.setBounds       (335, 270, 270, 50);
+        loadBtn.setBounds       (335, 330, 270, 50);
+        highscoresBtn.setBounds (335, 390, 270, 50);
+        optionsBtn.setBounds    (335, 450, 270, 50);
+        editBtn.setBounds       (335, 510, 270, 50);
+        quitBtn.setBounds       (335, 570, 270, 50);
 
         //playBtn.setFocusPainted(false);?
 
@@ -167,9 +170,10 @@ public class MainMenu extends JPanel implements ActionListener, ResourceHandler,
             quitMenu.requestFocusInWindow();
 
         } else if(e.getSource() == editBtn) {
-            FileEditor fileEditor = new FileEditor(parentFrame);
+            FileEditor fileEditor = new FileEditor(parentFrame,this.parentFrame.getContentPane());
             parentFrame.setContentPane(fileEditor);
             parentFrame.revalidate();
+            fileEditor.requestFocusInWindow();
         }
     }
 

@@ -3,6 +3,7 @@ package lost.macpan.panel;
 import lost.macpan.App;
 import lost.macpan.utils.ResourceHandler;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
@@ -22,6 +23,7 @@ import java.util.Scanner;
 public class FileEditor extends JPanel implements ActionListener, ResourceHandler {
     private final JFileChooser fc = new JFileChooser();
     private JFrame f;
+    private Container before;
     private final JButton openBtn = new JButton("Open File");
     private final JButton saveBtn = new JButton("Save");
     private final JButton backBtn = new JButton("zur\u00fcck");
@@ -29,8 +31,9 @@ public class FileEditor extends JPanel implements ActionListener, ResourceHandle
     private File file;
     private Scanner sc;
 
-    public FileEditor(JFrame f) {
+    public FileEditor(JFrame f,  Container beforeMenu) {
         this.f = f;
+        this.before = beforeMenu;
         initialize();
         setLayout(new BorderLayout());
 
@@ -40,9 +43,9 @@ public class FileEditor extends JPanel implements ActionListener, ResourceHandle
         backBtn.addActionListener(this);
         openBtn.addActionListener(this);
         saveBtn.addActionListener(this);
-        openBtn.setFont(new Font("Arial", 0, 16));
-        saveBtn.setFont(new Font("Arial", 0, 16));
-        textArea.setFont(new Font(Font.MONOSPACED, 0, 14));
+        openBtn.setFont(new Font("Arial", Font.PLAIN, 16));
+        saveBtn.setFont(new Font("Arial", Font.PLAIN, 16));
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
 
         add(btns, BorderLayout.NORTH);
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -97,9 +100,9 @@ public class FileEditor extends JPanel implements ActionListener, ResourceHandle
             }
         }
         else if(e.getSource() == backBtn){
-            MainMenu mM = new MainMenu((App)f);
-            f.setContentPane(mM);
+            f.setContentPane(before);
             f.revalidate();
+            before.requestFocusInWindow();
         }
     }
 }
